@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Workbench — Velorah{% endblock %}
+{% block title %}首页 — 几何星球{% endblock %}
 {% block head %}
 <script>
   var currentUser = null;
@@ -9,7 +9,7 @@
     currentUser = res.data;
     document.getElementById("topbarUser").innerHTML =
       currentUser.nickname +
-      (currentUser.role === 'admin' ? ' <span class="badge-admin">Admin</span>' : '');
+      (currentUser.role === 'admin' ? ' <span class="badge-admin">管理员</span>' : '');
     if (currentUser.role === 'admin') {
       document.getElementById("adminLink").style.display = '';
     }
@@ -19,46 +19,46 @@
 {% endblock %}
 {% block topbar_actions %}
 <span id="adminLink" style="display:none">
-  <a href="/admin" class="btn-glass btn-glass-ghost text-xs px-4 py-2">Admin</a>
+  <a href="/admin" class="btn-glass btn-glass-ghost text-xs px-4 py-2">管理后台</a>
 </span>
-<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="openChangePassword()">Password</button>
-<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="doLogout()">Exit</button>
+<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="openChangePassword()">修改密码</button>
+<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="doLogout()">退出</button>
 {% endblock %}
 {% block content %}
 <div class="z-content pt-24 px-4 max-w-6xl mx-auto">
 
-  <!-- Stats Row -->
+  <!-- 统计卡片 -->
   <div class="stats-row" id="statsRow">
     <div class="stat-card glass-card animate-fade-rise">
-      <div class="stat-label">Submissions</div>
+      <div class="stat-label">提交数</div>
       <div class="stat-value" id="sCount">--</div>
     </div>
     <div class="stat-card glass-card animate-fade-rise-delay">
-      <div class="stat-label">Total Likes</div>
+      <div class="stat-label">总点赞</div>
       <div class="stat-value" id="sLikes">--</div>
     </div>
     <div class="stat-card glass-card animate-fade-rise-delay">
-      <div class="stat-label">Total Comments</div>
+      <div class="stat-label">总评论</div>
       <div class="stat-value" id="sComments">--</div>
     </div>
     <div class="stat-card glass-card animate-fade-rise-delay-2">
-      <div class="stat-label">Total Shares</div>
+      <div class="stat-label">总分享</div>
       <div class="stat-value" id="sShares">--</div>
     </div>
     <div class="stat-card glass-card animate-fade-rise-delay-2">
-      <div class="stat-label">Total Collects</div>
+      <div class="stat-label">总收藏</div>
       <div class="stat-value" id="sCollects">--</div>
     </div>
   </div>
 
-  <!-- Submit Card -->
+  <!-- 提交卡片 -->
   <div class="submit-card glass-card animate-fade-rise-delay-3">
     <div class="submit-header">
       <div class="submit-icon">📤</div>
-      <span class="submit-title">New Submission</span>
+      <span class="submit-title">提交新视频</span>
     </div>
     <div class="submit-row">
-      <input type="text" class="input-glass submit-url" id="videoUrl" placeholder="Paste Douyin video link..." />
+      <input type="text" class="input-glass submit-url" id="videoUrl" placeholder="粘贴抖音视频链接..." />
       <select class="select-glass" id="videoCategory">
         <option value="日常">日常</option>
         <option value="商单">商单</option>
@@ -67,85 +67,85 @@
       </select>
       <div class="multi-select-wrap" id="collabWrap">
         <div class="multi-select-trigger" onclick="toggleCollabDropdown()">
-          <span class="placeholder-text" id="collabPlaceholder">Collaborators</span>
+          <span class="placeholder-text" id="collabPlaceholder">协作人员</span>
           <span class="arrow">▼</span>
         </div>
         <div class="multi-select-dropdown" id="collabDropdown">
           <div class="multi-select-list" id="collabList"></div>
           <div class="multi-select-actions">
-            <button class="btn-glass btn-glass-ghost text-xs" onclick="closeCollabDropdown()">Close</button>
+            <button class="btn-glass btn-glass-ghost text-xs" onclick="closeCollabDropdown()">关闭</button>
           </div>
         </div>
       </div>
-      <button class="liquid-glass-strong px-6 py-2.5 rounded-full text-sm font-medium text-white font-body" onclick="submitVideo()">Submit</button>
+      <button class="liquid-glass-strong px-6 py-2.5 rounded-full text-sm font-medium text-white font-body" onclick="submitVideo()">提交</button>
     </div>
   </div>
 
-  <!-- Result Modal -->
+  <!-- 结果弹窗 -->
   <div class="modal" id="resultModal">
     <div class="modal-glass liquid-glass-strong">
-      <div class="modal-header"><h3>Submission Success</h3><button class="modal-close" onclick="closeResultModal()">&times;</button></div>
+      <div class="modal-header"><h3>提交成功</h3><button class="modal-close" onclick="closeResultModal()">&times;</button></div>
       <div class="modal-body" id="resultBody"></div>
-      <div class="modal-footer"><button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="closeResultModal()">OK</button></div>
+      <div class="modal-footer"><button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="closeResultModal()">确认</button></div>
     </div>
   </div>
 
-  <!-- Change Password Modal -->
+  <!-- 修改密码弹窗 -->
   <div class="modal" id="passwordModal">
     <div class="modal-glass liquid-glass-strong">
-      <div class="modal-header"><h3>Change Password</h3><button class="modal-close" onclick="closeChangePassword()">&times;</button></div>
+      <div class="modal-header"><h3>修改密码</h3><button class="modal-close" onclick="closeChangePassword()">&times;</button></div>
       <div class="modal-body">
-        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Current Password</label><input type="password" class="input-glass" id="oldPassword" placeholder="Enter current password" /></div>
-        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">New Password</label><input type="password" class="input-glass" id="newPassword" placeholder="At least 4 characters" /></div>
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">原密码</label><input type="password" class="input-glass" id="oldPassword" placeholder="输入当前密码" /></div>
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">新密码</label><input type="password" class="input-glass" id="newPassword" placeholder="至少4位" /></div>
       </div>
       <div class="modal-footer">
-        <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closeChangePassword()">Cancel</button>
-        <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="changePassword()">Confirm</button>
+        <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closeChangePassword()">取消</button>
+        <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="changePassword()">确认修改</button>
       </div>
     </div>
   </div>
 
-  <!-- Edit Meta Modal -->
+  <!-- 编辑弹窗 -->
   <div class="modal" id="editMetaModal">
     <div class="modal-glass liquid-glass-strong">
-      <div class="modal-header"><h3>Edit Submission</h3><button class="modal-close" onclick="closeEditMeta()">&times;</button></div>
+      <div class="modal-header"><h3>修改提交信息</h3><button class="modal-close" onclick="closeEditMeta()">&times;</button></div>
       <div class="modal-body">
-        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Category</label>
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">分类</label>
           <select class="select-glass w-full" id="editMetaCategory">
             <option value="日常">日常</option><option value="商单">商单</option><option value="爆款">爆款</option><option value="金劫宝">金劫宝</option>
           </select>
         </div>
-        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Date</label><input type="date" class="input-glass" id="editMetaDate" /></div>
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">日期</label><input type="date" class="input-glass" id="editMetaDate" /></div>
       </div>
       <div class="modal-footer">
-        <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closeEditMeta()">Cancel</button>
-        <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="saveEditMeta()">Save</button>
+        <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closeEditMeta()">取消</button>
+        <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="saveEditMeta()">保存</button>
       </div>
     </div>
   </div>
 
-  <!-- Daily Changes Panel -->
+  <!-- 每日变化 -->
   <div class="changes-panel glass-card animate-fade-rise-delay-4" id="changesPanel" style="display:none">
     <div class="changes-header">
-      <h3>Yesterday Changes</h3>
+      <h3>昨日变化</h3>
       <span class="changes-subtitle" id="changesSubtitle"></span>
     </div>
     <div class="changes-grid" id="changesGrid"></div>
   </div>
 
-  <!-- Submission History -->
-  <h3 class="section-heading text-2xl my-6">Submission History</h3>
+  <!-- 提交历史 -->
+  <h3 class="section-heading text-2xl my-6">提交历史</h3>
   <table class="table-glass animate-fade-rise-delay-4" id="historyTable">
     <thead>
       <tr>
-        <th>Date</th><th>Video</th><th>Link</th><th>Category</th>
-        <th class="td-num">👍 Likes</th><th class="td-num">💬 Comments</th>
-        <th class="td-num">🔄 Shares</th><th class="td-num">⭐ Collects</th>
-        <th>Actions</th>
+        <th>日期</th><th>视频</th><th>链接</th><th>分类</th>
+        <th class="td-num">👍 点赞</th><th class="td-num">💬 评论</th>
+        <th class="td-num">🔄 分享</th><th class="td-num">⭐ 收藏</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody id="historyBody">
-      <tr><td colspan="9" class="td-empty">Loading...</td></tr>
+      <tr><td colspan="9" class="td-empty">加载中...</td></tr>
     </tbody>
   </table>
 
@@ -181,7 +181,7 @@
   function renderHistory(data) {
     var tbody = document.getElementById("historyBody");
     if (!data.length) {
-      tbody.innerHTML = '<tr><td colspan="9" class="td-empty">No submissions yet</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" class="td-empty">暂无提交</td></tr>';
       document.getElementById("sCount").textContent = "0";
       ["sLikes","sComments","sShares","sCollects"].forEach(function(id){ document.getElementById(id).textContent="0"; });
       return;
@@ -197,13 +197,13 @@
       return '<tr>'+
         '<td>'+(s.submitted_at||'').slice(0,10)+'</td>'+
         '<td><span class="desc-text" title="'+escapeHtml(s.desc||'')+'">'+(s.desc||'—').slice(0,25)+'</span></td>'+
-        '<td><a href="'+escapeHtml(s.video_url||'')+'" target="_blank" class="video-link" title="Open on Douyin">🔗</a></td>'+
+        '<td><a href="'+escapeHtml(s.video_url||'')+'" target="_blank" class="video-link" title="打开抖音">🔗</a></td>'+
         '<td><span class="badge '+badgeClass+' edit-meta" data-id="'+s.id+'" data-category="'+s.category+'" data-date="'+(s.submitted_at||'').slice(0,10)+'" onclick="openEditMeta(this)">'+escapeHtml(s.category)+' <span style="font-size:11px">✎</span></span></td>'+
         '<td class="td-num">'+formatNum(s.likes)+'</td>'+
         '<td class="td-num">'+formatNum(s.comments)+'</td>'+
         '<td class="td-num">'+formatNum(s.shares)+'</td>'+
         '<td class="td-num">'+formatNum(s.collects)+'</td>'+
-        '<td class="td-actions"><button class="btn-icon-edit" title="Edit" onclick="openEditMeta(this.parentElement.parentElement.querySelector(\'.edit-meta\'))">✎</button></td></tr>';
+        '<td class="td-actions"><button class="btn-icon-edit" title="修改" onclick="openEditMeta(this.parentElement.parentElement.querySelector(\'.edit-meta\'))">✎</button></td></tr>';
     }).join("");
     document.getElementById("sCount").textContent = data.length;
     document.getElementById("sLikes").textContent = formatNum(totalLikes);
@@ -243,19 +243,19 @@
     var url = document.getElementById("videoUrl").value.trim();
     var category = document.getElementById("videoCategory").value;
     var collabs = getSelectedCollaborators();
-    if (!url) { showToast("Please paste a video link", "error"); return; }
+    if (!url) { showToast("请粘贴视频链接", "error"); return; }
     var btn = event.target;
-    btn.disabled = true; btn.textContent = "Fetching...";
+    btn.disabled = true; btn.textContent = "抓取中...";
     fetch("/api/submissions", {
       method: "POST",
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({url:url, category:category, collaborator_ids:collabs}),
     }).then(function(r){return r.json()}).then(function(res){
-      btn.disabled = false; btn.textContent = "Submit";
-      if (!res.success) { showToast(res.error||"Submit failed", "error"); return; }
+      btn.disabled = false; btn.textContent = "提交";
+      if (!res.success) { showToast(res.error||"提交失败", "error"); return; }
       document.getElementById("resultBody").innerHTML =
         '<div class="text-sm text-white/70">'+escapeHtml(res.data.desc||'')+'</div><br>'+
-        '<div class="flex gap-4 text-sm">👍 '+formatNum(res.data.likes)+' &nbsp; 💬 '+formatNum(res.data.comments)+' &nbsp; 🔄 '+formatNum(res.data.shares)+' &nbsp; ⭐ '+formatNum(res.data.collects)+'</div>';
+        '<div class="flex gap-4 text-sm">👍 '+formatNum(res.data.likes)+' 💬 '+formatNum(res.data.comments)+' 🔄 '+formatNum(res.data.shares)+' ⭐ '+formatNum(res.data.collects)+'</div>';
       document.getElementById("resultModal").classList.add("active");
       document.getElementById("videoUrl").value = "";
       loadSubmissions();
@@ -272,18 +272,18 @@
   function changePassword() {
     var oldPw = document.getElementById("oldPassword").value.trim();
     var newPw = document.getElementById("newPassword").value.trim();
-    if (!oldPw || !newPw) { showToast("Please fill both fields", "error"); return; }
-    if (newPw.length < 4) { showToast("Password at least 4 characters", "error"); return; }
+    if (!oldPw || !newPw) { showToast("请填写新旧密码", "error"); return; }
+    if (newPw.length < 4) { showToast("新密码至少4位", "error"); return; }
     fetch("/api/change-password", {
       method: "POST",
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({old_password: oldPw, new_password: newPw}),
     }).then(function(r){return r.json()}).then(function(res){
       if (res.success) {
-        showToast("Password changed, please re-login", "success");
+        showToast("密码已修改，请重新登录", "success");
         closeChangePassword();
         setTimeout(function(){ doLogout(); }, 1500);
-      } else { showToast(res.error || "Change failed", "error"); }
+      } else { showToast(res.error || "修改失败", "error"); }
     });
   }
 
@@ -303,8 +303,8 @@
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({category: cat, submitted_at: dt}),
     }).then(function(r){return r.json()}).then(function(res){
-      if (res.success) { showToast("Saved", "success"); closeEditMeta(); loadSubmissions(); }
-      else { showToast(res.error || "Save failed", "error"); }
+      if (res.success) { showToast("已保存", "success"); closeEditMeta(); loadSubmissions(); }
+      else { showToast(res.error || "保存失败", "error"); }
     });
   }
 

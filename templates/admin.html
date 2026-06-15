@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Admin — Velorah{% endblock %}
+{% block title %}管理后台 — 几何星球{% endblock %}
 {% block head %}
 <script>
   var currentUser = null;
@@ -7,16 +7,16 @@
   fetch("/api/me").then(function(r){return r.json()}).then(function(res){
     if(!res.success) window.location.href="/login";
     currentUser = res.data;
-    if (currentUser.role !== 'admin') { document.body.innerHTML='<div style="text-align:center;padding:80px;color:#fff"><h2 class="text-2xl font-heading italic mb-2">403 Access Denied</h2><a href="/" class="text-white/60 underline">Return to workbench</a></div>'; return; }
-    document.getElementById("topbarUser").innerHTML = currentUser.nickname + ' <span class="badge-admin">Admin</span>';
+    if (currentUser.role !== 'admin') { document.body.innerHTML='<div style="text-align:center;padding:80px;color:#fff"><h2 class="text-2xl font-heading italic mb-2">403 无权限</h2><a href="/" class="text-white/60 underline">返回工作台</a></div>'; return; }
+    document.getElementById("topbarUser").innerHTML = currentUser.nickname + ' <span class="badge-admin">管理员</span>';
     initPage();
   });
 </script>
 {% endblock %}
 {% block topbar_actions %}
-<a href="/" class="btn-glass btn-glass-ghost text-xs px-4 py-2">← Workbench</a>
-<a href="/admin/users" class="btn-glass btn-glass-ghost text-xs px-4 py-2">Users</a>
-<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="doLogout()">Exit</button>
+<a href="/" class="btn-glass btn-glass-ghost text-xs px-4 py-2">← 工作台</a>
+<a href="/admin/users" class="btn-glass btn-glass-ghost text-xs px-4 py-2">用户管理</a>
+<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="doLogout()">退出</button>
 {% endblock %}
 {% block content %}
 <div class="z-content pt-24 px-4 max-w-7xl mx-auto">
@@ -25,17 +25,17 @@
 <!-- ═══════════ Users ═══════════ -->
 <div class="users-header animate-fade-rise">
   <div>
-    <h2 class="page-title">User Management</h2>
-    <p class="page-sub">All registered users — admins can adjust roles</p>
+    <h2 class="page-title">用户管理</h2>
+    <p class="page-sub">所有注册用户 — 管理员可调整角色权限</p>
   </div>
 </div>
 
 <table class="table-glass animate-fade-rise-delay" id="usersTable">
   <thead>
-    <tr><th>ID</th><th>Username</th><th>Nickname</th><th>Role</th><th>Registered</th><th style="text-align:right">Actions</th></tr>
+    <tr><th>ID</th><th>用户名</th><th>昵称</th><th>角色</th><th>注册时间</th><th style="text-align:right">操作</th></tr>
   </thead>
   <tbody>
-    <tr><td colspan="6" class="td-empty">Loading...</td></tr>
+    <tr><td colspan="6" class="td-empty">加载中...</td></tr>
   </tbody>
 </table>
 
@@ -44,63 +44,63 @@
 
 <div class="filter-bar animate-fade-rise">
   <div class="filter-row glass-card">
-    <div class="filter-item"><label>Employee</label>
-      <select class="select-glass" id="fUser" onchange="applyFilter()"><option value="">All</option></select>
+    <div class="filter-item"><label>员工</label>
+      <select class="select-glass" id="fUser" onchange="applyFilter()"><option value="">全部</option></select>
     </div>
-    <div class="filter-item"><label>Category</label>
+    <div class="filter-item"><label>分类</label>
       <select class="select-glass" id="fCategory" onchange="applyFilter()">
-        <option value="">All</option><option value="日常">日常</option><option value="商单">商单</option><option value="爆款">爆款</option><option value="金劫宝">金劫宝</option>
+        <option value="">全部</option><option value="日常">日常</option><option value="商单">商单</option><option value="爆款">爆款</option><option value="金劫宝">金劫宝</option>
       </select>
     </div>
-    <div class="filter-item"><label>Start</label><input type="date" class="input-glass" id="fDateFrom" onchange="applyFilter()" /></div>
-    <div class="filter-item"><label>End</label><input type="date" class="input-glass" id="fDateTo" onchange="applyFilter()" /></div>
-    <div class="filter-item"><label>Engagement ≥</label><input type="number" class="input-glass w-24" id="fEngagement" placeholder="0" onchange="applyFilter()" /></div>
-    <div class="filter-item"><label>Amount ≥</label><input type="number" class="input-glass w-24" id="fPaymentMin" placeholder="0" onchange="applyFilter()" /></div>
+    <div class="filter-item"><label>开始</label><input type="date" class="input-glass" id="fDateFrom" onchange="applyFilter()" /></div>
+    <div class="filter-item"><label>结束</label><input type="date" class="input-glass" id="fDateTo" onchange="applyFilter()" /></div>
+    <div class="filter-item"><label>互动 ≥</label><input type="number" class="input-glass w-24" id="fEngagement" placeholder="0" onchange="applyFilter()" /></div>
+    <div class="filter-item"><label>金额 ≥</label><input type="number" class="input-glass w-24" id="fPaymentMin" placeholder="0" onchange="applyFilter()" /></div>
     <div class="filter-item filter-actions">
-      <button class="liquid-glass-strong px-4 py-2 rounded-full text-xs font-medium text-white" onclick="exportExcel()">Export Excel</button>
-      <a href="/admin/monthly" class="btn-glass btn-glass-ghost text-xs px-4 py-2">Monthly</a>
-      <button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="refreshAll()">Refresh</button>
+      <button class="liquid-glass-strong px-4 py-2 rounded-full text-xs font-medium text-white" onclick="exportExcel()">导出Excel</button>
+      <a href="/admin/monthly" class="btn-glass btn-glass-ghost text-xs px-4 py-2">月度汇总</a>
+      <button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="refreshAll()">刷新</button>
     </div>
   </div>
 </div>
 
 <!-- Stats -->
 <div class="stats-row animate-fade-rise-delay" id="adminStats">
-  <div class="stat-card glass-card"><div class="stat-label">Matched</div><div class="stat-value" id="sCount">--</div></div>
-  <div class="stat-card glass-card"><div class="stat-label">Total Likes</div><div class="stat-value" id="sLikes">--</div></div>
-  <div class="stat-card glass-card"><div class="stat-label">Total Comments</div><div class="stat-value" id="sComments">--</div></div>
-  <div class="stat-card glass-card"><div class="stat-label">Total Shares</div><div class="stat-value" id="sShares">--</div></div>
-  <div class="stat-card glass-card"><div class="stat-label">Total Collects</div><div class="stat-value" id="sCollects">--</div></div>
-  <div class="stat-card glass-card"><div class="stat-label">Total Engagement</div><div class="stat-value td-num-gold" id="sEngagement">--</div></div>
-  <div class="stat-card glass-card"><div class="stat-label">Total Amount</div><div class="stat-value td-num-gold" id="sPayment">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">符合条件</div><div class="stat-value" id="sCount">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">总点赞</div><div class="stat-value" id="sLikes">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">总评论</div><div class="stat-value" id="sComments">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">总分享</div><div class="stat-value" id="sShares">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">总收藏</div><div class="stat-value" id="sCollects">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">总互动</div><div class="stat-value td-num-gold" id="sEngagement">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">总金额</div><div class="stat-value td-num-gold" id="sPayment">--</div></div>
 </div>
 
 <!-- Result Table -->
 <table class="table-glass animate-fade-rise-delay-2" id="resultTable">
   <thead>
     <tr>
-      <th>Employee</th><th>Date</th><th>Link</th><th>Category</th><th>Collaborators</th><th>Amount</th>
+      <th>员工</th><th>日期</th><th>链接</th><th>分类</th><th>协作人员</th><th>金额</th>
       <th class="td-num">👍</th><th class="td-num">💬</th><th class="td-num">🔄</th><th class="td-num">⭐</th><th class="td-num">🔥</th>
-      <th>Actions</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
-    <tr><td colspan="12" class="td-empty">Loading...</td></tr>
+    <tr><td colspan="12" class="td-empty">加载中...</td></tr>
   </tbody>
 </table>
 
 <!-- Payment Modal -->
 <div class="modal" id="paymentModal">
   <div class="modal-glass liquid-glass-strong">
-    <div class="modal-header"><h3>Edit Amount</h3><button class="modal-close" onclick="closePaymentModal()">&times;</button></div>
+    <div class="modal-header"><h3>编辑金额</h3><button class="modal-close" onclick="closePaymentModal()">&times;</button></div>
     <div class="modal-body">
-      <label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Amount (¥)</label>
+      <label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">金额 (元)</label>
       <input type="number" class="input-glass" id="paymentAmount" placeholder="0" step="0.01" />
-      <p class="text-xs text-white/30 mt-2">Leave blank to clear</p>
+      <p class="text-xs text-white/30 mt-2">留空则清除金额</p>
     </div>
     <div class="modal-footer">
-      <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closePaymentModal()">Cancel</button>
-      <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="savePayment()">Save</button>
+      <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closePaymentModal()">取消</button>
+      <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="savePayment()">保存</button>
     </div>
   </div>
 </div>
@@ -131,16 +131,16 @@
     if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" class="td-empty">No users</td></tr>'; return; }
     tbody.innerHTML = users.map(function(u){
       var isAdmin = u.role === 'admin';
-      var roleBadge = isAdmin ? '<span class="badge badge-shangdan">Admin</span>' : '<span class="badge badge-employee">Employee</span>';
+      var roleBadge = isAdmin ? '<span class="badge badge-shangdan">管理员</span>' : '<span class="badge badge-employee">员工</span>';
       var isInitialAdmin = u.username === 'admin' && isAdmin;
       var isSelf = currentUser && u.id === currentUser.id;
       var actionHtml = '';
-      if (isInitialAdmin) { actionHtml = '<span class="hint-locked">Protected</span>'; }
-      else if (isSelf) { actionHtml = '<span class="hint-locked">Current</span>'; }
+      if (isInitialAdmin) { actionHtml = '<span class="hint-locked">受保护</span>'; }
+      else if (isSelf) { actionHtml = '<span class="hint-locked">当前账号</span>'; }
       else {
-        if (isAdmin) { actionHtml += '<button class="btn-glass btn-glass-ghost text-xs px-3 py-1" onclick="changeRole('+u.id+',\'employee\',\''+escapeHtml(u.nickname)+'\')">⬇ Demote</button> '; }
-        else { actionHtml += '<button class="liquid-glass-strong px-3 py-1 rounded-full text-xs text-white font-medium" onclick="changeRole('+u.id+',\'admin\',\''+escapeHtml(u.nickname)+'\')">⬆ Promote</button> '; }
-        actionHtml += '<button class="btn-icon-danger" onclick="deleteUser('+u.id+',\''+escapeHtml(u.nickname)+'\')">🗑</button>';
+        if (isAdmin) { actionHtml += '<button class="btn-glass btn-glass-ghost text-xs px-3 py-1" onclick="changeRole('+u.id+',\'employee\',\''+escapeHtml(u.nickname)+'\')">⬇ 降为员工</button> '; }
+        else { actionHtml += '<button class="liquid-glass-strong px-3 py-1 rounded-full text-xs text-white font-medium" onclick="changeRole('+u.id+',\'admin\',\''+escapeHtml(u.nickname)+'\')">⬆ 提升管理员</button> '; }
+        actionHtml += '<button class="btn-icon-danger" onclick="deleteUser('+u.id+',\''+escapeHtml(u.nickname)+'\')">🗑 删除</button>';
       }
       return '<tr>'+
         '<td style="text-align:left">'+u.id+'</td>'+
@@ -153,21 +153,21 @@
   }
 
   function changeRole(userId, newRole, nickname) {
-    var verb = newRole === 'admin' ? 'Promote to Admin' : 'Demote to Employee';
-    if (!confirm(verb + '「' + nickname + '」?')) return;
+    var verb = newRole === 'admin' ? '提升为管理员' : '降为员工';
+    if (!confirm(verb + '「' + nickname + '」？')) return;
     fetch("/api/admin/users/"+userId+"/role", {
       method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({role: newRole}),
     }).then(function(r){return r.json()}).then(function(res){
       if (res.success) { showToast(verb, 'success'); loadUsersPage(); }
-      else { showToast(res.error || 'Failed', 'error'); }
+      else { showToast(res.error || '操作失败', 'error'); }
     });
   }
 
   function deleteUser(userId, nickname) {
-    if (!confirm('Delete「' + nickname + '」?\\n\\nAll data will be permanently removed.')) return;
+    if (!confirm('确认删除「' + nickname + '」？\\n\\n所有数据将被永久清除。')) return;
     fetch("/api/admin/users/"+userId, {method:"DELETE"}).then(function(r){return r.json()}).then(function(res){
-      if (res.success) { showToast('Deleted ' + nickname, 'success'); loadUsersPage(); }
-      else { showToast(res.error || 'Failed', 'error'); }
+      if (res.success) { showToast('已删除 ' + nickname, 'success'); loadUsersPage(); }
+      else { showToast(res.error || '删除失败', 'error'); }
     });
   }
 
@@ -176,7 +176,7 @@
       if (!res.success) return;
       allUsers = res.data;
       var sel = document.getElementById("fUser");
-      sel.innerHTML = '<option value="">All</option>';
+      sel.innerHTML = '<option value="">全部</option>';
       res.data.forEach(function(u){
         var opt = document.createElement("option"); opt.value = u.id; opt.textContent = u.nickname + " (" + u.username + ")"; sel.appendChild(opt);
       });
@@ -215,7 +215,7 @@
   function renderResults(data) {
     var tbody = document.querySelector("#resultTable tbody");
     if (!data.length) {
-      tbody.innerHTML = '<tr><td colspan="12" class="td-empty">No data</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="12" class="td-empty">暂无数据</td></tr>';
       ["sCount","sLikes","sComments","sShares","sCollects","sEngagement","sPayment"].forEach(function(id){ document.getElementById(id).textContent = id==='sPayment'?'--':'0'; });
       return;
     }
@@ -232,7 +232,7 @@
       else badgeClass = 'badge-richang';
       var isBiz = s.category === '商单' || s.category === '金劫宝';
       var payText = isBiz
-        ? '<span class="payment-cell editable" onclick="openPayment('+s.id+','+(s.payment_amount||0)+')">'+(s.payment_amount ? '¥'+formatNum(s.payment_amount) : 'Set')+'</span>'
+        ? '<span class="payment-cell editable" onclick="openPayment('+s.id+','+(s.payment_amount||0)+')">'+(s.payment_amount ? '¥'+formatNum(s.payment_amount) : '标注')+'</span>'
         : '—';
       return '<tr>'+
         '<td>'+escapeHtml(s.submitter_name)+'</td>'+
@@ -246,7 +246,7 @@
         '<td class="td-num">'+formatNum(s.shares)+'</td>'+
         '<td class="td-num">'+formatNum(s.collects)+'</td>'+
         '<td class="td-num td-num-gold">'+formatNum(eng)+'</td>'+
-        '<td class="td-actions"><button class="btn-icon-danger" title="Delete" onclick="deleteRow('+s.id+',\''+escapeHtml(s.submitter_name)+'\')">🗑</button></td></tr>';
+        '<td class="td-actions"><button class="btn-icon-danger" title="删除" onclick="deleteRow('+s.id+',\''+escapeHtml(s.submitter_name)+'\')">🗑</button></td></tr>';
     }).join("");
     document.getElementById("sCount").textContent = data.length;
     document.getElementById("sLikes").textContent = formatNum(totalLikes);
@@ -265,25 +265,25 @@
     fetch("/api/admin/payment/"+currentPaymentId, {
       method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({amount: amount}),
     }).then(function(r){return r.json()}).then(function(res){
-      if (res.success) { showToast("Saved","success"); closePaymentModal(); applyFilter(); }
+      if (res.success) { showToast("已保存","success"); closePaymentModal(); applyFilter(); }
     });
   }
 
   function exportExcel() { var p = buildUrl().split("?")[1]||""; window.open("/api/admin/export?"+p.replace("per_page=1000","")); }
   function refreshAll() {
-    var btn = event.target; btn.disabled = true; btn.textContent = "Refreshing...";
+    var btn = event.target; btn.disabled = true; btn.textContent = "刷新中...";
     fetch("/api/refresh",{method:"POST"}).then(function(r){return r.json()}).then(function(res){
-      if (res.success) { showToast("Refresh started, reload in ~10s","info"); setTimeout(function(){ applyFilter(); btn.disabled=false; btn.textContent="Refresh"; }, 10000); }
-      else { showToast(res.error||"Failed","error"); btn.disabled=false; btn.textContent="Refresh"; }
+      if (res.success) { showToast("刷新已启动，约10秒后重新加载","info"); setTimeout(function(){ applyFilter(); btn.disabled=false; btn.textContent="刷新"; }, 10000); }
+      else { showToast(res.error||"启动失败","error"); btn.disabled=false; btn.textContent="刷新"; }
     });
   }
 
   function doLogout() { fetch("/api/logout",{method:"POST"}).then(function(){ window.location.href="/login"; }); }
   function deleteRow(id, name) {
-    if (!confirm("Delete submission from「" + name + "」?\\n\\nAll snapshots will also be removed.")) return;
+    if (!confirm("确认删除「" + name + "」的提交？\\n\\n所有快照数据也将一并清除，不可恢复。")) return;
     fetch("/api/admin/submissions/"+id, {method:"DELETE"}).then(function(r){return r.json()}).then(function(res){
-      if (res.success) { showToast("Deleted","success"); applyFilter(); }
-      else { showToast(res.error||"Failed","error"); }
+      if (res.success) { showToast("已删除","success"); applyFilter(); }
+      else { showToast(res.error||"删除失败","error"); }
     });
   }
 </script>
