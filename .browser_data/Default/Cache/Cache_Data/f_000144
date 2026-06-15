@@ -1,0 +1,1707 @@
+/*! For license information please see 81306.0aa29196.js.LICENSE.txt */
+!function(e,t){"object"==typeof module&&"object"==typeof module.exports?t():"function"==typeof define&&define.amd?define([],t):(e="undefined"!=typeof globalThis?globalThis:e||self)&&t()}(this,function(){"use strict";"object"==typeof window&&(window.openRedirect={version:"1.2.18",webpackPluginVersion:"3.4.20",reportOnly:!1})}),!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).xss={})}(this,function(e){"use strict";var t=function(){return(t=Object.assign||function(e){for(var t,r=1,o=arguments.length;r<o;r++)for(var i in t=arguments[r])Object.prototype.hasOwnProperty.call(t,i)&&(e[i]=t[i]);return e}).apply(this,arguments)};function r(e,t,r){if(r||2==arguments.length)for(var o,i=0,a=t.length;i<a;i++)!o&&i in t||(o||(o=Array.prototype.slice.call(t,0,i)),o[i]=t[i]);return e.concat(o||Array.prototype.slice.call(t))}var o=/[^a-zA-Z0-9\\_:.-]/gim,i=/</g,a=/>/g,n=/&#([a-zA-Z0-9]*);?/gim,s=/&quot;/g,c=/&colon;?/gim,G=/&newline;?/gim,l=/((j\s*a\s*v\s*a|v\s*b|l\s*i\s*v\s*e)\s*s\s*c\s*r\s*i\s*p\s*t\s*|m\s*o\s*c\s*h\s*a):/gi,d=/u\s*r\s*l\s*\(.*/gi,u=/e\s*x\s*p\s*r\s*e\s*s\s*s\s*i\s*o\s*n\s*\(.*/gi,T=/"/g,h=function(e){return e.replace(i,"&lt;").replace(a,"&gt;")},F={indexOf:function(e,t){var r,o;for(r=0,o=e.length;r<o;r++)if(e[r]===t)return r;return -1},forEach:function(e,t,r){var o,i;for(o=0,i=e.length;o<i;o++)t.call(r,e[o],o,e)},some:function(e,t,r){var o,i;for(o=0,i=e.length;o<i;o++)if(t.call(r,e[o],o,e))return!0;return!1},trim:function(e){return e.replace(/(^\s*)|(\s*$)/g,"")},includes:function(e,t){if("string"==typeof e)return -1!==e.indexOf(t);for(var r=0;r<e.length;r++)if(e[r]===t)return!0;return!1},spaceIndex:function(e){var t=/\s|\n|\t/.exec(e);return t?t.index:-1},uniq:function(e){for(var t={},r=[],o=0;o<e.length;o++)t[e[o]]||(r.push(e[o]),t[e[o]]=!0);return r},from:function(e){for(var t=[],r=0;r<e.length;r++)t.push(e[r]);return t},keys:function(e){var t=[];for(var r in e)t.push(r);return t}};function p(e){return null==e}function f(e){var t;return'"'===(t=e)[0]&&'"'===t[t.length-1]||"'"===t[0]&&"'"===t[t.length-1]?e.substr(1,e.length-2):e}function m(e){var t,r,o,i,a,n,s,c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",G="",l=0;for(e=function(e){e=e.replace(/rn/g,"n");for(var t="",r=0;r<e.length;r++){var o=e.charCodeAt(r);o<128?t+=String.fromCharCode(o):o>127&&o<2048?t+=String.fromCharCode(o>>6|192)+String.fromCharCode(63&o|128):t+=String.fromCharCode(o>>12|224)+String.fromCharCode(o>>6&63|128)+String.fromCharCode(63&o|128)}return t}(e);l<e.length;)i=(t=e.charCodeAt(l++))>>2,a=(3&t)<<4|(r=e.charCodeAt(l++))>>4,n=(15&r)<<2|(o=e.charCodeAt(l++))>>6,s=63&o,isNaN(r)?n=s=64:isNaN(o)&&(s=64),G=G+c.charAt(i)+c.charAt(a)+c.charAt(n)+c.charAt(s);return G}function g(e){var t,r,o,i,a,n,s="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",c="",G=0;for(e=e.replace(/[^A-Za-z0-9+/=]/g,"");G<e.length;)t=s.indexOf(e.charAt(G++))<<2|(i=s.indexOf(e.charAt(G++)))>>4,r=(15&i)<<4|(a=s.indexOf(e.charAt(G++)))>>2,o=(3&a)<<6|(n=s.indexOf(e.charAt(G++))),c+=String.fromCharCode(t),64!==a&&(c+=String.fromCharCode(r)),64!==n&&(c+=String.fromCharCode(o));return function(e){for(var t="",r=0,o=0,i=0,a=0;r<e.length;)(o=e.charCodeAt(r))<128?(t+=String.fromCharCode(o),r++):o>191&&o<224?(t+=String.fromCharCode((31&o)<<6|63&(a=e.charCodeAt(r+1))),r+=2):(a=e.charCodeAt(r+1),t+=String.fromCharCode((15&o)<<12|(63&a)<<6|63&(i=e.charCodeAt(r+2))),r+=3);return t}(c)}function X(e,t,r){var o="",i=0,a=!1,n=!1,s=0,c=e.length,G="",l="";e:for(s=0;s<c;s++){var d=e.charAt(s);if(!1===a){if("<"===d){a=s;continue}}else if(!1===n){if("<"===d){o+=r(e.slice(i,s)),a=s,i=s;continue}if(">"===d||s===c-1){o+=r(e.slice(i,a)),G=function(e){var t,r=F.spaceIndex(e);return t=-1===r?e.slice(1,-1):e.slice(1,r+1),"/"===(t=F.trim(t).toLowerCase()).slice(0,1)&&(t=t.slice(1)),"/"===t.slice(-1)&&(t=t.slice(0,-1)),t}(l=e.slice(a,s+1)),o+=t(a,o.length,G,l,"</"===l.slice(0,2)),i=s+1,a=!1;continue}if('"'===d||"'"===d)for(var u=1,T=e.charAt(s-u);""===T.trim()||"="===T;){if("="===T){n=d;continue e}T=e.charAt(s-++u)}}else if(d===n){n=!1;continue}}return i<c&&(o+=r(e.substr(i))),o}function M(e,t){var r=0,i=0,a=[],n=!1,s=e.length;function c(e,r){if(!((e=(e=F.trim(e)).replace(o,"").toLowerCase()).length<1)){var i=t(e,r||"");i&&a.push(i)}}for(var G=0;G<s;G++){var l=e.charAt(G),d=void 0;if(!1!==n||"="!==l){if(!1===n||G!==i){if(/\s|\n|\t/.test(l)){if(e=e.replace(/\s|\n|\t/g," "),!1===n){if(-1===(d=function(e,t){for(;t<e.length;t++){var r=e[t];if(" "!==r)return"="===r?t:-1}return -1}(e,G))){c(F.trim(e.slice(r,G))),n=!1,r=G+1;continue}G=d-1;continue}if(-1===(d=function(e,t){for(;t>0;t--){var r=e[t];if(" "!==r)return"="===r?t:-1}return -1}(e,G-1))){c(n,f(F.trim(e.slice(r,G)))),n=!1,r=G+1;continue}}}else{if(-1===(d=e.indexOf(l,G+1)))break;c(n,F.trim(e.slice(i+1,d))),n=!1,r=(G=d)+1}}else n=e.slice(r,G),r=G+1,i='"'===e.charAt(r)||"'"===e.charAt(r)?r:function(e,t){for(;t<e.length;t++){var r=e[t];if(" "!==r)return"'"===r||'"'===r?t:-1}return -1}(e,G+1)}return r<e.length&&(!1===n?c(e.slice(r)):c(n,f(F.trim(e.slice(r))))),F.trim(a.join(" "))}function v(e,t,r){if(r=function(e){return e=function(e){for(var t="",r=0,o=e.length;r<o;r++)t+=32>e.charCodeAt(r)?" ":e.charAt(r);return F.trim(t)}(e=(e=(e=e.replace(s,'"')).replace(n,function(e,t){return"x"===t[0]||"X"===t[0]?String.fromCharCode(parseInt(t.substr(1),16)):String.fromCharCode(parseInt(t,10))})).replace(c,":").replace(G," "))}(r),"href"===t||"src"===t){if("#"===(r=F.trim(r)))return"#";if("http://"!==r.substr(0,7)&&"https://"!==r.substr(0,8)&&"mailto:"!==r.substr(0,7)&&"tel:"!==r.substr(0,4)&&"data:image/"!==r.substr(0,11)&&"ftp://"!==r.substr(0,6)&&"./"!==r.substr(0,2)&&"../"!==r.substr(0,3)&&"#"!==r[0]&&"/"!==r[0])return""}else if("background"===t){if(l.lastIndex=0,l.test(r))return""}else if("style"===t&&(u.lastIndex=0,u.test(r)||(d.lastIndex=0,d.test(r)&&(l.lastIndex=0,l.test(r)))))return"";return r=function(e){return e=h(e=e.replace(T,"&quot;"))}(r)}var b=function(e){return"string"==typeof e?e.replace(/'/g,'"').replace('=""',"").replace(/\s+/g,"").toLowerCase():""},_=function(){function e(e){var t=function(e){var t={};for(var r in e)t[r]=e[r];return t}(e||{});t.stripIgnoreTag&&(t.onIgnoreTag,t.onIgnoreTag=function(){return""}),t.whiteList={},t.onTag=function(){},t.onTagAttr=function(){},t.onIgnoreTag=function(){},t.onIgnoreTagAttr=function(){},t.safeAttrValue=v,t.escapeHtml=h,this.options=Object.assign(t,e)}return e.prototype.process=function(e){if(!(e=(e=e||"").toString()))return"";var t,r,o,i,a,n,s=this.options,c=s.whiteList,G=s.onTag,l=s.onIgnoreTag,d=s.onTagAttr,u=s.onIgnoreTagAttr,T=s.safeAttrValue,h=s.escapeHtml;s.stripBlankChar&&(e=(t=(t=e.split("")).filter(function(e){var t=e.charCodeAt(0);return!(127===t||t<=31&&10!==t&&13!==t)})).join("")),s.allowCommentTag||(e=function(e){for(var t="",r=0;r<e.length;){var o=e.indexOf("\x3c!--",r);if(-1===o){t+=e.slice(r);break}t+=e.slice(r,o);var i=e.indexOf("--\x3e",o);if(-1===i)break;r=i+3}return t}(e));var p=!1;s.stripIgnoreTagBody&&(r=s.stripIgnoreTagBody,"function"!=typeof(o=l)&&(o=function(){}),i=!Array.isArray(r),a=[],n=!1,l=(p={onIgnoreTag:function(e,t,s){var c;if(c=e,i||-1!==F.indexOf(r,c)){if(s.isClosing){var G="[/removed]",l=s.position+G.length;return a.push([!1!==n?n:s.position,l]),n=!1,G}return n||(n=s.position),"[removed]"}return o(e,t,s)},remove:function(e){var t="",r=0;return F.forEach(a,function(o){t+=e.slice(r,o[0]),r=o[1]}),t+=e.slice(r)}}).onIgnoreTag);var f=X(e,function(e,t,r,o,i){var a={sourcePosition:e,position:t,isClosing:i,isWhite:Object.prototype.hasOwnProperty.call(c,r)},n=G(r,o,a);if(null!=n)return n;if(a.isWhite){if(a.isClosing)return"</".concat(r,">");var s=function(e){var t=F.spaceIndex(e);if(-1===t)return{html:"",closing:"/"===e[e.length-2]};var r="/"===(e=F.trim(e.slice(t+1,-1)))[e.length-1];return r&&(e=F.trim(e.slice(0,-1))),{html:e,closing:r}}(o),p=c[r],f=M(s.html,function(e,t){var o=-1!==F.indexOf(p,e),i=d(r,e,t,o);return null==i?o?(t=T(r,e,t,null))?"".concat(e,'="').concat(t,'"'):e:null==(i=u(r,e,t,o))?void 0:i:i});return o="<".concat(r),f&&(o+=" ".concat(f)),s.closing&&(o+=" /"),o+=">"}return null==(n=l(r,o,a))?h(o):n},h);return p&&(f=p.remove(f)),f},e}(),E=Function("\nvar _checkXSS = function (it) {\n  return it && it.Math == Math && it;\n};\nreturn _checkXSS(typeof globalThis === 'object' && globalThis) ||\n_checkXSS(typeof window === 'object' && window) ||\n_checkXSS(typeof self === 'object' && self) ||\n_checkXSS(typeof global === 'object' && global) ||\nFunction('return this')();\n")(),y=new(function(){function e(){var e=this;this.batchData=[],this.uniqKeys=new Set,this.timeout=2e3,this.lock=!1,this.getSlardarBid=function(){var t,r,o="douyin_web";if(!F.includes(o,"bid"))return o;if(e.config&&e.config.bid)return e.config.bid;if(E&&E._xssBid)return E._xssBid;if(E&&E.slardar&&"function"==typeof E.slardar.config){var i=(E.slardar.config()||{}).bid;if(i)return i}if(E&&E.Slardar&&"function"==typeof E.Slardar.config){var a=(E.Slardar.config()||{}).bid;if(a)return a}return(null===(r=null===(t=null==E?void 0:E.Slardar)||void 0===t?void 0:t._baseParams)||void 0===r?void 0:r.bid)||"argus"},this.getConfigRegion=function(){var t;return F.includes("cn","region")?e.config&&e.config.region?e.config.region:((null===(t=null==E?void 0:E.gfdatav1)||void 0===t?void 0:t.region)||"cn").toLowerCase():"cn"},this.gerReportUrl=function(){var t={cn:g("aHR0cHM6Ly9tb24uemlqaWVhcGkuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),boe:g("aHR0cHM6Ly9tb24uemlqaWVhcGkuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),ttp:g("aHR0cHM6Ly9tb24udXMudGlrdG9rdi5jb20vbW9uaXRvcl9icm93c2VyL2NvbGxlY3QvYmF0Y2gvc2VjdXJpdHkvP2JpZD0="),va:g("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),maliva:g("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),sg:g("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),boei18n:g("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9")}[e.getConfigRegion()];if(t)return t+e.getSlardarBid()}}return e.prototype.setConfig=function(e){this.config=e},e.prototype.upload=function(){var e=this,t=this.gerReportUrl();!this.lock&&t&&0!==this.batchData.length&&(this.lock=!0,setTimeout(function(){var r=e.batchData.slice(0,100);e.batchData=e.batchData.slice(100),E.fetch(t,{method:"post",body:JSON.stringify(r),headers:{"Content-Type":"application/json"}}).catch(function(e){}),e.lock=!1,e.upload()},this.timeout))},e.prototype.generateKey=function(e){return e.collectKey?[e.collectMode,e.collectKey].join("___"):""},e.prototype.push=function(e){this.batchData.push(e),this.upload()},e.prototype.report=function(e){var t=this.generateKey(e);if(E.fetch&&e.collectKey){var r="object"==typeof window?window.location.href:"SSR";e.documentUrl=r;var o={age:Math.floor(Date.now()),type:"xss",url:r,body:e,"user-agent":""};"enforce"===e.disposition&&"SSR"!==r||(o.url=t),"SSR"===r&&(o.url="SSR___".concat(o.url),o.body.ssr=!0),this.push(o)}},e}()),P=function(e){for(var t=0,r=function(r){Array.isArray(e[r])?0===e[r].length?delete e[r]:(e[r]=F.from(F.uniq(e[r])),t+=e[r].length):0===F.keys(e[r]).length?delete e[r]:F.keys(e[r]).forEach(function(o){e[r][o]=F.from(F.uniq(e[r][o])),t+=e[r][o].length})},o=0,i=F.keys(e);o<i.length;o++)r(i[o]);return{count:t,ret:e}};function S(e,t){return y.setConfig(t),new _(t).process(e)}function R(e){var t,r=(t=/\s|\n|\t/.exec(e))?t.index:-1;if(-1===r)return{html:"",closing:"/"===e[e.length-2]};var o="/"===(e=e.slice(r+1,-1).trim())[e.length-1];return o&&(e=e.slice(0,-1).trim()),{html:e,closing:o}}var A=function(e){return -1===(e=(e=(e=(e=e.replace(/&colon;/gi,":")).replace(/&tab;/gi,"")).replace(/&newline;/gi,"")).replace(/(\t|\n|\r)/g,"")).indexOf("&#")?e.trim().toLowerCase():e.trim().replace(/&#(?:(x)([0-9a-f]+)|([0-9]+));?/gi,function(e,t,r,o){return String.fromCharCode(t?parseInt(r,16):parseInt(o))}).replace(/(\t|\n|\r)/g,"").toLowerCase()};function Q(e,t){if(void 0===e&&(e=""),"string"!=typeof e)return!0;if(e=A(e),F.includes(e,"base64")&&!function(e){if(""===e||""===e.trim())return!0;try{return!F.includes(e,"data:text/html;base64")}catch(e){return!0}}(e))return t&&t("data:text/html;base64"),!1;var r=["expression(","behavior:","view-source:"];if(F.some(r,function(t){return -1!==e.indexOf(t)}))return F.forEach(r,function(r){-1!==e.indexOf(r)&&t&&t(r)}),!1;var o=["data:application","data:javascript","data:text/html","data:texthtml"];if(F.some(o,function(t){return -1!==e.indexOf(t)}))return F.forEach(o,function(r){-1!==e.indexOf(r)&&t&&t(r)}),!1;if(e.indexOf("javascript:")>0)return t&&t("javascript:"),!1;if(/^javascript:/i.test(e)){var i=e.slice(11).replace(/\s/g,"").trim();return!!F.some(["void","void(0)","void0","false","undefined",";"],function(e){return e===i})||(t&&t("javascript:"),!1)}return!0}var L=function(e,t){var r,o,i="<%= isSaveValidUrl =>";if("string"!=typeof e||(o=Number("<%= urlLimit =>"),void 0!==r&&(o=r),"NaN"!==e.toString()&&-1!==o&&e.length>=o)||Q(e,t))return e;try{if(!0===(i=JSON.parse(i))||"true"===i){var a=new URL(e);return a.origin+a.pathname}}catch(e){}return"#"};function x(e,t,o){if(void 0===e&&(e=""),void 0===t&&(t=[]),"string"!=typeof e)return!0;if(!Q(e=A(e)))return!1;var i,a={url:(i=e.match(/^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/)||[])[0],scheme:i[1],slash:i[2],host:i[3],port:i[4],path:i[5],query:i[6],hash:i[7]},n=a.scheme,s=a.host;return o?!!o(e):!(!n||!s)&&(!F.includes(["http","https","file"],n)||("object"==typeof window&&window&&(t=r(r([],t,!0),[location.host],!1)),F.some(t,function(e){return!!(e instanceof RegExp&&e.test(s))||e===s})))}var C={a:["target","title","spellcheck","rel"],canvas:[],abbr:["title"],address:[],area:["shape","coords","alt"],article:[],aside:[],audio:["autoplay","controls","loop","preload"],b:[],bdi:["dir"],bdo:["dir"],big:[],blockquote:["cite"],br:[],caption:[],center:[],cite:[],code:[],col:["align","valign","span","width"],colgroup:["align","valign","span","width"],dd:[],del:["datetime"],details:["open"],div:["dir"],dl:[],dt:[],em:[],font:["color","size","face"],footer:[],h1:[],h2:[],h3:[],h4:[],h5:[],h6:[],header:[],hr:[],i:[],img:["alt","title","width","height","decoding"],ins:["datetime"],li:[],mark:[],nav:[],ol:["start"],p:[],pre:[],s:[],section:[],small:[],span:[],sub:[],sup:[],delete:[],form:[],strong:[],mask:["maskunits","x","y","width","height","fill"],table:["width","border","align","valign"],tbody:["align","valign"],td:["width","rowspan","colspan","align","valign"],tfoot:["align","valign"],th:["width","rowspan","colspan","align","valign"],thead:["align","valign"],tr:["rowspan","align","valign"],tt:[],u:[],ul:[],wbr:[],video:["autoplay","controls","loop","preload","height","width"],svg:["viewBox","version","xmlns","fill","width","height","stroke","stroke-width","style"],path:["d","fill","opacity","stroke","p-id","fill-rule","clip-rule","stroke-width","stroke-linecap","stroke-linejoin","fill-opacity","mask"],rect:["x","y","width","height","fill","stroke","rx"],g:[]},k={collect:null,initCollect:function(){this.collect={whiteList:{},filterProtocol:[]}},removeCollect:function(){var e=P(this.collect),t=e.count,r=e.ret;return this.collect=null,{collectKey:0===t?null:JSON.stringify(r),collectMode:"white"}},onIgnoreTagAttr:function(e,t,o){return e&&F.indexOf(["href","src"],t)>-1?k.domainWhiteList&&Array.isArray(k.domainWhiteList)&&k.domainWhiteList.length>0&&!x(o,r([],k.domainWhiteList,!0))?"":"".concat(t,'="').concat(L(o,function(e){var t;null===(t=k.collect)||void 0===t||t.filterProtocol.push(e)}),'"'):e&&(F.indexOf(["style","class","id"],t)>-1||t.indexOf("data-")>-1)?"".concat(t,'="').concat(o,'"'):(k.collect.whiteList[e]=k.collect.whiteList[e]||[],void k.collect.whiteList[e].push(t))},onIgnoreTag:function(e,t){if("style"===e)return t;X(t,function(e,t,r,o){M(R(o).html.replace("/",""),function(e){k.collect.whiteList[r]=k.collect.whiteList[r]||[],k.collect.whiteList[r].push(e)})},h)},whiteList:C,mergeWhiteList:function(e){for(var t,r={},o=0,i=F.keys(C);o<i.length;o++)r[t=i[o]]=F.from(C[t]);for(var a=0,n=F.keys(e);a<n.length;a++)r[t=n[a]]=t in C?C[t].concat(e[t]):F.from(e[t]);return r},setWhiteList:function(e){for(var t=0,r=F.keys(e);t<r.length;t++){var o=r[t];this.whiteList[o]=o in C?C[o].concat(e[o]):F.from(e[o])}}};try{var O={},w="merge";F.includes(w,"override")&&(k.whiteList=O.whiteList),F.includes(w,"merge")&&k.setWhiteList(O.whiteList)}catch(e){}var I=function(e,t){for(var r={},o=0,i=F.keys(e);o<i.length;o++){var a=i[o];Array.isArray(e[a])?r[a]=F.from(e[a]):r[a]=I({},e[a])}for(var n=0,s=F.keys(t);n<s.length;n++)(a=s[n])in e?Array.isArray(e[a])?r[a]=e[a].concat(t[a]):r[a]=I(e[a],t[a]):Array.isArray(t[a])?r[a]=F.from(t[a]):r[a]=I({},t[a]);return r},D={blackList:{a:["folder"],meta:["content"],iframe:["srcdoc"],input:["pattern"],vmlframe:["xmlns"]},blackTags:["script","xml","embed","isindex","object","base","set","handler","animate","payload","import"],blackAttrs:["charset","ns","namespace","formaction","xlink:href","xmlns:xlink","handler","repeat","repeat-start","repeat-end"],blackAttrRegExps:[/^on/],filterList:{param:["value"],video:["poster"],form:["action"]},filterAttrs:["href","src","background","style","dynsrc","lowsrc","content"]};try{var N={};N.blackAttrRegExps&&(N.blackAttrRegExps=N.blackAttrRegExps.map(function(e){return new RegExp(e.toString().slice(1,e.toString().length-1))}));var K="merge";F.includes(K,"override")&&(D=N),F.includes(K,"merge")&&(D=I(D,N))}catch(e){}var V={mode:"black",whiteList:{},blackConfig:D,collect:null,initCollect:function(){V.collect={blackList:{},blackTags:[],blackAttrs:[],blackAttrRegExps:[],filterAttrs:[],filterList:{},filterProtocol:[]}},removeCollect:function(){var e=P(V.collect),t=e.count,r=e.ret;return V.collect=null,{collectKey:0===t?null:JSON.stringify(r),collectMode:"black"}},onIgnoreTag:function(e,t){var r;if(!F.includes(D.blackTags,e))return X(t,function(e,t,r,o,i){if(-1!==r.indexOf("/"))return h(o);if(i)return"</".concat(r,">");var a=R(o),n=M(a.html,function(e,t){var o,i=0;if(D.blackList[r]&&F.includes(D.blackList[r],e)&&(V.collect.blackList[r]=V.collect.blackList[r]||[],V.collect.blackList[r].push(e),i++),D.blackAttrRegExps.length&&D.blackAttrRegExps.some(function(t){return t.test(e)})&&F.forEach(D.blackAttrRegExps,function(t){t.test(e)&&(V.collect.blackAttrRegExps.push("".concat(t.toString(),"->").concat(e)),i++)}),D.blackAttrs.length&&F.includes(D.blackAttrs,e)&&(D.blackAttrs.push(e),i++),!i){if(D.filterList&&D.filterList[r]&&F.includes(D.filterList[r],e)){var a=L(t,function(e){var t;null===(t=V.collect)||void 0===t||t.filterProtocol.push(e)});return a!==t&&(V.collect.filterList[r]=V.collect.filterList[r]||[],V.collect.filterList[r].push(e)),t?"".concat(e,"='").concat(a,"'"):e}return D.filterAttrs&&F.includes(D.filterAttrs,e)?((a=L(t,function(e){var t;null===(t=V.collect)||void 0===t||t.filterProtocol.push(e)}))!==t&&(null===(o=V.collect)||void 0===o||o.filterAttrs.push(e)),t?"".concat(e,"='").concat(a,"'"):e):t?"".concat(e,"='").concat(t,"'"):e}});return o="<".concat(r),n&&(o+=" ".concat(n)),a.closing&&(o+=" /"),o+=">"},h);null===(r=V.collect)||void 0===r||r.blackTags.push(e)}},U=function(e){var t=e.reportOnly,r=void 0===t||t,o=e.block;return r&&"all"===r?"report":("string"==typeof r&&("true"===r&&(r=!0),"false"===r&&(r=!1)),o?"enforce":r?"report":"enforce")},j=function(e){return function(r,o,i){if(!r||"string"!=typeof r)return r;var a=o;e===S&&(a=k).initCollect();var n=e(r,a);if(b(n)===b(r))return r;if(!i)return n;var s=i.logType,c=U(i),G=a.removeCollect();return y.report(t(t({type:s,disposition:c},G),{sourceText:m(r),filterText:m(n)})),"enforce"===c?n:r}},B=j(function(e,t){return void 0===t&&(t={}),t&&t.whiteList||(t.whiteList={a:["target","href","title"],abbr:["title"],address:[],area:["shape","coords","href","alt"],article:[],aside:[],audio:["autoplay","controls","crossorigin","loop","muted","preload","src"],b:[],bdi:["dir"],bdo:["dir"],big:[],blockquote:["cite"],br:[],caption:[],center:[],cite:[],code:[],col:["align","valign","span","width"],colgroup:["align","valign","span","width"],dd:[],del:["datetime"],details:["open"],div:[],dl:[],dt:[],em:[],figcaption:[],figure:[],font:["color","size","face"],footer:[],h1:[],h2:[],h3:[],h4:[],h5:[],h6:[],header:[],hr:[],i:[],img:["src","alt","title","width","height"],ins:["datetime"],li:[],mark:[],nav:[],ol:[],p:[],pre:[],s:[],section:[],small:[],span:[],sub:[],summary:[],sup:[],strong:[],strike:[],table:["width","border","align","valign"],tbody:["align","valign"],td:["width","rowspan","colspan","align","valign"],tfoot:["align","valign"],th:["width","rowspan","colspan","align","valign"],thead:["align","valign"],tr:["rowspan","align","valign"],tt:[],u:[],ul:[],video:["autoplay","controls","crossorigin","loop","muted","playsinline","poster","preload","src","height","width"]}),new _(t).process(e)}),Z=j(S),W=function(e,t,r){var o=[],i=L(e,function(e){o.push(e)});if(i===e)return e;o=F.from(F.uniq(o));var a=t||r||{};if(!a)return i;var n=a.logType,s=U(r);return y.report({type:n,disposition:s,collectKey:o.join("___"),collectData:JSON.stringify(o),collectMode:"black",sourceText:m(e),filterText:m(i)}),"enforce"===s?i:e},H=E._xssProject||{},Y=E.xssNamespace||{},z="3.0.26",$={FilterXSS:_,version:z,webpackPluginVersion:"<%= webpackPluginVersion =>",reportOnly:"<%= reportOnly =>",filterXSS:B,_filterXSS:Z,filterUrl:W,Config:k,BlackConfig:V,project:H,setProjectName:function(e){H[e]=this,E._xssProjectName=e}};Y.douyin_web=$,E.xssNamespace=Y,E.Math&&!E.Math.xssNamespace&&(E.Math.xssNamespace=Y),H[z]=$,E.globalThis=E,E.getFilterXss=function(){return void 0!==this._xssProjectName?this._xssProject[this._xssProjectName]:$},E.xss=$,E.isSafeUrl=x,E.isSafeDomain=x,E.isSafeProtocol=Q,E._xssProject=H,E._xssProjectName&&(H[E._xssProjectName]=$);var J=$.setProjectName.bind($);e.BlackConfig=V,e.Config=k,e.FilterXSS=_,e._filterXSS=Z,e.filterUrl=W,e.filterXSS=B,e.isSafeDomain=x,e.isSafeProtocol=Q,e.isSafeUrl=x,e.project=H,e.setProjectName=J,e.setXssNamespace=function(e){var t=e.appId,r=e.bid,o=e.region;Y[t]=$;k.bid=r,k.region=o,k.enabled=!0},e.xssNamespace=Y,Object.defineProperty(e,"__esModule",{value:!0})}),(self.webpackChunkdouyin_web=self.webpackChunkdouyin_web||[]).push([["81306"],{208872:function(e,t,r){"use strict";var o=r(88648),i=r(492071);let a=(0,i.A)(function(e){return o.createElement("svg",Object.assign({viewBox:"0 0 24 24",fill:"none",xmlns:"http://www.w3.org/2000/svg",width:"1em",height:"1em",focusable:!1,"aria-hidden":!0},e),o.createElement("path",{d:"M10.75 1.9c.4-1.2 2.1-1.2 2.5 0l1.99 6.12h6.45a1.3 1.3 0 0 1 .77 2.37l-5.22 3.78 2 6.11c.39 1.2-1 2.2-2.02 1.46L12 17.96l-5.22 3.78c-1.02.75-2.4-.25-2.01-1.46l1.99-6.11-5.22-3.78a1.3 1.3 0 0 1 .77-2.37h6.45l2-6.12Z",fill:"currentColor"}))},"star");t.Z=a},499966:function(e,t,r){"use strict";r.r(t),t.default={wrapper:"XR9gbbrp",img:"wFssZFdd"}},903331:function(e,t,r){"use strict";r.r(t)},487389:function(e,t,r){"use strict";r.r(t)},730746:function(e,t,r){"use strict";r.r(t)},535074:function(e,t,r){"use strict";r.r(t)},619619:function(e,t,r){"use strict";r.r(t)},307630:function(e,t,r){"use strict";r.r(t)},459903:function(e,t,r){"use strict";r.r(t)},225293:function(e,t,r){"use strict";r.r(t)},605471:function(e,t,r){"use strict";r.d(t,{_:function(){return o}});let o=r(88648).createContext({})},90913:function(e,t,r){"use strict";r(429532),r(779788);var o=r(88648),i=r(213470),a=r(616722),n=r(713097),s=r.n(n),c=r(965777),G=r(705514),l=r(484019);class d extends G.Z{get adapter(){return Object.assign(Object.assign({},super.adapter),{getColorPickerFoundation:()=>this.props.foundation,handleMouseDown:e=>{this.setState({isHandleGrabbing:!0}),this.ref.current.addEventListener("mousemove",this.foundation.setHandlePositionByMousePosition),window.addEventListener("mouseup",this.foundation.handleMouseUp)},handleMouseUp:()=>{this.ref.current.removeEventListener("mousemove",this.foundation.setHandlePositionByMousePosition),window.removeEventListener("mouseup",this.foundation.handleMouseUp),this.setState({isHandleGrabbing:!1})},getDOM:()=>this.ref.current,notifyChange:e=>this.props.onChange(e)})}componentDidUpdate(e,t,r){JSON.stringify(e.hsva)!==JSON.stringify(this.props.hsva)&&this.setState({handlePosition:this.foundation.getHandlePositionByHSVA()})}render(){let e=(0,i.ZI)({h:this.props.hsva.h,s:100,v:100,a:1}),t=(0,i.MA)(this.props.hsva);return o.createElement("div",{className:s()(`${a.U.PREFIX}-colorChooseArea`,this.props.className),style:Object.assign({backgroundColor:e,width:this.props.width,height:this.props.height,cursor:this.state.isHandleGrabbing?"grabbing":"pointer"},this.props.style),ref:this.ref,"aria-label":"Color",onMouseDown:this.handleClick,"aria-valuetext":`Saturation ${(0,l.N)(this.props.hsva.s)}%, Brightness ${(0,l.N)(this.props.hsva.v)}%`},o.createElement("div",{className:`${a.U.PREFIX}-handle`,style:{width:this.props.handleSize,height:this.props.handleSize,left:this.state.handlePosition.x,top:this.state.handlePosition.y,backgroundColor:`rgba(${t.r},${t.g},${t.b},${t.a})`},onMouseDown:e=>this.foundation.handleMouseDown(e)}))}constructor(e){super(e),this.handleClick=e=>{this.foundation.setHandlePositionByMousePosition(e),this.foundation.handleMouseDown(e)},this.foundation=new c.Z(this.adapter),this.state={handlePosition:this.foundation.getHandlePositionByHSVA(),isHandleGrabbing:!1},this.ref=o.createRef()}}t.Z=d},11246:function(e,t,r){"use strict";r.d(t,{Z:function(){return p}});var o=r(96008),i=r.n(o),a=r(88648),n=r(201845),s=r.n(n),c=r(313561),G=r(518593),l=r(786462),d=r(901003),u=r(318e3),T=r(61820),h=r(394216);let F=l.UX.NAVIGATION;class p extends a.PureComponent{render(){let{forwardRef:e,monthText:t,onMonthClick:r,onNextMonth:o,onPrevMonth:i,onPrevYear:n,onNextYear:s,density:p,shouldBimonthSwitch:f,panelType:m}=this.props,g="borderless",X="compact"===p?"default":"large",M="compact"===p?"small":"default",v=m===l.j2.PANEL_TYPE_LEFT,b=m===l.j2.PANEL_TYPE_RIGHT,_={},E={};f&&b&&(_.visibility="hidden"),f&&v&&(E.visibility="hidden");let y=e||this.navRef;return a.createElement("div",{className:F,ref:y},a.createElement(c.Z,{key:"double-chevron-left","aria-label":"Previous year",icon:a.createElement(d.Z,{"aria-hidden":!0,size:X}),size:M,theme:g,noHorizontalPadding:!0,onClick:n,style:_}),a.createElement(c.Z,{key:"chevron-left","aria-label":"Previous month",icon:a.createElement(u.Z,{"aria-hidden":!0,size:X}),size:M,onClick:i,theme:g,noHorizontalPadding:!0,style:_}),a.createElement("div",{className:`${F}-month`},a.createElement(G.Z,{onClick:r,theme:g,size:M},a.createElement("span",null,t))),a.createElement(c.Z,{key:"chevron-right","aria-label":"Next month",icon:a.createElement(T.Z,{"aria-hidden":!0,size:X}),size:M,onClick:o,theme:g,noHorizontalPadding:!0,style:E}),a.createElement(c.Z,{key:"double-chevron-right","aria-label":"Next year",icon:a.createElement(h.Z,{"aria-hidden":!0,size:X}),size:M,theme:g,noHorizontalPadding:!0,onClick:s,style:E}))}constructor(e){super(e),this.navRef=a.createRef()}}p.propTypes={monthText:s().string,density:s().string,onMonthClick:s().func,onNextMonth:s().func,onPrevMonth:s().func,onNextYear:s().func,onPrevYear:s().func,navPrev:s().node,navNext:s().node,shouldBimonthSwitch:s().bool,panelType:s().oneOf([l.j2.PANEL_TYPE_LEFT,l.j2.PANEL_TYPE_RIGHT])},p.defaultProps={monthText:"",onMonthClick:i(),onNextMonth:i(),onPrevMonth:i(),onNextYear:i(),onPrevYear:i()}},4884:function(e,t,r){"use strict";r(429532);var o=r(645260),i=r.n(o),a=r(88648),n=r(201845),s=r.n(n),c=r(713097),G=r.n(c),l=r(274220),d=function(e,t){var r={};for(var o in e)Object.prototype.hasOwnProperty.call(e,o)&&0>t.indexOf(o)&&(r[o]=e[o]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols)for(var i=0,o=Object.getOwnPropertySymbols(e);i<o.length;i++)0>t.indexOf(o[i])&&Object.prototype.propertyIsEnumerable.call(e,o[i])&&(r[o[i]]=e[o[i]]);return r};let u=function(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},{position:t="",className:r,arrowStyle:o,popStyle:n}=e,s=d(e,["position","className","arrowStyle","popStyle"]),c=0===t.indexOf("top")||0===t.indexOf("bottom"),u=G()(r,l.UX.ARROW),T=i()(o,"borderOpacity"),h=i()(o,"backgroundColor",i()(n,"backgroundColor")),F=i()(o,"borderColor",i()(n,"borderColor")),p=Object.assign(Object.assign({},s),{width:l.KT.ARROW_BOUNDING.width,height:l.KT.ARROW_BOUNDING.height,xmlns:"http://www.w3.org/2000/svg",className:u});return c?a.createElement("svg",Object.assign({},p),a.createElement("path",{d:"M0 0.5L0 1.5C4 1.5, 5.5 3, 7.5 5S10,8 12,8S14.5 7, 16.5 5S20,1.5 24,1.5L24 0.5L0 0.5z",style:{fill:F,opacity:T}}),a.createElement("path",{d:"M0 0L0 1C4 1, 5.5 2, 7.5 4S10,7 12,7S14.5  6, 16.5 4S20,1 24,1L24 0L0 0z",style:{fill:h}})):a.createElement("svg",Object.assign({},p),a.createElement("path",{d:"M0.5 0L1.5 0C1.5 4, 3 5.5, 5 7.5S8,10 8,12S7 14.5, 5 16.5S1.5,20 1.5,24L0.5 24L0.5 0z",style:{fill:F,opacity:T}}),a.createElement("path",{d:"M0 0L1 0C1 4, 2 5.5, 4 7.5S7,10 7,12S6 14.5, 4 16.5S1,20 1,24L0 24L0 0z",style:{fill:h}}))};u.propTypes={position:s().string,className:s().string,arrowStyle:s().object,popStyle:s().object},t.Z=u},687351:function(e,t,r){"use strict";r(429532);var o=r(88648),i=r(713097),a=r.n(i),n=r(201845),s=r.n(n),c=r(308429),G=r(345918),l=r(705514),d=r(348278),u=r(541367);let T=G.U.PREFIX;class h extends l.Z{componentDidMount(){this.foundation.init(),-1===this.handlerIndex&&(this.handlerIndex=this.context.registerHandler(this.handlerRef))}componentDidUpdate(e){}componentWillUnmount(){this.foundation.destroy()}get adapter(){return Object.assign(Object.assign({},super.adapter),{registerEvents:()=>{this.handlerRef.current.addEventListener("mousedown",this.onMouseDown),this.handlerRef.current.addEventListener("touchstart",this.onTouchStart)},unregisterEvents:()=>{this.handlerRef.current.removeEventListener("mousedown",this.onMouseDown),this.handlerRef.current.removeEventListener("touchstart",this.onTouchStart)}})}render(){let{style:e,className:t,children:r}=this.props,{direction:i}=this.context;return o.createElement("div",{className:a()(t,T+"-handler",T+"-handler-"+i),style:e,ref:this.handlerRef},null!=r?r:o.createElement(u.Z,{size:"inherit",style:{rotate:"horizontal"===this.context.direction?"0deg":"90deg"}}))}constructor(e){super(e),this.onMouseDown=e=>{let{notifyResizeStart:t}=this.context;t(this.handlerIndex,e,"mouse")},this.onTouchStart=e=>{let{notifyResizeStart:t}=this.context;t(this.handlerIndex,e.targetTouches[0],"touch")},this.getHandler=()=>this.handlerRef.current,this.state={},this.handlerRef=(0,o.createRef)(),this.foundation=new c.TQ(this.adapter),this.handlerIndex=-1}}h.propTypes={children:s().node,direction:s().string,onResizeStart:s().func,className:s().string,disabled:s().bool,style:s().object},h.defaultProps={},h.contextType=d.M,t.Z=h},701920:function(e,t,r){"use strict";var o=r(88648),i=r(393868);t.Z=e=>{let{children:t,anyColumnFixed:r,flattenedColumns:a,tableWidth:n,headWidths:s,setHeadWidths:c,getHeadWidths:G,getCellWidths:l,handleRowExpanded:d,renderExpandIcon:u,renderSelection:T,getVirtualizedListRef:h,setBodyHasScrollbar:F,direction:p}=e,f=(0,o.useMemo)(()=>({anyColumnFixed:r,flattenedColumns:a,renderExpandIcon:u,renderSelection:T,setHeadWidths:c,getHeadWidths:G,getCellWidths:l,headWidths:s,tableWidth:n,handleRowExpanded:d,getVirtualizedListRef:h,setBodyHasScrollbar:F,direction:p}),[r,a,u,T,c,G,l,s,n,d,h,F,p]);return o.createElement(i.Z.Provider,{value:f},t)}},149188:function(e,t,r){"use strict";r(675373),r.e("16787").then(r.bind(r,597147))},85554:function(e,t,r){"use strict";r(675373),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,92737)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,776547)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,213533)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,522573)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,327984)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,487935)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,315659)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,983190)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,526317)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,619619)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,571508)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,631214)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,138440)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,915669)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,787831)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,530266)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,586441)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,621401)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,26604)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,415134)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,945173)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,180388)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,766903)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,140939)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,304495)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,66425)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,671195)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,893933)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,310443)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,869275)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,364759)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,24913)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,595980)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,524491)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,695755)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,105345)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,130289)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,588386)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,225479)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,522030)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,51600)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,497409)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,631056)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,865525)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,593870)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("61639")]).then(r.bind(r,93458))},551150:function(e,t,r){"use strict";r(675373),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,776547)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,213533)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,522573)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,327984)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,487935)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,315659)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,983190)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,526317)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,619619)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,571508)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,631214)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,138440)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,915669)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,787831)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,530266)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,586441)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,621401)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,26604)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,415134)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,945173)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,180388)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,766903)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,140939)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,304495)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,66425)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,671195)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,893933)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,310443)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,869275)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,364759)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,24913)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,595980)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,524491)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,695755)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,105345)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,130289)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,588386)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,225479)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,522030)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,51600)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,497409)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,631056)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,865525)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,593870)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,93458)),Promise.all([r.e("74792"),r.e("39822"),r.e("18919"),r.e("40331"),r.e("95803")]).then(r.bind(r,86005))},858388:function(e,t,r){"use strict";r(675373),Promise.all([r.e("75032"),r.e("19833"),r.e("89730")]).then(r.bind(r,339704))},343706:function(e,t,r){"use strict";r(675373),Promise.all([r.e("27319"),r.e("59129"),r.e("2434")]).then(r.bind(r,329715))},513871:function(e,t,r){"use strict";r.d(t,{Z:function(){return a}}),r(874386),r(897860),r(413806),r(826893),r(268917);var o=r(763094),i=r(156770);function a(e,t){let r;let a=new o.b3,n=0,s=[],c=[];for(;r=e[n++];){let G=(0,i.nI)(r);if(!G)continue;let[l,d]=G;if("VERSION"===l)a.version=parseInt(d);else if("MEDIA"===l&&d){let e;let r=(0,i.AK)(d);switch(r.TYPE){case"AUDIO":e=new o.tL;break;case"SUBTITLES":e=new o.vJ;break;default:e=new o.cL}e.url=(0,i.WN)(r.URI,t),e.default="YES"===r.DEFAULT,e.autoSelect="YES"===r.AUTOSELECT,e.group=r["GROUP-ID"],e.name=r.NAME,e.lang=r.LANGUAGE,r.CHANNELS&&(e.channels=Number(r.CHANNELS.split("/")[0]),Number.isNaN(e.channels)&&(e.channels=0)),"AUDIO"===r.TYPE&&r.URI&&s.push(e),"SUBTITLES"===r.TYPE&&c.push(e)}else if("STREAM-INF"===l&&d){let r=new o._w,s=(0,i.AK)(d);if(r.bitrate=parseInt(s["AVERAGE-BANDWIDTH"]||s.BANDWIDTH),r.name=s.NAME,r.url=(0,i.WN)(e[n++],t),s.RESOLUTION){let[e,t]=s.RESOLUTION.split("x");r.width=parseInt(e),r.height=parseInt(t)}if(s.CODECS){let e=s.CODECS.split(/[ ,]+/).filter(Boolean);r.videoCodec=(0,i.wq)("video",e),r.audioCodec=(0,i.wq)("audio",e),r.textCodec=(0,i.wq)("text",e)}r.audioGroup=s.AUDIO,r.subtitleGroup=s.SUBTITLES,a.streams.push(r)}}return a.streams.forEach((e,t)=>{e.id=t}),s.length&&(s.forEach((e,t)=>{e.id=t}),a.streams.forEach(e=>{e.audioGroup&&(e.audioStreams=s.filter(t=>t.group===e.audioGroup))})),c.length&&(c.forEach((e,t)=>{e.id=t}),a.streams.forEach(e=>{e.subtitleGroup&&(e.subtitleStreams=c.filter(t=>t.group===e.subtitleGroup))})),a}},359534:function(e,t,r){"use strict";r.d(t,{Dt:function(){return s},G6:function(){return a},vU:function(){return n}}),r(954372),r(826893),r(250440);let o="undefined"!=typeof window,i=o&&navigator.userAgent.toLocaleLowerCase(),a=o&&/^((?!chrome|android).)*safari/.test(i),n=o&&i.includes("firefox"),s=o&&i.includes("android")},821265:function(e,t,r){"use strict";r.d(t,{W:function(){return a}});var o=r(134761),i=r(224831);class a{reset(){this.sequenceNumber=0,this.timescale=0,this.sampleDuration=0,this.sampleRate=0,this.channelCount=0,this.baseMediaDecodeTime=0,this.present=!1,this.pid=-1,this.codec="",this.samples=[],this.config=[],this.warnings=[]}exist(){return!!(this.sampleRate&&this.channelCount&&this.codec&&this.codecType===i.yQ.AAC)}hasSample(){return!!this.samples.length}get isEncryption(){return this.isAudioEncryption}get firstDts(){return this.samples.length?this.samples[0].dts:null}get firstPts(){return this.samples.length?this.samples[0].pts:null}get samplesDuration(){if(this.samples.length>0){let e=this.samples[0],t=this.samples[this.samples.length-1];return t.dts-e.dts+t.duration}return 0}constructor(){(0,o._)(this,"id",2),(0,o._)(this,"type",i.Vc.AUDIO),(0,o._)(this,"codecType",i.yQ.AAC),(0,o._)(this,"pid",-1),(0,o._)(this,"codec",""),(0,o._)(this,"sequenceNumber",0),(0,o._)(this,"sampleDuration",0),(0,o._)(this,"timescale",0),(0,o._)(this,"formatTimescale",0),(0,o._)(this,"baseMediaDecodeTime",0),(0,o._)(this,"duration",0),(0,o._)(this,"warnings",[]),(0,o._)(this,"samples",[]),(0,o._)(this,"baseDts",0),(0,o._)(this,"sampleSize",16),(0,o._)(this,"sampleRate",0),(0,o._)(this,"channelCount",0),(0,o._)(this,"objectType",0),(0,o._)(this,"sampleRateIndex",0),(0,o._)(this,"config",[]),(0,o._)(this,"present",!1),(0,o._)(this,"isVideoEncryption",!1),(0,o._)(this,"isAudioEncryption",!1),(0,o._)(this,"kid",null),(0,o._)(this,"ext",void 0)}}},597923:function(e,t,r){"use strict";r.d(t,{Z:function(){return v}});var o=r(134761),i=r(520739),a=r(878389);r(250440),r(268917),r(779788),r(675373),r(777180);var n=r(178975),s=r(259689),c=r(398210),G=r(87287),l=r(728672),d=r(230313),u=r(419268),T=r(322077),h=r(860479),F=r(570492),p=r(773456),f=r(545187),m=r(251210),g=r(151417),X=r(348341),M=r(788115);class v extends h.ZP{get worker(){return this._workerSink}get currentSrc(){return this._src}get src(){var e;return(null===(e=this._media)||void 0===e?void 0:e.src)||this._src}get seeking(){return this._seeking}get ended(){return this.runtime.ended}get buffered(){return this.runtime.buffered}get curTimeBuffered(){return Math.min(this.runtime.buffered._audioBufferEnd,this.runtime.buffered._videoBufferEnd)}get currentTime(){var e;return this._seekCurrentTime>=0?this._seekCurrentTime:(null===(e=this._media)||void 0===e?void 0:e.currentTime)||0}get autoPlayPolicy(){return this._autoplayPolicy}set currentTime(e){if(!(e>=this.duration-2)||!this._media||!(this._media.currentTime>=this.duration-2))e<0?e=0:this.duration>0&&e>=this.duration&&(e=this.duration-2),this.runtime.ended=!1,this._seekCurrentTime=e,this._seekedEventTimestamp=Date.now(),this._seekCurrentTimeCnt=0,this.syncCurrentTimer(),this.dispatchMediaEvent(u.c.TIMEUPDATE),this.emit(p.Zo.CURRENT_TIME,{time:e})}syncCurrentTimer(){clearTimeout(this._seekCheckCurrentTimer),this._seekCheckCurrentTimer=setTimeout(()=>{this.media&&(1>=Math.abs(this.media.currentTime-this._seekCurrentTime)||this._seekedEventTimestamp>0&&Date.now()-this._seekedEventTimestamp>=5e3?(this._seekCurrentTimeCnt++,this._seekCurrentTimeCnt>=5?(this._seekCurrentTime=-1,clearTimeout(this._seekCheckCurrentTimer),this._seekCheckCurrentTimer=null,this._seekedEventTimestamp=0,this._seekCurrentTimeCnt=0):this.syncCurrentTimer()):this.syncCurrentTimer())},15)}get duration(){return this.runtime.duration}get error(){return this._errorInfo}get playbackRate(){return"number"==typeof this._playbackRate?this._playbackRate:this._defaultPlaybackRate}set playbackRate(e){this.logger.log("set playbackRate",e),this._playbackRate=e,this.emit(p.Zo.PLAYBACKRATE,{rate:e})}get playbackQuality(){var e;let t=(null===(e=this._media)||void 0===e?void 0:e.getVideoPlaybackQuality())||{totalVideoFrames:0,droppedVideoFrames:0};return this.runtime.playbackQuality={decodedVideoFrames:t.totalVideoFrames,droppedVideoFrames:t.droppedVideoFrames,droppedRate:t.droppedVideoFrames/t.totalVideoFrames*100},this.runtime.playbackQuality}_resetMediaEvtState(){this._mediaEventState={loadeddata:!1,loadedmetadata:!1,loadstart:!1,canplay:!1}}get speedInfo(){return this.runtime.speedInfo}get audioCtxState(){var e,t;return null===(t=this._audioTrack)||void 0===t?void 0:null===(e=t.ctx)||void 0===e?void 0:e.state}get bufferedPoint(){return(0,X.bA)(this.currentTime,this.buffered)}playBy(){var e,t,r;let o=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(!this._media)return;if(!o.seamless&&![m.b.FLV,m.b.RTM,m.b.RTM_WEBTS].includes(o.protocol)&&this._media.srcObject&&(this._media.srcObject=null),o.protocol===m.b.RTM_WEBTS&&"string"==typeof o.url&&this._rtmWebTsScopeId){let e=(0,M.q8)(o.url,this._rtmWebTsScopeId);e&&e!==o.url?o.preloadUrl=e:o.preloadUrl=void 0}null===(e=this._rtmLoader)||void 0===e||e.disconnect(),this.updateCfg(o),this.init(o.seamless),this.logger.log("playBy",o.seamless,o.protocol);let n=(0,X.Og)(this._media);if(o.protocol===m.b.RTM&&!this._rtmLoader&&(this._rtmLoader=new l.Z(this,this._cfg)),o.seamless){this.emit(p.Zo.SEAMLESS_LOAD_STREAM,(0,a._)((0,i._)({},o),{autoPlayPolicy:this._media.autoplay&&n,canAutoPlay:n,type:p.Zo.LOAD_STREAM,muted:this._media.muted,paused:this._media.paused}));return}this._setTimelineData(),this.resetInitTimeStamp(o);let s=[];o.stream&&s.push(o.stream),this.postMsgToWorker((0,a._)((0,i._)({},o),{type:p.Zo.LOAD_STREAM,autoPlayPolicy:this._media.autoplay&&n,canAutoPlay:n,muted:this._media.muted,paused:this._media.paused}),s),this.emit(p.Zo.URLCHANGE,{url:o.url}),[m.b.FLV,m.b.RTM,m.b.RTM_WEBTS].includes(o.protocol)&&this.dispatchMediaEvent(u.c.LOADSTART),o.protocol===m.b.RTM&&o.url&&(null===(t=this._cfg.ab)||void 0===t?void 0:t.rtm_main_thread_connect)&&(null===(r=this._rtmLoader)||void 0===r||r.load({url:o.url}))}init(){let e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(this._errorInfo=null,this._startTime=performance.now(),!e)this.updateLastStep(G.ef.NEW,{support:(0,n.Eo)()}),this._isReUseWorker?this.updateLastStep("reuse",{workerSize:c.Yz.size}):this.updateLastStep("newworker"),this.resetAutoPlayState(),this._mediaPlayRetry=!1,this._canplay=!1,this._resetMediaEvtState(),this._handlePoster(),this._cfg.urlList&&this._cfg.urlList.length>0&&(this._src=this._cfg.urlList[0].src),(!this._cfg.bindSrcTiming||this._cfg.bindSrcTiming===G.Iv.INIT)&&this.attachMedia()}attachMedia(){this._media&&!this._media.srcObject?(this._isReuseSrc=!1,this.logger.log(`media bind srcObject ${this._cfg.bindSrcTiming}`),this._media.srcObject=this._mediaStream):this._isReuseSrc=!0}detachMedia(){this._media&&this._media.srcObject&&(this._doMediaPause(),this._resetMediaEvtState(),this._media.srcObject=null,this.logger.log("media detach srcObject"))}reset(){var e,t,r,o;this.logger.log("call reset()"),this.updateLastStep(G.ef.RESET),super.destroy(),this._resetMediaEvtState(),this._unbindMediaEvent(),this._removeOldTracks(null===(e=this.media)||void 0===e?void 0:e.srcObject),null===(t=this._rtmLoader)||void 0===t||t.disconnect(),(null===(r=this.media)||void 0===r?void 0:r.srcObject)&&(this.media.srcObject=null,this.media.load(),this._canplay=!1),this._isPaused=null,this._isResumeAudioCtx=!1,null===(o=this._audioCtxCoord)||void 0===o||o.destroy(),this._audioCtxCoord=void 0,this._startTime=0,this._firstframeCost={},this._seeking=!1,this._seekCurrentTime=-1,this._seekedEventTimestamp=0,this._seekCheckCurrentTimer&&(clearTimeout(this._seekCheckCurrentTimer),this._seekCheckCurrentTimer=null)}destroy(){this._workerSink&&this._rtmWebTsScopeId&&(0,M.ck)(this._workerSink,this._rtmWebTsScopeId),super.destroy()}updateProtoConfig(){var e;let t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},r=arguments.length>1&&void 0!==arguments[1]&&arguments[1],o=!t.seamless&&(t.protocol===m.b.MP4||t.protocol===m.b.DASH);t.requireWorkerAck=o,this.updateCfg(t,r),this.updateLastStep(G.ef.SEND_CONFIG),this.emit(p.Zo.PROTOCOL_CONFIG,t),this._audioTrack&&(null===(e=t.writeable)||void 0===e?void 0:e.audioWritable)&&(this._audioTrack.writableNeutered=!0),o&&this.checkWorkerEnable()}checkWorkerEnable(){if(!this._checkWorkerEnableTimer&&!!this._isReUseWorker)this._checkWorkerEnableTimer=setTimeout(()=>{this._checkWorkerEnableTimer=null,T.T.addWorkerDisableCnt(),this.onVEError(new F.Z(F.t.VEWORKER_REVEIVE_TIMEOUT,"workerReceiveMessageTimeout"))},100)}onWorkerEnable(){this._checkWorkerEnableTimer&&(clearTimeout(this._checkWorkerEnableTimer),this._checkWorkerEnableTimer=null)}updateCfg(){var e,t,r;let o=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},a=arguments.length>1&&void 0!==arguments[1]&&arguments[1];!a&&(o.seamless=o.seamless||!1,super.normalizeConfig(o)),this.updateLoggerID(o),(null==o?void 0:o.seamless)&&(this._cfg.preloadDataInfo=void 0),(null===(e=o.mediaInfo)||void 0===e?void 0:e.audioSampleRate)&&(null===(t=o.mediaInfo)||void 0===t?void 0:t.audioSampleRate)>0&&(this._sampleRate=o.mediaInfo.audioSampleRate),o.ctxDependList&&o.ctxDependList.length>=0?this._ctxDependList=o.ctxDependList:this._ctxDependList=(0,X.Uw)(),this.isLive&&(null===(r=o.mediaInfo)||void 0===r?void 0:r.volumebalance)&&this._updateVbalanceCfg((0,i._)({duration:o.mediaInfo.duration},o.mediaInfo.volumebalance))}updateCodecConfig(e){this.emit(p.Zo.MEDIACODEC_CONFIG,e)}switchCancel(){this.emit(p.Zo.CANCEL_SWITCH)}getFirstframeCost(){return this._firstframeCost}updateLoggerID(e){var t;(null==e?void 0:null===(t=e.mediaInfo)||void 0===t?void 0:t.id)&&(this.logger.loggerID=e.mediaInfo.id)}peekPreloadUrl(e){if(!!this._rtmWebTsScopeId&&!!e)return(0,M.ri)(e,this._rtmWebTsScopeId)}_canUseNeuteredAudioTrack(){return this._cfg.protocol&&!this.isLive}async onInitRender(e){var t;if(!this._media||this._errorInfo)return;this.updateLastStep(G.ef.INIT_RENDER),this._startTimelines.reqtime=Date.now(),this._sampleRate=e.sampleRate;let r=this._media.muted||!this._media.volume,o=(0,X.Og)(this._media);if(this._autoplayPolicy=this._media.autoplay&&o,this.logger.log("init render, autoplay",this._autoplayPolicy,", muted:",r,", videoAutoplay:",this._media.autoplay,", sampleRate:",this._sampleRate,", e",JSON.stringify(e)),e.audioWritable&&this._audioTrack&&(this.logger.log("\uD83D\uDD0AaudioWritable back mainSink"),this.onDownWritable({audioWritable:e.audioWritable,audioTrack:e.audioTrack})),(null==e?void 0:e.audio)&&(this._audioTrack&&(!e.audioWritable&&!this._canUseNeuteredAudioTrack()&&this.closeRender(),this._audioTrack=null),!this._audioTrack)){let t;try{this.logger.log("\uD83D\uDD0AaudioTrack generate"),t=await (0,g.vH)(e,this._cfg)}catch(e){this.onVEError(F.Z.create(F.t.AUDIO_TRACK_ERROR,e.message,"audioTrackGenerate error")),this.updateLastStep(G.ef.AUDIO_TRACK_ERR);return}if(this._errorInfo){t&&g.Lx.setStatus(t,"idle");return}t&&(this.updateLastStep(G.ef.AUDIO_TRACK),this.logger.log(`initRender audioWriteable send, sampleRate:${e.sampleRate} channelCount:${e.channelCount}`),this._audioTrack=t,this.updateLastStep(G.ef.SEND_WRITABLE),this.emit(p.Zo.WRITABLE,{audioWritable:this._canUseNeuteredAudioTrack()&&t.writableNeutered?void 0:t.writable,audioTrack:{id:t.id,sampleRate:e.sampleRate,channelCount:e.channelCount||G.vv},autoplayPolicy:this._autoplayPolicy,canAutoPlay:o,muted:r}),t.writableNeutered=!0,this.addAudioTrack())}!this._errorInfo&&((this._autoplayPolicy||(this._cfg.audioCtxCoord?null===(t=this._audioCtxCoord)||void 0===t?void 0:t.isDesiredRunning():this._isResumeAudioCtx))&&(this.logger.log("init render resumeAudioCtx",this.audioCtxState),this.resumeAudioCtx()),this._replaceMediaTrack&&(this.logger.warn("call pause() -> play() in onInitRender"),this._replacingTrack=!0,(!1===this._isPaused||null===this._isPaused&&this._autoplayPolicy)&&(this._media.pause(),this.play().then(()=>{var e;this._canplay||null===(e=this._media)||void 0===e||e.play()}).catch(e=>{}))))}addAudioTrack(){let e=this._removeOldATracks(this._mediaStream);if(this._replaceMediaTrack=!!e||this._replaceMediaTrack,this._audioTrack){let e=this._audioTrack.track;this._mediaStream.addTrack(e),this.logger.log("replace audio track!",e.id),g.Lx.setStatus(this._audioTrack,"using")}}createVideoTrack(){let e,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};this.logger.log("createVideoTrack"),this.createMediaStream();let r=this._removeOldVTracks(this._mediaStream);this._replaceMediaTrack=!!r;try{e=(0,g.eY)()}catch(e){this.onVEError(F.Z.create(F.t.VIDEO_TRACK_ERROR,e.message,"videoTrackGenerate error"));return}this._videoTrack=e,!t.writeable&&(t.writeable={}),t.writeable.videoWritable=this._videoTrack.writable,this._videoTrack&&(this._mediaStream.addTrack(this._videoTrack.track),this.logger.log("replace video track!"))}createMediaStream(){if(this._mediaStream)this.logger.log("mediaStream exist");else{var e;this.logger.log("createMediaStream"),this._mediaStream=(null===(e=this._media)||void 0===e?void 0:e.srcObject)||new MediaStream}}createAudioTrack(){var e,t,r,o,i,a;let n,s=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};this.createMediaStream();let c=(null===(e=s.mediaInfo)||void 0===e?void 0:e.audioSampleRate)||G.hD,l=(null===(t=s.mediaInfo)||void 0===t?void 0:t.audioChannelCnt)||G.vv;if(s.sendDefaultWorkerLet&&g.Lx.hasIdleTracks(c,l)&&(n=(0,g.Dc)({sampleRate:c,channelCount:l},this._cfg),this.logger.log("audioTrackGenerateFromCache")),n){this._audioTrack=n,!s.writeable&&(s.writeable={}),this._sampleRate=c,(!this._canUseNeuteredAudioTrack()||!n.writableNeutered)&&(s.writeable.audioWritable=n.writable),s.writeable.audioTrack={id:n.id,sampleRate:c,channelCount:l};let e=(0,X.Og)(this._media);this._autoplayPolicy=!!(null===(r=this._media)||void 0===r?void 0:r.autoplay)&&e,(this._autoplayPolicy||(this._cfg.audioCtxCoord?null===(o=this._audioCtxCoord)||void 0===o?void 0:o.isDesiredRunning():this._isResumeAudioCtx))&&(this.logger.log("createMediaStream resumeAudioCtx",this.audioCtxState),this.resumeAudioCtx()),this.addAudioTrack(),s.autoPlay=this.isLive?e:this._autoplayPolicy,s.muted=!!((null===(i=this._media)||void 0===i?void 0:i.muted)||!(null===(a=this._media)||void 0===a?void 0:a.volume));return}let{_ctxDependList:d}=this;if(!!d&&!!(null==d?void 0:d.length))(0,h.eE)(d)}onChangeURL(e){let{url:t}=e;this._src=t,this.logger.log(`load changeUrl ${t}`)}onFirstFrame(e){this.updateLastStep(G.ef.FIRST_FRAME),this.logger.log(`firstframe show! ${(performance.now()-this._startTime).toFixed(0)} ms, now:${performance.now()}`,e.firstAFrame,e.firstVFrame),this._firstframeCost=e,"rtm"===this._cfg.protocol&&d.K.markFirstFrame(this._src),this.dispatchMediaEvent(u.c.FIRST_FRAME,{fvt:this._firstframeCost}),this._isReuseSrc&&(!this._mediaEventState.loadeddata&&(this.logger.warn("mock emit loadeddata event"),this.dispatchMediaEvent(u.c.LOADEDDATA)),!this._mediaEventState.canplay&&(this.logger.warn("mock emit canplay event"),this.dispatchMediaEvent(u.c.CANPLAY)))}onLoadedmetadata(e){this.runtime.duration=e.meta.duration,this._cfg.bindSrcTiming===G.Iv.META_READY&&!this._cfg.seamless&&this.attachMedia()}onDurationChange(e){this.runtime.duration=e.duration,this.dispatchMediaEvent(u.c.DURATIONCHANGE)}onRemoveBuffer(e){}onProgress(e){this.runtime.buffered.update(e),this.runtime.videoBuffered.update({buffered:e.videoBuffered}),this.runtime.audioBuffered.update({buffered:e.audioBuffered}),e.speedInfo&&(this.runtime.speedInfo=e.speedInfo),this.dispatchMediaEvent(u.c.PROGRESS,e)}onRateChange(e){this._playbackRate=e.rate,this.logger.log(`mainSink receive rateChange ${e.rate}`),this.dispatchMediaEvent(u.c.RATECHANGE)}onEnded(){if(!!this.media)if(this.runtime.ended=!0,this.media.paused)this.dispatchMediaEvent(u.c.ENDED);else{var e,t;let r=null===(e=this._audioTrack)||void 0===e?void 0:e.ctx;r&&"running"===r.state?r.addEventListener("statechange",()=>{"running"!==r.state&&this.dispatchMediaEvent(u.c.ENDED)},{once:!0}):(this._showingPoster=!1,this.media.addEventListener("pause",()=>{this.dispatchMediaEvent(u.c.ENDED)},{once:!0})),null===(t=this._media)||void 0===t||t.pause()}}onSeeking(){this._seeking=!0,this.dispatchMediaEvent(u.c.SEEKING)}onSeeked(){this._seeking=!1,this._seekedEventTimestamp=Date.now(),this.dispatchMediaEvent(u.c.SEEKED)}onSwitchComplete(e){let{url:t}=e;this._src=t}onVEError(e){!this._errorInfo&&(this._requestAudioCtxSuspended("onVEError"),super.onVEError(e))}play(){return(0,X.Og)(this._media)&&this.resumeAudioCtx(),this.logger.log(`play before ctxState ${this.audioCtxState}`),super.play()}resumeAudioCtx(){if(this._errorInfo||this._cfg.bindSrcTiming===G.Iv.MANUAL&&this._media&&!this._media.srcObject){this.logger.log("resume audioCtx return, errorInfo is not null!");return}if(this._cfg.audioCtxCoord){this._requestAudioCtxRunning("resumeAudioCtx");return}if("suspended"===this.audioCtxState&&(!1===this._isPaused||null===this._isPaused&&this._autoplayPolicy)){var e,t;null===(t=this._audioTrack)||void 0===t||null===(e=t.ctx.resume())||void 0===e||e.then(()=>{if(this._isResumeAudioCtx=!1,this.updateLastStep(G.ef.CTX_RUNNING),this.logger.log("audio context resumed!",this._isPaused),this._isPaused){var e,t;null===(t=this._audioTrack)||void 0===t||null===(e=t.ctx.suspend())||void 0===e||e.then(()=>{this.updateLastStep(G.ef.CTX_PAUSE),this.logger.log("resume then suspend audioCtx suspend!")})}else this.resumeAudioCtx()})}else"running"!==this.audioCtxState&&(this._isResumeAudioCtx=!0)}_removeOldVTracks(e){if(!e)return{};let t=e.getVideoTracks()[0];return t&&e.removeTrack(t),t}_removeOldATracks(e){if(!e)return{};let t=e.getAudioTracks()[0];if(t){e.removeTrack(t);let r=g.Lx.get(t.id);r&&g.Lx.setStatus(r,"idle")}return t}_removeOldTracks(e){if(!e)return{};let t=this._removeOldVTracks(e);return{oldA:this._removeOldATracks(e),oldV:t}}_updateVbalanceCfg(e){this.postMsgToWorker({type:p.Zo.VOLUMEBALANCE_UPDATE,param:e})}_bindMediaEvents(){this._media&&(this._mediaPropsObserver.observe(this._media,{attributes:!0}),this._media.addEventListener("loadstart",this._onMediaLoadstart),this._media.addEventListener("loadedmetadata",this._onMediaLoadedmetadata),this._media.addEventListener("loadeddata",this._onMediaLoadeddata),this._media.addEventListener("canplay",this._onMediaCanplay),this._media.addEventListener("play",this._onMediaPlay),this._media.addEventListener("pause",this._onMediaPause),this._media.addEventListener("volumechange",this._onMediaVolumeChange),this._media.addEventListener("waiting",this._onMediaWaiting),document.addEventListener("visibilitychange",this._onVisibilitychange))}_unbindMediaEvent(){var e;document.removeEventListener("visibilitychange",this._onVisibilitychange),this._media&&(null===(e=this._mediaPropsObserver)||void 0===e||e.disconnect(),this._media.removeEventListener("loadstart",this._onMediaLoadstart),this._media.removeEventListener("loadedmetadata",this._onMediaLoadedmetadata),this._media.removeEventListener("loadeddata",this._onMediaLoadeddata),this._media.removeEventListener("canplay",this._onMediaCanplay),this._media.removeEventListener("play",this._onMediaPlay),this._media.removeEventListener("pause",this._onMediaPause),this._media.removeEventListener("volumechange",this._onMediaVolumeChange),this._media.removeEventListener("waiting",this._onMediaWaiting))}_doMediaPause(){this.emit(p.Zo.PAUSE),this._requestAudioCtxSuspended("mediaPause")}_ensureAudioCtxCoord(){return!this._audioCtxCoord&&(this.logger.log("create AudioCtxCoordinator"),this._audioCtxCoord=new f.Y({getCtx:()=>{var e;return null===(e=this._audioTrack)||void 0===e?void 0:e.ctx},canResume:()=>!1===this._isPaused||null===this._isPaused&&this._autoplayPolicy,onResumeSuccess:()=>{this.updateLastStep(G.ef.CTX_RUNNING),this.logger.log("audio context resumed!",this._isPaused)},onSuspendSuccess:()=>{this.updateLastStep(G.ef.CTX_PAUSE),this.logger.log("audio context suspend!",this.audioCtxState)},onResumeFail:e=>{this.logger.warn("audio context resume failed",(null==e?void 0:e.message)||e)},onSuspendFail:e=>{this.logger.warn("audio context suspend failed",(null==e?void 0:e.message)||e)}})),this._audioCtxCoord}_requestAudioCtxSuspended(e){var t,r,o;if(this._cfg.audioCtxCoord){this.logger.log(`[AudioCtxCoord] requestSuspended from ${e}`,`ctxState=${this.audioCtxState}`,`paused=${this._isPaused}`,`autoplayPolicy=${this._autoplayPolicy}`),this._ensureAudioCtxCoord().requestSuspended();return}null===(o=this._audioTrack)||void 0===o||null===(r=o.ctx)||void 0===r||null===(t=r.suspend())||void 0===t||t.then(()=>{this.logger.log(`audio context suspend! source=${e}`,this.audioCtxState)}).catch(()=>{})}_requestAudioCtxRunning(e){this.logger.log(`[AudioCtxCoord] requestRunning from ${e}`,`ctxState=${this.audioCtxState}`,`paused=${this._isPaused}`,`autoplayPolicy=${this._autoplayPolicy}`),this._ensureAudioCtxCoord().requestRunning()}_handlePoster(){if(!this._media)return;let e=(0,X.Og)(this._media);if(this.logger.log("_handlePoster",this._media.autoplay,e,this.audioCtxState),this._media.autoplay&&e){this.resumeAudioCtx();return}if(!!this._media.autoplay||!this._cfg.disableDefaultPoster)!this._handlePosterListenerRegistered&&(this._handlePosterListenerRegistered=!0,!this._cfg.disableDefaultPoster&&(this._media.addEventListener("play",this._onPlay4Poster),this._media.addEventListener("pause",this._onPause4Poster))),this._media.removeEventListener("canplay",this._onCanplay4Poster),this._media.addEventListener("canplay",this._onCanplay4Poster,{once:!0})}resetInitTimeStamp(e){e.firstTimeStemp=Date.now()}constructor(e,t={}){t.worker=(0,i._)({enable:"boolean"!=typeof t.worker||t.worker,recylable:t.protocol&&![m.b.FLV,m.b.RTM,m.b.RTM_WEBTS].includes(t.protocol)},"object"==typeof t.worker?t.worker:{}),t.coreType=G.MR.MediaStream,super(e,t),(0,o._)(this,"version","0.0.2-alpha.83-2026060102"),(0,o._)(this,"logger",new s.ZP("MediaStreamAdaptor")),(0,o._)(this,"_playbackRate",void 0),(0,o._)(this,"_defaultPlaybackRate",1),(0,o._)(this,"_replaceMediaTrack",!1),(0,o._)(this,"_startTime",0),(0,o._)(this,"_firstframeCost",{}),(0,o._)(this,"_seeking",!1),(0,o._)(this,"_autoplayPolicy",!1),(0,o._)(this,"_isResumeAudioCtx",!1),(0,o._)(this,"_audioCtxCoord",void 0),(0,o._)(this,"_seekCurrentTime",-1),(0,o._)(this,"_seekCurrentTimeCnt",0),(0,o._)(this,"_seekCheckCurrentTimer",null),(0,o._)(this,"_seekedEventTimestamp",0),(0,o._)(this,"_mediaStream",null),(0,o._)(this,"_sampleRate",0),(0,o._)(this,"_ctxDependList",void 0),(0,o._)(this,"_isReuseSrc",!1),(0,o._)(this,"_checkWorkerEnableTimer",null),(0,o._)(this,"_rtmLoader",null),(0,o._)(this,"_rtmWebTsScopeId",void 0),(0,o._)(this,"_mediaEventState",{loadstart:!1,loadedmetadata:!1,loadeddata:!1,canplay:!1}),(0,o._)(this,"_mediaPropsObserver",new MutationObserver(e=>{e.forEach(e=>{let{type:t,attributeName:r}=e;this._media&&"attributes"===t&&"loop"===r&&this.emit(p.Zo.LOOP_CHANGE,{loop:this._media.loop})})})),(0,o._)(this,"_onVisibilitychange",()=>{let e="visible"===document.visibilityState;if(!this.isPiP)this.emit(p.Zo.VISIBILITYSTATE,{state:e})}),(0,o._)(this,"_onMediaLoadstart",e=>{this._startTimelines.loadstarttime=Date.now(),this._startTimelines.loadstarttype=1,this.logger.log("onMediaLoadstart",this._mediaEventState.loadstart),this.updateLastStep(G.ef.LOAD_START),this._mediaEventState.loadstart?e.stopImmediatePropagation():this._mediaEventState.loadstart=!0}),(0,o._)(this,"_onMediaLoadedmetadata",e=>{this.logger.log("onMediaLoadedmetadata",this._mediaEventState.loadedmetadata),this._mediaEventState.loadedmetadata?e.stopImmediatePropagation():this._mediaEventState.loadedmetadata=!0,e instanceof CustomEvent?this.updateLastStep("loademetaddata1"):this.updateLastStep("loademetaddata")}),(0,o._)(this,"_onMediaLoadeddata",e=>{this._startTimelines.loadeddatatime=Date.now(),this._startTimelines.ffcost=this._startTimelines.loadeddatatime-this._startTimelines.loadstarttime,this._startTimelines.loadeddatatype=1;let t=e instanceof CustomEvent;t?this.updateLastStep("loadeddata1"):this.updateLastStep("loadeddata"),this.logger.log(`onMediaLoadeddata ${this._mediaEventState.loadeddata} ${t}`),this._mediaEventState.loadeddata?e.stopImmediatePropagation():this._mediaEventState.loadeddata=!0}),(0,o._)(this,"_onMediaCanplay",e=>{var t,r;if(!this._media||this._errorInfo){e.stopImmediatePropagation();return}this._canplay=!0;let o=e instanceof CustomEvent;o?this.updateLastStep("canplay1"):this.updateLastStep("canplay"),this.logger.log(`_onMediaCanplay ${this._mediaEventState.canplay} ${null===(t=this._media)||void 0===t?void 0:t.autoplay} ${this._isPaused} ${o}`),((null===(r=this._media)||void 0===r?void 0:r.autoplay)&&!0!==this._isPaused||!1===this._isPaused)&&(this.logger.log("onMediaCanplay call play"),super.play()),this._mediaEventState.canplay?e.stopImmediatePropagation():this._mediaEventState.canplay=!0}),(0,o._)(this,"_onMediaPlay",e=>{if(!this._media||this._errorInfo){e.stopImmediatePropagation();return}this._isPaused=!1;let t=this._media.muted||!this._media.volume,r=this._media.loop,o=(0,X.Og)(this._media);this._autoplayPolicy=this._media.autoplay&&o;let i=this.playbackRate;this.logger.log("onMediaPlay",`ctxState=${this.audioCtxState}`,`muted=${t}`,`playbackRate=${i}`,`autoplayPolicy=${this._autoplayPolicy}`),this.updateLastStep("sendplaytoworker"),this.isLive||o?this.resumeAudioCtx():this.logger.log("onMediaPlay skip resumeAudioCtx: canAutoPlay=false"),this._replacingTrack&&(e.stopImmediatePropagation(),this._replacingTrack=!1),this.emit(p.Zo.PLAY,{muted:t,loop:r,playbackRate:i,autoplayPolicy:this._autoplayPolicy,canAutoPlay:o})}),(0,o._)(this,"_onMediaPause",e=>{if(this._isPaused=!0,this.logger.log("on pause! message to worker",this._replacingTrack),this._replacingTrack){e.stopImmediatePropagation();return}this._doMediaPause()}),(0,o._)(this,"_onPlay4Poster",e=>{this.logger.log("onPlay4Poster！",this._showingPoster),this._showingPoster&&e.stopImmediatePropagation()}),(0,o._)(this,"_onPause4Poster",e=>{this.logger.log("onPausePoster！",this._showingPoster),this._showingPoster&&(e.stopImmediatePropagation(),this._showingPoster=!1)}),(0,o._)(this,"_onCanplay4Poster",()=>{if(this._cfg.disableDefaultPoster){this.dispatchMediaEvent(u.c.AUTOPLAY_WAS_PREVENTED);return}this._showingPoster=!0,this.logger.log("hack, 展示首帧！")}),(0,o._)(this,"_onMediaWaiting",e=>{if(!this._media)return;let t=e instanceof CustomEvent;this.logger.log(`receive waiting ${this._media.currentTime} ${t}`),this.updateLastStep(t?"waitingMock":G.ef.WAITING,{currentTime:this._media.currentTime,isMock:t})}),(0,o._)(this,"_onMediaVolumeChange",e=>{var t;if(!this._media)return;let r=(0,X.Og)(this._media);this._autoplayPolicy=this._media.autoplay&&r;let o=this._media.muted||!this._media.volume;this.logger.log("volume change",o,this._autoplayPolicy,this._showingPoster,null===(t=this._media)||void 0===t?void 0:t.paused),this._showingPoster&&e.stopImmediatePropagation(),this._media&&!this._media.paused&&(this.emit(p.Zo.MUTED_SET,{muted:o,autoplayPolicy:this._autoplayPolicy,canAutoPlay:r}),"suspended"===this.audioCtxState&&this._autoplayPolicy&&this.media&&!this.media.paused&&!o&&(this.logger.log("onMediaVolumeChange resumeAudioCtx",this.audioCtxState),this.resumeAudioCtx()))}),"number"==typeof t.defaultPlaybackRate&&(this._defaultPlaybackRate=t.defaultPlaybackRate),this.resetInitTimeStamp(t),this.updateLoggerID(t),this._bindMediaEvents(),this._resetMediaEvtState(),this.createMediaStream(),this.init(),this.createVideoTrack(t),this.createAudioTrack(t),this.updateProtoConfig(t,!0),this._rtmWebTsScopeId=this._cfg.webTsPreloadScopeId,this._workerSink&&this._rtmWebTsScopeId&&(0,M.le)(this._workerSink,this._rtmWebTsScopeId)}}},888555:function(e,t,r){"use strict";r.d(t,{U:function(){return i},j:function(){return a}});var o=r(818749);let i={PREFIX:`${o.T}-chat`,PREFIX_DIVIDER:`${o.T}-chat-divider`,PREFIX_CHAT_BOX:`${o.T}-chat-chatBox`,PREFIX_CHAT_BOX_ACTION:`${o.T}-chat-chatBox-action`,PREFIX_INPUT_BOX:`${o.T}-chat-inputBox`,PREFIX_ATTACHMENT:`${o.T}-chat-attachment`,PREFIX_HINT:`${o.T}-chat-hint`},a={ROLE:{USER:"user",ASSISTANT:"assistant",SYSTEM:"system",DIVIDER:"divider"},CHAT_ALIGN:{LEFT_RIGHT:"leftRight",LEFT_ALIGN:"leftAlign"},MESSAGE_STATUS:{LOADING:"loading",INCOMPLETE:"incomplete",COMPLETE:"complete",ERROR:"error"},PIC_SUFFIX_ARRAY:["png","jpg","jpeg","gif","bmp","webp"],PIC_PREFIX:"image/",SCROLL_ANIMATION_TIME:300,SHOW_SCROLL_GAP:100,MODE:{BUBBLE:"bubble",NO_BUBBLE:"noBubble",USER_BUBBLE:"userBubble"},SEND_HOT_KEY:{ENTER:"enter",SHIFT_PLUS_ENTER:"shift+enter"}}},395075:function(e,t,r){"use strict";r.d(t,{UX:function(){return i},j2:function(){return a}});var o=r(818749);let i={PREFIX:`${o.T}-form`},a={LAYOUT:["horizontal","vertical"],LABEL_POS:["left","top","inset"],LABEL_ALIGN:["left","right"],EXTRA_POS:["middle","bottom"],DEFAULT_TRIGGER:"change"}},912898:function(e,t,r){"use strict";r.d(t,{Z:function(){return i}}),r(874386);var o=r(883520);class i extends o.Z{constructor(){super(...arguments),this.handleVisibleChange=e=>{let{visible:t,onVisibleChange:r}=this.getProps();!(t in this.getProps())&&this.setState({visible:e}),r&&r(e)},this.handleCurrentIndexChange=e=>{let{currentIndex:t,onChange:r}=this.getProps();!(t in this.getProps())&&this.setState({currentIndex:e}),r&&r(e)}}}},375069:function(e,t,r){"use strict";r(429532);var o=r(883520),i=r(354159),a=r.n(i);class n extends o.Z{init(e){var t,r;super.init(e),this.animation=a().loadAnimation(this._adapter.getLoadParams()),null===(t=this.getProp("getAnimationInstance"))||void 0===t||t(this.animation),null===(r=this.getProp("getLottie"))||void 0===r||r(n.getLottie())}destroy(){super.destroy(),this.animation.destroy()}constructor(e){super(Object.assign(Object.assign({},n.defaultAdapter),e)),this.animation=null,this.handleParamsUpdate=()=>{var e;this.animation.destroy(),this.animation=a().loadAnimation(this._adapter.getLoadParams()),null===(e=this.getProp("getAnimationInstance"))||void 0===e||e(this.animation)}}}n.getLottie=()=>a(),t.Z=n},139357:function(e,t,r){"use strict";r.d(t,{Z:function(){return s}}),r(429532);var o=r(645260),i=r.n(o),a=r(883520),n=r(794158);class s extends a.Z{init(){this._timer=null,this._mounted=!0}destroy(){this._mounted=!1}isValidKey(e){return null!=e&&("string"==typeof e||"number"==typeof e)}handleClick(e){let{isSubNav:t,itemKey:r,text:o,disabled:i}=this.getProps();if(i)return;!t&&this.isValidKey(r)&&!this._adapter.getSelectedKeysIsControlled()&&!this._adapter.getSelected()&&this._adapter.updateSelected(!0);let a=[r];if(!t){if(!this._adapter.getSelected()){let t=[this._adapter.cloneDeep(this.getProps())];this._adapter.notifyGlobalOnSelect({itemKey:r,selectedKeys:a,selectedItems:t,domEvent:e})}this._adapter.notifyGlobalOnClick({itemKey:r,text:o,domEvent:e})}this._adapter.notifyClick({itemKey:r,text:o,domEvent:e})}handleKeyPress(e){if((0,n.Z)(e)){let{link:t,linkOptions:r}=this.getProps(),o=i()(r,"target","_self");this.handleClick(e),"string"==typeof t&&("_blank"===o?window.open(t):window.location.href=t)}}constructor(e){super(Object.assign({},e))}}},345918:function(e,t,r){"use strict";r.d(t,{U:function(){return i}});var o=r(818749);let i={PREFIX:`${o.T}-resizable`}},375550:function(e,t,r){"use strict";r.d(t,{KT:function(){return c},UX:function(){return n},j2:function(){return s}});var o=r(818749),i=r(120534),a=r(221912);let n={PREFIX:`${o.T}-select`,PREFIX_OPTION:`${o.T}-select-option`,PREFIX_GROUP:`${o.T}-select-group`},s={SIZE_SET:["small","large","default"],POSITION_SET:a.j2.POSITION_SET,MODE_SELECT:"select",MODE_AUTOCOMPLETE:"autoComplete",STATUS:i.L,SEARCH_POSITION_TRIGGER:"trigger",SEARCH_POSITION_DROPDOWN:"dropdown"},c={LIST_HEIGHT:270}},428297:function(e,t,r){"use strict";function o(e){try{return e instanceof HTMLElement}catch(t){return"object"==typeof e&&1===e.nodeType&&"object"==typeof e.style&&"object"==typeof e.ownerDocument}}r.d(t,{Z:function(){return o}})},676606:function(e,t,r){"use strict";r.d(t,{N:function(){return n},d:function(){return a}});var o=r(134761);r(874386);var i=r(990815);class a extends i.S{constructor(...e){super(...e),(0,o._)(this,"el",void 0)}}let n=e=>e instanceof a},364656:function(e,t,r){"use strict";r.d(t,{$z:function(){return c},bl:function(){return l},tq:function(){return G}});var o,i,a,n=r(540971);function s(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}var c=(s(o={},n.lS.default,Object.create(null)),s(o,n.lS.host,Object.create(null)),o),G=(s(i={},n.lS.default,Object.create(null)),s(i,n.lS.host,Object.create(null)),i),l=(s(a={},n.lS.default,Object.create(null)),s(a,n.lS.host,Object.create(null)),a)},811265:function(e,t,r){"use strict";r.d(t,{Z:function(){return i}});let o=`
+GeForce RTX 4090|1950
+GeForce RTX 4090 Laptop GPU|1791
+GeForce RTX 4070 Ti|1517
+GeForce RTX 3090 Ti|1465
+GeForce RTX 4080|1426
+GeForce RTX 4060 Laptop GPU|1408
+GeForce RTX 3080 Ti Laptop GPU|1394
+GeForce RTX 3080|1325
+GeForce RTX 3080 Ti|1298
+RTX A5500 Laptop GPU|1242
+GeForce RTX 3090|1235
+GeForce RTX 3070 Ti|1229
+GeForce RTX 3070|1228
+GeForce RTX 3060 Ti|1166
+GeForce RTX 3080 Laptop GPU|1139
+RTX A4000 Laptop GPU|1126
+GeForce RTX 2080 Ti|1120
+GeForce RTX 3070 Laptop GPU|1077
+TITAN V|1070
+GeForce RTX 2080 SUPER|1063
+Quadro RTX 8000|1054
+RTX A6000|1046
+TITAN RTX|1046
+GeForce RTX 3070 Ti Laptop GPU|1033
+RTX A5000 Laptop GPU|1027
+GeForce RTX 4090 Laptop GPU|1024
+GeForce RTX 3060|1015
+TITAN X (Pascal)|1008
+TITAN Xp|995
+GeForce GTX 1080 Ti|992
+GeForce RTX 4070 Laptop GPU|989
+GeForce RTX 4090|982
+GeForce RTX 2070 SUPER|981
+GeForce RTX 4080|975
+GeForce RTX 3060|970
+GeForce RTX 2080|970
+GeForce RTX 4080 Laptop GPU|968
+GeForce RTX 3060 Laptop GPU|913
+GeForce RTX 2060 SUPER|890
+GeForce RTX 4060 Laptop GPU|882
+GeForce RTX 2070|879
+GeForce RTX 2080 Super with Max-Q Design|868
+GeForce RTX 2080 with Max-Q Design|868
+Quadro RTX 5000|867
+GeForce RTX 3080 Ti Laptop GPU|861
+Quadro RTX 5000 with Max-Q Design|843
+Asus GeForce GTX 1080|841
+GeForce GTX 1080|841
+GeForce RTX 2070 Super with Max-Q Design|837
+RTX A3000 Laptop GPU|835
+Quadro RTX 4000 with Max-Q Design|833
+GeForce RTX 3070 Ti Laptop GPU|827
+Quadro RTX 4000|817
+RTX A6000|814
+GeForce GTX 1070 Ti|785
+GeForce RTX 4070 Ti|784
+GeForce RTX 4050 Laptop GPU|784
+RTX A5500 Laptop GPU|783
+TITAN Xp COLLECTORS EDITION|771
+GeForce RTX 2070 with Max-Q Design|765
+GeForce RTX 3050|760
+GeForce RTX 2060|757
+GeForce GTX 980 Ti|755
+Quadro P6000|753
+GeForce GTX 1080|747
+Quadro RTX 6000|744
+GeForce GTX 1070|742
+RTX A4000|739
+GeForce RTX 3090|737
+GeForce RTX 3080 Ti|733
+GeForce GTX 1080 Ti|729
+Quadro P4200|711
+GeForce GTX 1080 with Max-Q Design|707
+GeForce RTX 3060 Lite Hash Rate|705
+EIZO MED-XN83|704
+GeForce RTX 3080 Ti|701
+GeForce GTX 1660 SUPER|701
+TITAN Xp|700
+EVGA GeForce GTX 1070|698
+GeForce RTX 3090 Ti|696
+Quadro GV100|695
+Quadro P4000|695
+GeForce GTX 1660 Ti|694
+GeForce RTX 3070 Ti|690
+RTX 6000 Ada Generation|687
+GeForce RTX 3070|687
+Quadro RTX 8000|685
+RTX A2000 12GB|683
+GeForce RTX 2080|679
+GeForce GTX TITAN X|679
+Quadro M6000 24GB|676
+GeForce GTX 1660 SUPER|674
+TITAN V|673
+Quadro RTX 3000|672
+Graphics Device|672
+RTX A5000|669
+GeForce RTX 3090|669
+TITAN Xp COLLECTORS EDITION|669
+GeForce GTX 1070 A17|668
+GeForce RTX 3080 Laptop GPU|667
+RTX A4500 Embedded GPU|663
+RTX A5000 Laptop GPU|663
+GeForce RTX 3080|658
+GeForce RTX 3050 Ti Laptop GPU|657
+GeForce GTX 1070 with Max-Q Design|656
+GeForce RTX 3060 Ti|656
+Quadro P4200 with Max-Q Design|651
+GeForce RTX 3080|651
+GeForce RTX 2080 SUPER|650
+GeForce GTX 1070 Ti|648
+GeForce GTX 1070 with MaxQ Design|642
+RTX A3000 Laptop GPU|641
+GeForce RTX 3070 Laptop GPU|641
+GeForce GTX 1070|640
+GA104GL [RTX A4000]|639
+GeForce GTX 980 Ti|637
+GeForce RTX 2070 Mobile / Max-Q Refresh|637
+RTX A4000 Laptop GPU|634
+GeForce RTX 3060|633
+Microsoft Virtual Render Driver|633
+GeForce RTX 3050 Laptop GPU|631
+RTX A2000|629
+GeForce RTX 2070 Mobile / Max-Q|626
+GeForce RTX 3070|625
+Quadro P5000|625
+Quadro P4000|621
+GeForce RTX 3060 Laptop GPU|621
+GeForce RTX 2060 with Max-Q Design|618
+GV102|614
+GeForce RTX 2070 SUPER|612
+GeForce GTX 1660|606
+GeForce RTX 2070|604
+GeForce GTX 1660 Ti with Max-Q Design|601
+GeForce GTX TITAN X|598
+RTX A2000 8GB Laptop GPU|598
+GeForce GTX TITAN Xp|595
+GeForce GTX 980|593
+GeForce RTX 2080 SUPER|591
+GTX 1060 HL|589
+Tesla T4|589
+GRID P4-1Q|585
+RTX A4000|581
+GeForce RTX 2080 Ti|577
+GeForce RTX 2080 Super with Max-Q Design|576
+Quadro RTX 4000 Mobile / Max-Q|576
+TU102 [TITAN RTX]|574
+GeForce GTX 1060 with Max-Q Design|571
+GeForce RTX 2070 SUPER|570
+GeForce GTX 1060 6GB|570
+GeForce RTX 2080 Mobile|568
+GeForce RTX 2060|568
+Quadro P3200|565
+P106-100|564
+GRID V100DX-1Q|564
+RTX A2000|562
+GeForce RTX 2080 Ti Rev. A|561
+GeForce RTX 2080 Rev. A|559
+GV100 [TITAN V]|557
+GeForce RTX 2080|556
+GeForce GTX 1650 SUPER|554
+P106-100 Custom|553
+GeForce RTX 2070 Super with Max-Q Design|553
+GV100|553
+GeForce RTX 2070 Mobile|550
+GP102 [TITAN X]|548
+RTX A2000 12GB|546
+GeForce GTX 1060 5GB|542
+MSI GeForce GTX 1060|542
+GeForce RTX 2060 SUPER|542
+GRID T4-1Q|539
+Quadro RTX 5000 Mobile / Max-Q|538
+GeForce RTX 3050|538
+GeForce GTX 1060 3GB|538
+Quadro RTX 5000 with Max-Q Design|537
+Quadro M6000|536
+RTX A2000 Laptop GPU|536
+GeForce GTX 1660 SUPER|533
+A10-2B|530
+TITAN X (Pascal)|530
+Quadro P5000|527
+GeForce RTX 2070|526
+GeForce GTX 1080|525
+GeForce RTX 2060 Mobile|524
+PNY GeForce GTX 980|524
+GeForce GTX 1080 Mobile|523
+GeForce RTX 2060 SUPER|520
+GeForce GTX 780 Ti|518
+RTX A4500|516
+GeForce RTX 2060 Rev. A|515
+MSI GeForce GTX 980|515
+Quadro P3200 with Max-Q Design|513
+GeForce RTX 2070 with Max-Q Design|513
+GeForce RTX 3050 Ti Laptop GPU|510
+Quadro RTX 3000 Mobile / Max-Q|509
+GeForce GTX 1660 SUPER|508
+Quadro RTX 4000|508
+GeForce GTX 1060|506
+GeForce RTX 2080 with Max-Q Design|505
+GeForce GTX 1080 Ti|505
+GeForce GTX 1660 Ti Rev. A|504
+GeForce GTX 1660 Ti Mobile|504
+GeForce RTX 3050 Laptop GPU|503
+GeForce RTX 2060|503
+Quadro RTX 4000 with Max-Q Design|500
+EIZO MED-XN83|499
+GeForce GTX 970|499
+GeForce GTX 1080|495
+GeForce GTX 1070 Ti|492
+GeForce GTX 980|491
+A100-PCIE-40GB|489
+GeForce GTX 1070|487
+GeForce GTX 1660 Ti|487
+Quadro P2200|485
+GeForce GTX TITAN Black|484
+TITAN Xp COLLECTORS EDITION|483
+TITAN RTX|482
+Quadro P5200|482
+GeForce GTX 1060 with Max-Q Design|480
+RTX A1000 Laptop GPU|479
+GeForce GTX 1060 6GB|479
+Quadro RTX 5000|475
+TITAN V|475
+GRID P100-4Q|474
+EVGA GeForce GTX 970|472
+GeForce GTX 1650 SUPER|471
+GeForce GTX 1650 Ti|470
+Quadro RTX 3000|470
+Quadro M5000|469
+Quadro RTX 3000 with Max-Q Design|468
+GeForce GTX 980 Ti|467
+GeForce GTX TITAN|467
+Quadro P4200|466
+GeForce GTX 1070 with Max-Q Design|466
+Quadro M5000|466
+GeForce GTX 1080 Ti|466
+Tesla M60|462
+GeForce GTX 1660|457
+GeForce GTX 1660|455
+GeForce RTX 2050|453
+GeForce GTX 1060|453
+GeForce RTX 2060 with Max-Q Design|453
+Quadro P3200 with Max-Q Design|452
+Quadro P4000|450
+GeForce GTX 1060 3GB|449
+GeForce GTX 1070|448
+GeForce GTX 1060 6GB Rev. 2|447
+Gigabyte GeForce GTX 780 Ti|447
+TITAN Xp|444
+GeForce GTX 980M|440
+A10-4Q|439
+GeForce GTX 1080 with Max-Q Design|437
+GeForce GTX 1650 SUPER|435
+Quadro P5000|435
+Quadro P3000|434
+RTX A6000|434
+GeForce GTX 1060 3GB|433
+GeForce GTX 1070 Ti|432
+GeForce GTX 780|432
+GeForce GTX 1060 Mobile|432
+Gigabyte GeForce GTX 970|431
+GeForce GTX TITAN Z|431
+Quadro K6000|429
+GeForce GTX 1650|425
+GeForce GTX 970|421
+Tesla K20m|420
+Quadro GV100|419
+Quadro P4000|419
+Quadro P3200|417
+GTX 1060 HL|415
+RTX A2000 Laptop GPU|415
+GeForce GTX 780 by St3Phl3|414
+P102-100|412
+T1200 Laptop GPU|412
+GeForce GTX 780 Ti|411
+GeForce GTX 1060 6GB|408
+GeForce GTX 1650 Ti with Max-Q Design|407
+Quadro T2000 with Max-Q Design|407
+Quadro P2000|406
+Quadro P2200|406
+GeForce RTX 2060 Max-Q|405
+GeForce GTX 1650 Ti Mobile|403
+GeForce GTX 1060 Mobile 6GB|403
+GeForce GTX 1060 with Max-Q Design|401
+GeForce GTX 980|398
+GeForce RTX 2070 Rev. A|397
+GeForce GTX TITAN X|397
+Tesla T4|395
+Quadro P6000|394
+GeForce GTX 1060 3GB|394
+Quadro M5000|393
+GeForce GTX 1060 with Max-Q Design|392
+PNY GeForce GTX 970|392
+Quadro T2000|391
+Quadro T1000 with Max-Q Design|391
+GRID P40-8Q|390
+GeForce GTX 780 Rev. 2|389
+Quadro GP100|387
+GeForce GTX 980|387
+P104-100|387
+GeForce GTX 1650 Ti|386
+GRID P40-4Q|384
+GeForce GTX 780 Ti|383
+Device|383
+TU117M|381
+Quadro P2000|380
+Quadro RTX 6000|379
+GeForce GTX 1070 Mobile|378
+Quadro T1000|377
+GeForce RTX 3070 Mobile / Max-Q|376
+GeForce GTX 1060|376
+GRID V100-1Q|375
+GeForce GTX 780 Rev. 2|372
+GeForce RTX 2050|370
+GeForce GTX 770|370
+GeForce GTX 970|368
+GeForce GTX 1650 Ti|368
+GRID T4-2B4|368
+Asus GeForce GTX 780|366
+P106-100|365
+Quadro RTX 8000|365
+GeForce GTX TITAN Black|365
+GRID RTX6000-2Q|365
+GeForce GTX TITAN Black|363
+Quadro M4000|363
+GeForce GTX 1060 6GB|362
+Quadro P5000|361
+GeForce GTX 1650|361
+Quadro M5500|361
+GeForce GTX 780|360
+GeForce GTX 780|360
+GeForce GTX 980M|358
+GeForce GTX 1650|358
+GeForce GTX 1050 Ti|357
+Quadro P3200 Mobile|357
+GeForce GTX 1650 with Max-Q Design|356
+Tesla T4|356
+Quadro P2000|356
+GeForce GTX TITAN|355
+GeForce GTX 970|355
+GeForce GTX 980 Ti|354
+GeForce GTX 1660 Ti with Max-Q Design|354
+GeForce GTX 780 Rev. 2|352
+GRID P4-4Q|351
+GeForce GTX TITAN X|351
+T1200 Laptop GPU|350
+GRID T4-8Q|350
+GeForce GTX 1060|349
+GeForce GTX 1050 Ti with Max-Q Design|348
+GeForce GTX 970M|346
+T1000 8GB|346
+GeForce RTX 3080 Mobile / Max-Q 8GB/16GB|346
+GeForce GTX 780 Ti|346
+GeForce GTX 680|346
+GeForce GTX 1660 Ti|345
+GeForce GTX 780|345
+Quadro M6000|344
+GRID T4-16Q|344
+GeForce RTX 2080 Ti|344
+GRID T4-1B|343
+Quadro K5200|342
+Quadro P2200|341
+T1000 8GB|341
+Tesla K80|341
+Quadro T2000 Mobile / Max-Q|338
+TU107|337
+GeForce GTX 780 Mac|336
+GeForce GTX TITAN|336
+GeForce GTX 980M|335
+GRID P40-2Q|335
+EVGA GeForce GTX 780|334
+GeForce GTX TITAN Z|334
+TITAN X (Pascal)|332
+GeForce GTX 960|331
+Tesla P40|331
+GeForce GTX 1650 Ti with Max-Q Design|330
+Tesla P40|330
+GeForce GTX 1060se 3GB|329
+GeForce GTX 1650 Mobile / Max-Q|329
+Quadro T2000 with Max-Q Design|328
+T1000|327
+RTX A5500|326
+A40-8Q|326
+GeForce RTX 3060 Mobile / Max-Q|326
+GeForce GTX 690|326
+Tesla V100-SXM2-16GB|326
+Quadro M5000|325
+A16-2B|323
+GeForce GTX 1050 Ti with Max-Q Design|321
+GeForce GTX 1050 Ti Mobile|321
+GeForce GTX 980M|319
+Quadro M3000M|318
+GeForce GTX 1650 with Max-Q Design|318
+GeForce GTX 670|316
+Quadro P3000|316
+T600 Laptop GPU|315
+Quadro T1000 with Max-Q Design|313
+Tesla K80|312
+Tesla K20m|311
+GeForce GTX 770|311
+Tesla P100-PCIE-16GB|311
+Quadro M5000M|311
+Tesla K80|309
+EVGA GeForce GTX 1070|309
+Quadro T1000|309
+GeForce GTX 1050 Ti|309
+GeForce GTX TITAN Z|308
+Quadro T2000|308
+Quadro M6000 24GB|308
+GeForce GTX 760 Ti|308
+GeForce RTX 2080 SUPER Mobile / Max-Q|308
+GeForce GTX 1050 Ti|307
+Quadro P2000|304
+Quadro P6000|304
+GeForce GTX 770 Mac Edition|303
+MSi GeForce GTX 1050 Ti|303
+A40|303
+T600|303
+P106-090|302
+P106-090|301
+Quadro K5200|300
+GeForce GTX 770|299
+GeForce GTX 680|299
+GeForce GTX TITAN|299
+GeForce GTX 680|297
+GRID M60-4Q|296
+Quadro M4000|296
+GRID M60-2Q|295
+GeForce GTX 760|294
+GRID V100DX-16Q|293
+Quadro RTX 6000/8000|293
+GeForce GTX 770|293
+GP104|292
+GeForce GTX 780 Rev. 2|290
+GeForce GTX 1050 Ti|288
+GeForce GTX 950|288
+EVGA GeForce GTX 1050 Ti|288
+GeForce GTX 1650 with Max-Q Design|286
+GeForce GTX 880M|285
+%NVIDIA_DEV.13D7.0580.1028%|283
+GP104GL|283
+Gigabyte GeForce GTX 960|282
+Quadro K5200|281
+GeForce GTX 660 Ti|281
+GeForce GTX 670|281
+Quadro M4000|280
+GeForce GTX 580|280
+MSi GeForce GTX 960|280
+Tesla M6|278
+PNY GeForce GTX 680|278
+T500|277
+GeForce GTX 1050|276
+GeForce GTX 1050 Ti with Max-Q Design|276
+GeForce GTX 690|276
+GeForce GTX 680|276
+GeForce GTX 670|275
+GeForce GTX 760 Ti|274
+GeForce GTX 1050 3GB|272
+GeForce GTX 880M|272
+Tesla M60|272
+Asus GeForce GTX 960|271
+Quadro M4000|269
+T600|268
+Tesla K20m|268
+GeForce GTX 760|268
+GP102 [TITAN Xp]|267
+GeForce GTX 960|267
+GeForce GTX 670|265
+Quadro T1000 Mobile|265
+GeForce GTX 1050|264
+Tesla M60|264
+EVGA GeForce GTX 1080 Ti|263
+GeForce GTX 970M|263
+GeForce GTX 780M|262
+GeForce GTX 690|262
+Asus GeForce GTX 770|261
+GeForce GTX 1070 with MaxQ Design|261
+EVGA GeForce GTX 960|261
+GeForce GTX 960|260
+GRID T4-2Q|259
+GeForce GTX 970M|259
+GeForce GTX 960|259
+Quadro M3000M|258
+GeForce GTX 1060se 3GB|257
+Tesla K10|257
+Quadro M3000M|257
+Quadro M2200|256
+GeForce GTX 690|255
+GeForce GTX 760|254
+GeForce GTX 880M|254
+Quadro K4200|253
+Quadro P2000 with Max-Q Design|253
+T550 Laptop GPU|253
+Quadro K5200|252
+MSI GeForce GTX 760|250
+GeForce GTX 580|249
+GeForce GTX 780M Mac Edition|249
+GeForce GTX 570|249
+Tesla V100-PCIE-16GB|248
+GeForce GTX880M|248
+GeForce GTX 760|247
+GeForce GTX 570 Rev. 2|247
+Asus GeForce GTX 670|246
+GeForce GTX 580|246
+GeForce GTX 1050|245
+Tesla P4|244
+GeForce GTX 680MX|244
+GeForce GTX 480|242
+GeForce GTX 1050|242
+Quadro 7000|241
+Quadro M4000M|241
+GeForce GTX 1050 Mobile|240
+GeForce GTX 660|240
+GeForce GTX 760 (192-bit)|239
+Quadro K5000|239
+GeForce GTX 760 OEM|238
+GeForce GTX 660 Ti|238
+GeForce GTX 775M Mac Edition|238
+GeForce GTX 965M|237
+GeForce GTX 870M|236
+GeForce GTX 950|236
+GeForce GTX 560 Ti 448 Cores|236
+GeForce GTX 780M|236
+Quadro P2000 with Max-Q Design|234
+MSI GeForce GTX 980 TI|234
+GRID K2|233
+GeForce GTX 1060 6GB OpenGL Engine|233
+PNY GeForce GTX 1060|233
+EVGA GeForce GTX 980|232
+GRID RTX6000P-6Q|232
+GeForce GTX 950|232
+GeForce GTX 950|232
+GeForce GTX 590|231
+GeForce GTX 1070 OpenGL Engine|231
+TITAN X (Pascal)|229
+GeForce GTX 1050 with Max-Q Design|229
+GeForce GTX TITAN Black|228
+Quadro K4200|227
+GeForce GTX 660 OEM|227
+GeForce MX450|225
+GeForce GTX 1050 with Max-Q Design|225
+Quadro P1000|225
+Graphics Device|225
+Quadro M2000|222
+GeForce GTX 1630|222
+Quadro M4000M|221
+Quadro K5100M|221
+EVGA GeForce GTX 760|221
+GeForce GTX 1070 Ti|221
+GeForce GTX 660 Ti|220
+GeForce GTX 570|220
+GeForce GTX 660 Ti|219
+Quadro K6000|219
+GeForce GTX 570 Rev. 2|219
+GeForce GTX 1050 with Max-Q Design|219
+Tesla M40|218
+GeForce GTX 680M|217
+GeForce GTX 780M by Nick[D]vB|217
+Asus GeForce GTX 980 TI|217
+GeForce GTX 1060 3GB|217
+Graphics Device|217
+GeForce GTX 570 Rev. 2|216
+GeForce GTX 1060 3GB OpenGL Engine|216
+GeForce GTX 660|215
+Point of View GeForce GTX 660 Ti|214
+Gigabyte GeForce GTX 980|214
+Quadro K5000|213
+Quadro P1000|213
+GeForce GTX 480|213
+GeForce MX450|212
+Quadro K4200|211
+GRID K280Q|211
+Asus GeForce GTX 760|210
+Quadro P1000|210
+GeForce GTX 680MX|209
+GeForce GTX 1060 6GB|209
+GeForce GTX 660|209
+GeForce GTX 750 Ti|208
+GeForce GTX 780M Mac Edition|208
+GeForce GTX 775M Mac Edition|208
+GRID K520|208
+Quadro M2200|207
+GRID M60-8Q|207
+GRID K2|207
+GeForce GTX 775M Mac Edition|206
+GeForce GTX 560 Ti 448 Cores|205
+GeForce GTX 760 (192-bit)|205
+Quadro K5000|205
+Gigabyte GeForce GTX 980 TI|204
+GeForce GTX 780M Mac Edition|204
+Asus GeForce GTX 660|204
+GRID M60-1B|202
+GeForce GTX 650 Ti BOOST|202
+GeForce GTX 480|202
+GeForce GTX 960M|201
+GeForce GTX 660 OEM|201
+GeForce GTX 780 Ti|201
+Quadro K5000|201
+GeForce GTX 780M Mac Edition|201
+GeForce GTX 870M|200
+GeForce GTX 680MX|200
+GeForce GTX 680MX|199
+Quadro P1000|198
+Tesla P100 PCIe 16GB|198
+Quadro K5100M|198
+GeForce GTX 470|198
+Quadro P620|197
+Asus GeForce GTX 780|197
+Quadro 6000|196
+Quadro M1200|195
+Quadro K2200|195
+GeForce GTX 590|195
+Quadro M2000M|194
+Quadro M4000 OpenGL Engine|194
+GeForce GTX 870M|194
+GeForce GTX 1070|194
+EVGA GeForce GTX 750 Ti|194
+Zotac GeForce GTX 680|193
+Quadro RTX 3000 with Max-Q Design|193
+T400|193
+Quadro M2200|193
+Quadro K4100M by nikey22|192
+GRID K2|192
+GTX 865M by iMacGFX|191
+Quadro M2000|191
+GeForce GTX 980M|190
+GeForce GTX 560 Ti|190
+Palit GeForce GTX 660|190
+GRID K260Q|189
+GRID M10-2Q|189
+GeForce GTX 660|189
+GeForce GTX 965M|189
+GeForce GTX 650 Ti BOOST|188
+GeForce GTX 675MX Mac Edition|188
+Quadro K5100M by nikey22|187
+GeForce GTX 680M|187
+Zotac GeForce GTX 660|186
+GeForce GTX 650 Ti BOOST|186
+GeForce GTX 760 (192-bit)|185
+GRID M60-1Q|184
+Gigabyte GeForce GTX 960|184
+Quadro M2000M Special Edition|184
+GeForce GTX 560 Ti|184
+Inno3D GeForce GTX660|183
+GeForce GTX 1060|183
+GeForce GTX 675MX Mac Edition|182
+Quadro P600|181
+GeForce GTX 1080|181
+GeForce GTX 675MX Mac Edition|181
+Quadro P620|180
+GK104 Board - 20530501|180
+Ashley|180
+Quadro M2000|179
+GeForce GTX 860M|179
+MSi GeForce GTX 1050 Ti|179
+Asus GeForce GTX 750 Ti|178
+GeForce GTX 750 Ti|178
+GeForce GTX 750 Ti|177
+EVGA GeForce GTX 980 TI|177
+Asus GeForce GTX 770|177
+GeForce GTX 760 OEM|176
+GeForce GTX 750|176
+Quadro P2000 Mobile|176
+Quadro K4100M|175
+T400 4GB|174
+GeForce GTX 1080 Ti OpenGL Engine|174
+Quadro K5000M|173
+GeForce GTX 960A|173
+GeForce GTX 560 Ti|172
+Tesla M10|172
+GeForce GTX 1080 Ti|172
+GRID RTX6000P-6|172
+GK104 Board - 2051b502|172
+GeForce GTX 770M|172
+GeForce GTX 960M|172
+GeForce GTX 970|172
+GRID M10-2Q|171
+GeForce GTX 560 Ti OEM|171
+MSi GeForce GTX 970|171
+GK104GL [GRID K2]|171
+GeForce GTX 470|170
+GeForce GTX 560 Ti|170
+TITAN Xp|170
+GeForce GTX 870M|170
+GeForce MX350|169
+MSi GeForce GTX 580|169
+GeForce GTX 960M|169
+EVGA GeForce GTX 760|169
+Quadro K4000M|169
+T400|169
+GeForce MX350|168
+GeForce GTX 470|168
+GeForce GTX 560|167
+Quadro 6000|167
+GeForce GTX 1050 Ti OpenGL Engine|167
+Quadro M1200|167
+Gigabyte GeForce GTX 970|166
+GeForce GT 1030|166
+GeForce GTX780M by nikey22|166
+GeForce GTX870M by nikey22|166
+Tesla V100-PCIE-32GB|165
+Quadro K2200|165
+Quadro M1000M|165
+Quadro K2200|165
+Asus GeForce GTX 970|164
+GeForce GTX 750 Ti|164
+Quadro M2000M|164
+GeForce GTX 1050|164
+GeForce GTX 1050 Ti|163
+Quadro K5000|163
+Graphics Device|162
+GeForce MX250|162
+T500|161
+EVGA GeForce GTX 570|161
+Quadro M2000M|161
+Quadro K1200|159
+GeForce GTX 860M|159
+GeForce GTX 770M|159
+Quadro M1200|158
+GeForce GTX 675MX|158
+GeForce MX330|158
+Quadro K2200M|157
+Quadro K4000|157
+GeForce GTX 690|157
+GeForce GTX 860M|157
+MSi GeForce GTX 670|156
+Quadro K2200|156
+Quadro K4100M|156
+GeForce GTX 770M by Nick[D]vB|155
+Tesla V100-SXM2-32GB|155
+GeForce GTX 1080 OpenGL Engine|155
+Gigabyte GeForce GTX 670|155
+EVGA GeForce GTX 960|155
+GeForce GTX 750|155
+GeForce Pre-Release TITAN X (Pascal) OpenGL Engine|154
+GeForce GTX TITAN Xp|154
+Asus GeForce GTX 950|154
+Quadro K4100M|153
+GeForce GTX 960|153
+GeForce GTX 770M|153
+GeForce MX330|153
+Quadro M2200 Mobile|153
+GeForce MX250|153
+GeForce Pre-Release TITAN Xp OpenGL Engine|153
+Quadro P600|153
+Quadro M620|152
+GeForce GTX 1070 Ti OpenGL Engine|152
+GeForce GTX 770|152
+GeForce GT 1030|152
+Tesla C2070|152
+GeForce GTX 650 Ti|152
+GRID K240Q|151
+GeForce GTX 480 OpenGL Engine|151
+GeForce GTX 750|151
+GeForce GTX TITAN|151
+GeForce GTX 760 (192-bit)|151
+GeForce GTX 560|151
+GeForce GT 1030|151
+Quadro K5000M|151
+Quadro P1000 Mobile|151
+Zotac GeForce GTX 660|151
+GeForce GTX 460 v2|150
+GRID GTX P40-6|150
+MSi GeForce GTX 660|149
+GeForce GTX 780M|149
+MSI GeForce GTX 760|149
+P106-090|149
+GeForce GTX 950A|149
+GeForce MX150|149
+Asus GeForce GTX 1060|149
+Unknown|149
+GeForce GTX 980 Ti|148
+GRID T4-4Q|148
+GeForce GTX 465|147
+Colorful GeForce GTX 960|147
+Gigabyte GeForce GTX 750|147
+Quadro M1000M|147
+GeForce GTX 780 Mac|147
+GeForce GTX 460|146
+MSi GeForce GTX 960|146
+GeForce GTX 560|146
+Quadro K4000|145
+GeForce GTX 970M|145
+Quadro M1000M|145
+Unknown|145
+GeForce GTX 980|144
+GeForce GTX 950|144
+GeForce GTX 675M|144
+Zotac GeForce GTX 960|144
+GeForce Pre-Release Graphics Device|144
+GeForce GTX 670 OpenGL Engine|143
+Quadro K4000|143
+EVGA GeForce GTX 580|143
+GeForce GTX 950M|143
+GeForce GTX TITAN Black OpenGL Engine|142
+GeForce GTX 760|142
+Quadro 5000|142
+MSI GeForce GTX 570 HD|142
+GeForce Pre-Release TITAN Xp COLLECTORS EDITION OpenGL E|142
+GeForce GTX 1050 OpenGL Engine|142
+GeForce GTX TITAN X|142
+GeForce GTX 880M|141
+GV-N660OC-2GD|141
+GeForce GTX 750|141
+Quadro M5000M|140
+GeForce GTX 970 OpenGL Engine|140
+GeForce GTX 675MX|140
+Asus GeForce GTX 760|140
+Quadro P5000 OpenGL Engine|139
+GeForce GTX 580|139
+GeForce GTX 675MX|139
+Zotac GeForce GTX 750|139
+Quadro K1200|139
+GeForce MX150|139
+GeForce GTX 650 Ti|139
+Quadro K1200|139
+GeForce GTX 980 Ti OpenGL Engine|139
+GeForce GTX 580M|138
+Asus GeForce GTX 580|138
+GeForce GTX 770 OpenGL Engine|138
+GeForce GT 1010|138
+GeForce GTX 780 Rev. 2|138
+Quadro P2000 OpenGL Engine|138
+GeForce MX250|138
+Quadro K4000|137
+GeForce GTX 460 v2|137
+GeForce GTX 770M|137
+Gigabyte GeForce GTX 570 HD|136
+GeForce GTX 465|136
+GeForce GTX 460 v2|136
+GeForce GTX 670|136
+GeForce GTX 590 OpenGL Engine|136
+GeForce GTX 780|135
+GeForce GTX TITAN Black|135
+GeForce GTX 660 Ti|135
+Zotac GeForce GTX 560 Ti|134
+GeForce GTX 880M OpenGL Engine|134
+GeForce GTX 650 Ti|134
+GeForce GTX 760 OpenGL Engine|134
+null Graphics Device|134
+Quadro M620|133
+GeForce GTX 780M Mac Edition|133
+GeForce MX150|132
+Asus GeForce GTX 570 HD|132
+GeForce GTX 775M OpenGL Engine|132
+GeForce GTX 850M|132
+Asus GeForce GTX 570|132
+Quadro K6000 OpenGL Engine|131
+GeForce GTX 850M|131
+GeForce GTX 460|131
+GeForce GTX 950A|130
+GeForce GTX 780M OpenGL Engine|130
+Point of View GeForce GTX 660 Ti|130
+GeForce GTX 775M Mac Edition|130
+EVGA GeForce GTX 650 Ti|130
+EVGA GeForce GTX 750 Ti|129
+GeForce GTX 460|129
+Quadro P520|129
+Gainward GeForce GTX 570|129
+Asus GeForce GTX 750 Ti|129
+Quadro K3100M|128
+Quadro K2200|128
+Asus GeForce GTX 560 Ti|127
+GeForce GTX 680|127
+GeForce GTX 680 OpenGL Engine|127
+GeForce GTX 950M|127
+GRID V100-2B|127
+Gigabyte GeForce GTX 660 Ti|127
+N15E-GT|126
+Quadro K1200|126
+GeForce GTX 650 Ti|126
+Gigabyte GeForce GTX 770|126
+GeForce GTX 660|126
+Quadro 5000|125
+GeForce GT 1030|125
+GeForce GTX 950M|125
+GeForce GTX 765M|125
+Quadro M5000|125
+Gigabyte GeForce GTX 560 Ti|125
+GeForce GTX 580M|125
+Quadro M2000|124
+GeForce GTX 850M|124
+GeForce GTX 570 OpenGL Engine|123
+Gainward GeForce GTX 750 Ti|123
+Quadro K2200M|123
+GeForce GTX 780M Mac Edition|123
+GeForce GTX 680MX OpenGL Engine|123
+Quadro K4200|123
+GeForce GTX 460 OEM|122
+GeForce GTX 670MX|122
+MSi GeForce GTX 560 Ti|122
+GeForce GTX 460 SE|122
+Quadro M4000|122
+GeForce GTX880M OpenGL Engine|122
+Quadro P620|121
+GeForce GTX 560 SE|121
+GeForce GTX880M by nikey22|121
+GeForce GTX 555|121
+GeForce GTX 965M OpenGL Engine|121
+GeForce GTX 850A|121
+Quadro K5000 OpenGL Engine|120
+GeForce GTX 580 OpenGL Engine|120
+Quadro K3100M|120
+GeForce GTX 650 Ti BOOST|119
+GeForce GTX 570M|119
+GeForce GTX 675MX OpenGL Engine|119
+GeForce GTX 775M Mac Edition|119
+Zotac GeForce GTX 1050 Ti|118
+GeForce GTX 965M|117
+Quadro M600M|117
+GeForce GTX 780M by Nick[D]vB|117
+GeForce GTX 460 SE|117
+GeForce GTX 555|116
+GeForce GTX 670M|116
+Quadro K3000M|116
+GeForce GTX 780 Ti OpenGL Engine|116
+Quadro K4000M|115
+GeForce GTX 860M|115
+Asus GeForce GTX 660|115
+Tesla C2075|114
+GeForce GTX 675MX Mac Edition|114
+Zotac GeForce GTX 770|114
+Gigabyte GeForce GTX 750 Ti|114
+GeForce MX330|114
+GeForce GT 1030|113
+GeForce GTX TITAN OpenGL Engine|113
+GeForce GTX 590|113
+Quadro K620|113
+GeForce GTX 780M|112
+GeForce GTX 560 Ti|112
+Quadro 6000|112
+EVGA GeForce GTX 560 Ti|112
+Asus GeForce GTX 960|112
+Quadro K5000|112
+Point of View GeForce GTX 470|111
+PNY GeForce GTX 580|111
+GeForce GTX 770M|111
+GeForce GT 120|111
+MSi GeForce GTX 660|111
+Gigabyte GeForce GTX 560|111
+GeForce GTX 680MX|110
+GeForce 945M|110
+GeForce GTX 765M|110
+GeForce GTX 950 OpenGL Engine|110
+GeForce Pre-Release Tesla C2075 OpenGL Engine|109
+GeForce GTX 550 Ti|109
+GeForce GTX 765M|108
+PNY GeForce GTX 750|108
+GeForce GTX 560 Ti 448 Cores|108
+Quadro P500|108
+GeForce GTX 670MX|108
+GeForce GTX 680MX|107
+GeForce GTX 460 SE|107
+GeForce GTX 675MX Mac Edition|107
+GeForce GTX 770M OpenGL Engine|107
+GeForce 945M|107
+GeForce GTX 675MX|107
+PNY GeForce GTX 570 HD|106
+GeForce GTX 745|106
+GeForce MX230|106
+GeForce GTX 670MX|106
+GeForce 845M|106
+Quadro K3100M OpenGL Engine|105
+Quadro P2000|105
+GeForce MX570 A|105
+GeForce GTX 750 Ti|104
+GeForce GTX 660 OEM|104
+Quadro M600M|104
+GeForce GTX 750|104
+GeForce GTX 645|104
+GP108|104
+Quadro P520|104
+Zotac GeForce GTX 460|103
+Chip Model|103
+GeForce GTX 670M|103
+Quadro T1000|103
+GeForce GTX 670M|103
+GeForce GTX 650|103
+Zotac GeForce GTX 750|102
+GeForce GTX 460 OpenGL Engine|102
+GeForce GTX 860M OpenGL Engine|102
+Quadro 4000|102
+Asus GeForce GTX 480|102
+Zotac GeForce GTX 650 Ti|102
+GeForce GT 755M|101
+GF100 Board - 10220000|101
+GeForce GTX 470M|101
+GeForce GTX 570 Rev. 2|101
+GeForce GTX 775M by iDopt Mac|101
+GeForce GTX 765M by Nick[D]vB|101
+GeForce GTX 570|101
+GeForce GTX 645|101
+GeForce GTX 550 Ti|100
+GeForce GTX 760M|100
+GeForce GT 1030 OpenGL Engine|100
+GeForce GTX 650|100
+Quadro P400|100
+GeForce GTX 480|99
+EVGA GeForce GTX 650|99
+EVGA GeForce GTX 560|99
+GeForce MX130|99
+GeForce MX130|98
+Asus GeForce GTX 460|98
+Elitegroup GeForce GTX 460|98
+Tesla V100-SXM2-32GB|98
+GeForce GT 755M|98
+GeForce GTX 760 Ti OpenGL Engine|98
+Quadro P520|97
+GeForce GT 755M Mac Edition|97
+GeForce GTX 1060 5GB|97
+Palit GeForce GTX 650 Ti|97
+MSi GeForce GTX 460|96
+GeForce GTX 650|96
+Gigabyte GeForce GTX 580|96
+Gigabyte GeForce GTX 460|96
+GeForce GTX 745|96
+EVGA GeForce GTX 550 Ti|96
+GeForce GTX 465|96
+GeForce GTX 460 SE|96
+GeForce GTX 765M|96
+GeForce GT 755M Mac Edition|96
+Quadro M520|95
+Quadro K620|95
+T1000|95
+GeForce GTX 745|95
+Quadro K620|95
+GeForce GT 755M|94
+GeForce GTX 660 Ti OpenGL Engine|94
+Quadro K3000M|94
+Quadro K4000|94
+Quadro K4000 OpenGL Engine|94
+GeForce GTX 560|94
+GeForce GTX 650 Ti OpenGL Engine|94
+Zotac GeForce GTX 560|94
+Asus GeForce GTX 560|93
+GeForce GTX 650 Ti|93
+GeForce GPU|92
+GeForce GTX 460|92
+MSi GeForce GTX 650 Ti|92
+GeForce GTX 645|92
+Gigabyte GeForce GTX 760|92
+GeForce GTX 660M|92
+GeForce GTS 450|92
+GeForce GTX 765M|92
+Quadro K2000D|92
+Quadro K2000|91
+GeForce GT 740|91
+GeForce GTX 650|91
+GRID M6-0B|91
+HP Quadro K620|91
+GeForce MX130|91
+Quadro K3000M by ST3PHL3|91
+Quadro 4000|90
+GeForce MX230|90
+Quadro K620|90
+Quadro K2100M by Nick[D]vB|90
+Quadro K3000M by nikey22|89
+GeForce GT 650M OpenGL Engine|89
+Quadro 4000|89
+Quadro K3000M|88
+GeForce GTX 660M|88
+Quadro K6000|87
+GeForce GT 755M Mac Edition|87
+Palit GeForce GTX 650|87
+Quadro P500|87
+GeForce GTX 570M|86
+Gainward GeForce GTX 460|86
+GeForce GTX 950M|86
+Quadro K2000D|86
+GeForce GTX 650 Ti BOOST|86
+Quadro K2100M|86
+GeForce GTX 470|85
+Quadro K2000|85
+Quadro K2000|85
+GeForce GT 750M Mac Edition|85
+GeForce GTX 745|85
+GRID K220Q|85
+GeForce GTX 750 OpenGL Engine|85
+Quadro 5000M|84
+Quadro P400|84
+GeForce GTS 450|84
+GeForce GT 640 Rev. 2|84
+GeForce GTX 660M Mac Edition|84
+Quadro P400|84
+Asus GeForce GTX 560 SE|84
+PNY GeForce GTX 460|83
+GeForce GT 640 Rev. 2|83
+GeForce GTS 450 Rev. 2|83
+GeForce GTS 450|83
+GeForce GTS 450 Rev. 2|83
+GeForce GTX 645|82
+GeForce GPU|82
+GeForce GTX 560M|82
+Quadro K3000M|82
+Quadro K2100M by nikey22|82
+Gigabyte GeForce GTX 750|82
+GeForce GT 740|82
+GeForce GT 750M Mac Edition|82
+GeForce GTX 765M OpenGL Engine|82
+GeForce GTX 645 OpenGL Engine|82
+Quadro K620|81
+GeForce GTX 550 Ti OpenGL Engine|81
+Quadro 4000M|81
+PNY GeForce GTX 550 Ti|81
+GeForce MX110|80
+GeForce GTX 760M|80
+MSi GeForce GTX 745|80
+Quadro K2100M OpenGL Engine|80
+Quadro K2000|80
+Quadro 5000|80
+Quadro K620 OpenGL Engine|80
+MSi GeForce GTX 745|80
+GeForce GT 755M OpenGL Engine|80
+GeForce GTX 660M|79
+Gigabyte GeForce GTX 550 Ti|79
+MSi GeForce GTX 650|79
+GeForce GTX 560M|79
+Quadro P400|78
+Quadro K2100M|78
+Quadro K2100M|78
+Zotac GeForce GTX 1050 Ti|78
+Quadro 3000M|77
+GeForce 940A|77
+GeForce GTX 460M|77
+GeForce GTX 550 Ti|77
+GeForce GT 545|77
+GeForce GT 650M Mac Edition|77
+GeForce 940MX|76
+GeForce GTX 650 OEM|76
+GeForce GTX 550 Ti|76
+GeForce GT 755M Mac Edition|76
+GeForce GT 740 OpenGL Engine|75
+Gainward GeForce GTX 550 Ti|75
+Quadro K1200|75
+GeForce GT 650M Mac Edition|75
+EVGA GeForce GTX 650|75
+GeForce GT 750M Mac Edition|74
+GeForce GTX 745|73
+GeForce GTX 555|73
+GeForce GTX 650|73
+Gainward GeForce GTS 450|73
+GeForce GT 650M|73
+GeForce GT 755M Mac Edition|73
+GeForce GTX 460M|72
+GeForce 930A|72
+GeForce 930MX|72
+GeForce 940MX|72
+GeForce MX110|72
+GeForce GT 750M Mac Edition|72
+Quadro 2000|72
+GeForce 845M|71
+Quadro 2000D|71
+GeForce GT 640 Rev. 2|71
+GeForce MX110|71
+GeForce GT 1010|71
+GeForce GT 545|71
+Quadro K1200 OpenGL Engine|71
+GeForce 940MX|71
+GeForce GTX 650 OpenGL Engine|71
+EVGA GeForce GTX 650 Ti BOOST|71
+Quadro K2100M|70
+GeForce GT 1010|70
+Quadro M500M|70
+GeForce GT 650M Mac Edition|70
+GeForce GT 640 OEM|70
+Quadro K2000D|70
+Quadro K2000 OpenGL Engine|70
+GeForce GT 750M Mac Edition|70
+GeForce GT 650M|69
+Quadro K1100M by Nick[D]vB|69
+GeForce GT 650M|69
+GeForce 940M|69
+GeForce GT 650M|69
+Quadro 4000|69
+GeForce GT 650M Mac Edition|69
+GeForce GT 745M|69
+Gainward GeForce GTX 560 Ti|68
+GeForce 920MX|68
+Quadro M520|68
+GeForce GT 640|68
+GeForce 840M|68
+GeForce 9800 GTX / 9800 GTX+|68
+GeForce GTX 770M by Nick[D]vB|67
+Zotac GeForce GTX 650|67
+Asus GeForce GTX 550 Ti|67
+GeForce GT 750M|67
+Quadro K3100M by nikey22|67
+GeForce GT 750M|67
+GeForce GTX 760 (192-bit) OpenGL Engine|67
+HP Quadro 4000|67
+Quadro K2000|67
+GeForce GTS 450 Rev. 2|67
+GeForce 930MX|67
+GeForce GTX 660M Mac Edition|66
+GeForce GTX 570|66
+GeForce GT 750M|66
+GeForce GT 650M Mac Edition|66
+GeForce GT 650M OpenGL Engine|65
+GeForce GTX 660M OpenGL Engine|65
+GeForce 930M|65
+Palit GeForce GTX 650|65
+GeForce GTX 760M|65
+GeForce GT 650M Mac Edition|65
+GeForce 940M|65
+GeForce GT 750M Mac Edition|64
+GeForce 940M|64
+GeForce GT 740|63
+GeForce 930MX|63
+Quadro 3000M|63
+GeForce GT 730|63
+Quadro K1100M|63
+GeForce GT 750M|63
+GeForce 840M|63
+GeForce GT 640 OEM|63
+GeForce 840M|63
+GeForce GT 640 Rev. 2|62
+GeForce GTS 450|62
+Quadro 2000|62
+GeForce GT 745M|62
+GeForce GT 740|62
+GeForce GT 640|62
+Quadro 2000|62
+GeForce GTX 660M Mac Edition|62
+Quadro K1100M OpenGL Engine|62
+Quadro K2000M|62
+GeForce GTX 680MX OpenGL Engine|61
+EVGA GeForce GT 730|61
+Quadro 2000D|61
+GeForce 840A|61
+MSi GeForce GTX 660 Ti|61
+Quadro K1100M|61
+GeForce GT 645M|61
+GeForce GTX 780M OpenGL Engine|61
+HP GeForce GT 730|61
+Quadro K5000M OpenGL Engine|61
+EVGA GeForce GT 640|61
+GeForce 920MX|60
+Quadro M500M|60
+Quadro K620M|60
+GeForce 930M|60
+GeForce 930A|60
+GeForce GT 640 OEM|60
+GeForce GT 640|60
+Quadro 2000M|60
+GeForce GT 640|60
+GeForce GT 640M Mac Edition|60
+GeForce GT 640M Mac Edition|60
+GeForce GT 640M Mac Edition|59
+GeForce GT 645M|59
+GeForce 930M|59
+Gigabyte GeForce GTX 650 Ti|59
+GeForce GT 640 OEM|59
+GeForce 830M|59
+Asus GeForce GT 640|58
+MSI GeForce GTX 1070|58
+GeForce GT 555M|58
+Quadro K2000M|58
+Quadro K1100M|57
+GeForce GT 650M Mac Edition|57
+Quadro K2000M by Nick[D]vB|57
+EVGA GeForce GTX 650 Ti|57
+GeForce GT 640M|56
+GeForce GT 650M Mac Edition|56
+GeForce GT 445M|56
+GeForce 830A|56
+GeForce 9800 GT|56
+Asus GeForce GTS 450|55
+GeForce 830M|55
+GeForce 920MX|55
+Quadro 2000|55
+EVGA GeForce GT 545|54
+Quadro K2000M|54
+GeForce GT 650M Mac Edition|54
+GeForce GTX 280|54
+GeForce GT 640|53
+Quadro FX 2800M|53
+Quadro 3000M OpenGL Engine|53
+GeForce GT 740|53
+null GeForce 920A|53
+GeForce GT 640M Mac Edition|52
+GeForce GT 635|52
+Graphics Device|52
+GeForce GT 640M|52
+GeForce GTX 660M Mac Edition|52
+Quadro 2000M|52
+Quadro 5010M|52
+GeForce GTS 250|52
+GeForce GT 445M|51
+GeForce GT 640M OpenGL Engine|51
+GeForce GT 640M|50
+EVGA GeForce GT 740|50
+GeForce GT 640M Mac Edition|50
+GeForce 730A|50
+GeForce 920M|49
+HP Quadro 2000|49
+GeForce GT 730M|49
+null GeForce 920A|49
+GeForce GT 555M|49
+GeForce GT 640M LE|49
+GeForce GT 730M|49
+GeForce GT 730M|48
+GeForce GT 640M Mac Edition|48
+Quadro K2000M OpenGL Engine|48
+GeForce GT 640M LE|48
+GeForce GT 740M|47
+GeForce GTX 460M|47
+GeForce GT 440|47
+GeForce GT 440|46
+GeForce GT 640M Mac Edition|46
+Quadro P400|46
+GeForce GT 730|46
+Dell Quadro 2000M|45
+GeForce GT 740M|45
+GeForce GT 740M|45
+GeForce GTS 450 Rev. 2|45
+GeForce 920M|45
+GeForce 920M|45
+GeForce 910M|44
+GeForce GTX 680M|44
+GeForce GT 730|44
+Quadro 2000M|44
+GeForce GT 635|43
+GeForce GT 720 OpenGL Engine|43
+GeForce GT 635|43
+Quadro K5200 OpenGL Engine|43
+Zotac GeForce GTX 650|43
+GeForce GT 440|43
+GeForce GT 435M|42
+GeForce GT 735M|42
+Gainward GeForce GT 630|42
+Quadro 1000M|42
+GeForce 820M|41
+GeForce GTX 680M OpenGL Engine|41
+MSI GeForce GT 635|41
+GeForce 820A|41
+Tesla M10|41
+Asus GeForce GT 440|40
+Asus GeForce GT 630|40
+GeForce GT 820M|40
+GeForce 910M|40
+GeForce GT 820M|40
+GeForce GT 730|40
+GeForce GT 550M|40
+GeForce GT 430|40
+GeForce GT 540M|39
+Asus GeForce GT 720|39
+GeForce GT 630|39
+GeForce GT 530|39
+GeForce GT 635M|39
+GeForce GT 620M/630M/635M/640M LE|39
+NVS 5400M|39
+Quadro K600|39
+Quadro K610M|39
+Asus GeForce GT 730|39
+GeForce GT 630|39
+GeForce GT 440|39
+GeForce GT 630M|38
+GeForce 820M|38
+Quadro K420|38
+Quadro K610M|38
+GeForce GT 625M|38
+Quadro K1000M|38
+NVS 5200M|38
+GRID K1|38
+Quadro K600|38
+Quadro K420|38
+GeForce GT 630|38
+Quadro K600|37
+Quadro 600|37
+HP Quadro 600|37
+Quadro K1000M|37
+Quadro K610M|37
+GRID K180Q|37
+GRID K160Q|37
+GeForce GT 635M|37
+Gigabyte GeForce GT 440|37
+GeForce 820M|37
+GeForce GT 530|37
+GeForce GT 540M|37
+GeForce GT 630 OEM|37
+Quadro K610M by Nick[D]vB|37
+NVS 510|37
+GeForce GT 630M|37
+Quadro 1000M|37
+GeForce GT 540M|37
+GeForce GT 530|37
+Quadro K1100M|37
+Quadro K620M|37
+Quadro 1000M|36
+GeForce GT 730|36
+GeForce 820M|36
+GeForce GT 430|36
+GRID K1|36
+GeForce GT 525M|36
+NVS 5200M|36
+NVS 510|36
+Zotac GeForce GT 430|36
+Quadro K600|36
+Asus GeForce GT 730|36
+HP Quadro K4000|35
+GeForce GT 755M Mac Edition|35
+GeForce GT 630|35
+NVS 5400M|35
+NVS 5400M|35
+GeForce GT 640 OpenGL Engine|35
+GeForce GT 625M|35
+GeForce GT 630|35
+GeForce GT 430|35
+Quadro K600 OpenGL Engine|35
+Quadro K1000M|35
+Zotac GeForce GT 630|35
+Gigabyte GeForce GT 630|35
+GRID K140Q vGPU|35
+GeForce GT 710M|35
+GeForce GT 620M|35
+GeForce GT 720M|34
+GeForce 710M|34
+Quadro 1000M,|34
+Quadro K510M|34
+GeForce 9400 GT|34
+Quadro K1000M|34
+GeForce GT 635M|34
+Quadro K420|34
+GRID K180Q|34
+Asus GeForce GT 430|34
+Quadro K4100M|34
+Gigabyte GeForce GT 730|34
+GeForce GT 620M|34
+GeForce GT 525M|34
+Quadro K420|34
+Dell NVS 5200M|34
+GeForce 710A|34
+GeForce GT 425M|33
+GeForce GT 710B|33
+GeForce GT 525M|33
+Quadro 600|33
+GeForce GT 620M|33
+Quadro K600|33
+Quadro 600|33
+GeForce 610M/710M/810M/820M / GT 620M/625M/630M/720M|33
+MSI GeForce GT 730|33
+GeForce GT 710|33
+GeForce GT 435M|33
+NVS 510|33
+Asus GeForce GT 710|33
+NVS 510|32
+GeForce 710M|32
+GeForce GT 720M|32
+GeForce GT 730A|32
+GeForce GT 710M|32
+GIGABYTE GeForce GTX 660|31
+EVGA GeForce GT 710|31
+GeForce GT 710|31
+GeForce GT 710|31
+GeForce GT 425M|31
+GeForce GT 720|31
+EVGA GeForce GT 710|31
+Quadro K1000M by Nick[D]vB|31
+Asus GeForce GT 710|31
+GeForce GT 720|31
+GeForce GT 420M|30
+GeForce GT 710|30
+null Graphics Device|30
+GeForce GT 240|30
+GeForce 810M|29
+GeForce GT 720M|29
+GeForce GT 710|29
+Quadro 600|29
+GeForce 810M|29
+GeForce GT 420M|28
+Quadro 410|28
+GeForce GTX 660M|28
+MSI GeForce GT 710|28
+GeForce GT 720|28
+GeForce GT 735M|27
+GeForce GT 720|27
+GeForce GT 720|27
+GeForce GT 630 OpenGL Engine|27
+Quadro 410|27
+GeForce GT 330M|26
+GeForce GT 420M|26
+GeForce GT 430|26
+GeForce 615|25
+GeForce GTX 760A|25
+Toshiba GeForce GT 525M|25
+GeForce GT 520MX|25
+GeForce GT 620|25
+GeForce GT 625|25
+GeForce GT 710|24
+Quadro NVS 4200M|24
+GeForce 840A|24
+GeForce 610M|24
+GeForce 800M|24
+GeForce GT 420|24
+GeForce 705M|23
+GeForce GT 705|23
+GeForce 800M|23
+GeForce 610M|23
+GeForce GT 620 OEM|23
+GeForce GT 625|23
+GeForce GT 420|23
+Quadro NVS 4200M|23
+GeForce GT 520M|22
+NVS 4200M|22
+GeForce GT 620 OEM|22
+NVS 5200M|22
+GeForce GT 620 OEM|22
+GeForce GT 620|22
+GeForce GT 705|21
+GeForce GT 620|21
+GeForce GT 630 Rev. 2|21
+Quadro NVS 4200M|21
+GeForce GT 520M|20
+GTX 980M SLI|20
+GeForce GT 620|20
+GeForce GT 520M|20
+GeForce GT 520|19
+GeForce 410M|19
+GeForce 730A|19
+GeForce GT 520|19
+GeForce GT 610|19
+Asus GeForce GT 610|19
+NVS 310|18
+GeForce 410M|18
+NVS 315|18
+GeForce 605|18
+GeForce GT 610|18
+GeForce GT 520|17
+GeForce MX550|17
+NVS 4200M|17
+NVS 315|17
+NVS 310|17
+GeForce 410M|17
+Palit GeForce GTX 660|17
+GeForce 605|17
+NVS 310|17
+GeForce GT 415M|17
+Zotac GeForce GT 610|17
+GeForce GTX 675M|17
+GeForce GT 610|16
+Quadro 4000M|16
+PNY GeForce GT 610|16
+GeForce GT 610|16
+GeForce 510|15
+MSi GeForce GT 610|15
+GeForce GT 735M|15
+GeForce GT 520|15
+GeForce 510|15
+GeForce GT 320M|14
+GeForce 9600M GT|14
+GeForce GTX 570M|14
+Corporation D3D12 (NVIDIA GeForce RTX 3080 Ti)|13
+GeForce 510|13
+Quadro FX 1800M|12
+Asus GeForce GT 520|12
+GeForce GT 705|12
+MSi GeForce GT 630|11
+Quadro 3000M|10
+Gigabyte GeForce GT 610|10
+Pegatron GeForce GT 420|9
+GeForce 210|8
+GeForce 9300 / nForce 730i|7
+NVS 3100M|7
+GeForce 8600 GT|5
+GeForce 8400 GS Rev. 3|4
+GeForce 8400 GS|3
+GeForce 9600 GT|2
+GeForce GT 550M|-1
+GeForce 8600 GTS|-1
+GeForce GT 520MX|-1
+EVGA GeForce GTX 460|-1
+EVGA GeForce GTX 970|-1
+GP106|-1
+GRID P4-2B|-1
+Gainward GeForce GTX 650|-1
+GeForce 210|-1
+GeForce 310|-1
+GeForce 310M|-1
+GeForce 315|-1
+GeForce 315M|-1
+GeForce 320M|-1
+GeForce 405|-1
+GeForce 610M|-1
+GeForce 820A|-1
+GeForce 8300 GS|-1
+GeForce 8400 GS|-1
+GeForce 8400 GS Rev. 2|-1
+GeForce 8400 GS Rev. 3|-1
+GeForce 8400M GS|-1
+GeForce 8400M GT|-1
+GeForce 8500 GT|-1
+GeForce 8600 GT|-1
+GeForce 8600M GS|-1
+GeForce 8600M GT|-1
+GeForce 8700M GT|-1
+GeForce 8800 GT|-1
+GeForce 8800 GTS|-1
+GeForce 8800 GTS 512|-1
+GeForce 8800 GTX|-1
+GeForce 8800M GTX|-1
+GeForce 9200M GE|-1
+GeForce 9200M GS|-1
+GeForce 9300 / nForce 730i|-1
+GeForce 9300 GE|-1
+GeForce 9300 GS|-1
+GeForce 9300M GS|-1
+GeForce 9400|-1
+GeForce 9400M|-1
+GeForce 9500 GT|-1
+GeForce 9500M GS|-1
+GeForce 9600 GS|-1
+GeForce 9600 GSO|-1
+GeForce 9600 GSO 512|-1
+GeForce 9600 GT|-1
+GeForce 9600M GS|-1
+GeForce 9600M GT|-1
+GeForce 9600M GT / GeForce GT 220M|-1
+GeForce 9800 GT|-1
+GeForce 9800 GTX+|-1
+GeForce 9800 GTX/9800 GTX+|-1
+GeForce 9800M GTS|-1
+GeForce G 103M|-1
+GeForce G 105M|-1
+GeForce G105M|-1
+GeForce G205M|-1
+GeForce G210|-1
+GeForce G210M|-1
+GeForce GT 120|-1
+GeForce GT 120M|-1
+GeForce GT 130|-1
+GeForce GT 130M|-1
+GeForce GT 220|-1
+GeForce GT 220M|-1
+GeForce GT 230|-1
+GeForce GT 230M|-1
+GeForce GT 240|-1
+GeForce GT 240M|-1
+GeForce GT 240M|-1
+GeForce GT 320|-1
+GeForce GT 320M|-1
+GeForce GT 325M|-1
+GeForce GT 330|-1
+GeForce GT 330M|-1
+GeForce GT 335M|-1
+GeForce GT 435M|-1
+GeForce GT 520M|-1
+GeForce GT 525M|-1
+GeForce GT 555M/635M|-1
+GeForce GTS 240|-1
+GeForce GTS 250|-1
+GeForce GTS 360M|-1
+GeForce GTX 1180|-1
+GeForce GTX 260|-1
+GeForce GTX 260M|-1
+GeForce GTX 275|-1
+GeForce GTX 280|-1
+GeForce GTX 285|-1
+GeForce GTX 295|-1
+GeForce GTX 560 SE|-1
+GeForce GTX 750 v2|-1
+GeForce RTX T10-16|-1
+GeForce RTX T10-8|-1
+Gigabyte GeForce GTX 1050 Ti|-1
+ION|-1
+MSI GeForce GT 710|-1
+NVS 300|-1
+NVS 3100M|-1
+NVS 4200M|-1
+NVS 5100M|-1
+Palit GTX 680 JetStream|-1
+Quadro FX 1700|-1
+Quadro FX 1700M|-1
+Quadro FX 1800|-1
+Quadro FX 1800M|-1
+Quadro FX 2700M|-1
+Quadro FX 2800M|-1
+Quadro FX 3600M|-1
+Quadro FX 360M|-1
+Quadro FX 370|-1
+Quadro FX 3700|-1
+Quadro FX 3700M|-1
+Quadro FX 380 LP|-1
+Quadro FX 3800|-1
+Quadro FX 3800M|-1
+Quadro FX 4600|-1
+Quadro FX 4800|-1
+Quadro FX 4800|-1
+Quadro FX 5600|-1
+Quadro FX 570M|-1
+Quadro FX 580|-1
+Quadro FX 770M|-1
+Quadro FX 880M|-1
+Quadro K1100M by Nick[D]vB|-1
+Quadro K2000D|-1
+Quadro K2000M|-1
+Quadro K2100M by Nick[D]vB|-1
+Quadro NVS 135M|-1
+Quadro NVS 140M|-1
+Quadro NVS 160M|-1
+Quadro NVS 290|-1
+Quadro NVS 295|-1
+Quadro NVS 4200M|-1
+Quadro P4000 OpenGL Engine|-1
+Sony GeForce 410M|-1
+Zotac GeForce GTX 780|-1
+`;function i(){return o}},227508:function(e,t,r){"use strict";var o=r(88648);function i(e){return function(e){if(Array.isArray(e))return a(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(e){if("string"==typeof e)return a(e,t);var r=Object.prototype.toString.call(e).slice(8,-1);if("Object"===r&&e.constructor&&(r=e.constructor.name),"Map"===r||"Set"===r)return Array.from(e);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return a(e,t)}}(e)||function(){throw TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function a(e,t){(null==t||t>e.length)&&(t=e.length);for(var r=0,o=Array(t);r<t;r++)o[r]=e[r];return o}t.Z=function(e,t){var r=!(arguments.length>2)||void 0===arguments[2]||arguments[2],a=arguments.length>3&&void 0!==arguments[3]?arguments[3]:{},n=a.deps,s=void 0===n?[]:n,c=(0,o.useRef)(),G=(0,o.useRef)(e),l=(0,o.useCallback)(function(){d();c.current=window.setInterval(function(){G.current()},t)},[t].concat(i(s))),d=(0,o.useCallback)(function(){clearInterval(c.current)},[]);return(0,o.useEffect)(function(){return G.current=e,r&&l(),function(){return d()}},[G,t,r].concat(i(s))),{run:l,cancel:d}}},112907:function(e,t){"use strict";t.Z={default:{tension:170,friction:26},gentle:{tension:120,friction:14},wobbly:{tension:180,friction:12},stiff:{tension:210,friction:20},slow:{tension:280,friction:60},molasses:{tension:280,friction:120}}},948923:function(e,t,r){"use strict";r.d(t,{K:function(){return o}});let o=()=>({device_platform:"web",cookie_enabled:window.navigator.cookieEnabled,screen_width:window.screen.width,screen_height:window.screen.height,browser_language:window.navigator.language,browser_platform:window.navigator.platform,browser_name:window.navigator.appCodeName,browser_version:window.navigator.appVersion,browser_online:window.navigator.onLine,tz_name:Intl.DateTimeFormat().resolvedOptions().timeZone})},300752:function(e,t,r){"use strict";r.d(t,{C:function(){return G},i:function(){return c}});var o=Object.defineProperty,i=Object.getOwnPropertySymbols,a=Object.prototype.hasOwnProperty,n=Object.prototype.propertyIsEnumerable,s=(e,t,r)=>t in e?o(e,t,{enumerable:!0,configurable:!0,writable:!0,value:r}):e[t]=r,c=(e,t)=>{for(var r in t||(t={}))a.call(t,r)&&s(e,r,t[r]);if(i)for(var r of i(t))n.call(t,r)&&s(e,r,t[r]);return e},G=(e,t,r)=>new Promise((o,i)=>{var a=e=>{try{s(r.next(e))}catch(e){i(e)}},n=e=>{try{s(r.throw(e))}catch(e){i(e)}},s=e=>e.done?o(e.value):Promise.resolve(e.value).then(a,n);s((r=r.apply(e,t)).next())})},508417:function(e,t,r){"use strict";r.d(t,{Z:function(){return n}});var o=r(401425),i=r(699975),a=r(692124);function n(e,t){(0,i.Z)(2,arguments);var r=(0,a.Z)(t);r%7==0&&(r-=7);var n=(0,o.Z)(e),s=n.getUTCDay(),c=r%7,G=((c+7)%7<1?7:0)+r-s;return n.setUTCDate(n.getUTCDate()+G),n}},843541:function(e,t,r){"use strict";r.d(t,{Z:function(){return n}});var o=r(767674),i=r(886969),a=r(699975);function n(e){(0,a.Z)(1,arguments);var t=(0,o.Z)(e),r=new Date(0);return r.setUTCFullYear(t,0,4),r.setUTCHours(0,0,0,0),(0,i.Z)(r)}},749103:function(e,t,r){"use strict";r.d(t,{Z:function(){return a}});var o=r(401425),i=r(699975);function a(e){(0,i.Z)(1,arguments);var t=(0,o.Z)(e),r=t.getFullYear(),a=t.getMonth(),n=new Date(0);return n.setFullYear(r,a+1,0),n.setHours(0,0,0,0),n.getDate()}},114837:function(e,t,r){var o=r(898865);e.exports=function(e){return function(t){return o(t,e)}}},680162:function(e,t,r){var o=r(237164),i=Object.prototype.hasOwnProperty;e.exports=function(e){var t=this.__data__;return o?void 0!==t[e]:i.call(t,e)}},19275:function(e){var t=/^(?:0|[1-9]\d*)$/;e.exports=function(e,r){var o=typeof e;return!!(r=null==r?9007199254740991:r)&&("number"==o||"symbol"!=o&&t.test(e))&&e>-1&&e%1==0&&e<r}},907027:function(e,t,r){e=r.nmd(e);var o=r(363751),i=t&&!t.nodeType&&t,a=i&&e&&!e.nodeType&&e,n=a&&a.exports===i&&o.process,s=function(){try{var e=a&&a.require&&a.require("util").types;if(e)return e;return n&&n.binding&&n.binding("util")}catch(e){}}();e.exports=s},257675:function(e,t,r){var o=r(866674),i=r(437949);e.exports=function(e){return null!=e&&i(e.length)&&!o(e)}},248281:function(e,t,r){var o=r(564498),i=r(271277),a=r(907027),n=a&&a.isSet,s=n?i(n):o;e.exports=s},493288:function(e,t,r){var o=r(54850);function i(e,t){if("function"!=typeof e||null!=t&&"function"!=typeof t)throw TypeError("Expected a function");var r=function(){var o=arguments,i=t?t.apply(this,o):o[0],a=r.cache;if(a.has(i))return a.get(i);var n=e.apply(this,o);return r.cache=a.set(i,n)||a,n};return r.cache=new(i.Cache||o),r}i.Cache=o,e.exports=i},738343:function(e,t,r){var o=r(486526),i=r(372264),a=r(371318),n=r(74690),s=r(681662),c=r(667005),G=r(986448);e.exports=function(e,t,r){return(r&&"number"!=typeof r&&n(e,t,r)&&(t=r=void 0),r=void 0===r?4294967295:r>>>0)?(e=G(e))&&("string"==typeof t||null!=t&&!s(t))&&!(t=o(t))&&a(e)?i(c(e),0,r):e.split(t,r):[]}},51597:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),Object.defineProperty(t,"DraggableCore",{enumerable:!0,get:function(){return l.default}}),t.default=void 0;var o=function(e,t){if(!t&&e&&e.__esModule)return e;if(null===e||"object"!=typeof e&&"function"!=typeof e)return{default:e};var r=T(t);if(r&&r.has(e))return r.get(e);var o={},i=Object.defineProperty&&Object.getOwnPropertyDescriptor;for(var a in e)if("default"!==a&&Object.prototype.hasOwnProperty.call(e,a)){var n=i?Object.getOwnPropertyDescriptor(e,a):null;n&&(n.get||n.set)?Object.defineProperty(o,a,n):o[a]=e[a]}return o.default=e,r&&r.set(e,o),o}(r(88648)),i=u(r(201845)),a=u(r(309931)),n=u(r(135729)),s=r(704993),c=r(959107),G=r(671494),l=u(r(864837)),d=u(r(595361));function u(e){return e&&e.__esModule?e:{default:e}}function T(e){if("function"!=typeof WeakMap)return null;var t=new WeakMap,r=new WeakMap;return(T=function(e){return e?r:t})(e)}function h(){return(h=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(e[o]=r[o])}return e}).apply(this,arguments)}function F(e,t,r){return(t=function(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var o=r.call(e,t||"default");if("object"!=typeof o)return o;throw TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}class p extends o.Component{static getDerivedStateFromProps(e,t){let{position:r}=e,{prevPropsPosition:o}=t;return r&&(!o||r.x!==o.x||r.y!==o.y)?((0,d.default)("Draggable: getDerivedStateFromProps %j",{position:r,prevPropsPosition:o}),{x:r.x,y:r.y,prevPropsPosition:{...r}}):null}constructor(e){super(e),F(this,"onDragStart",(e,t)=>{if((0,d.default)("Draggable: onDragStart: %j",t),!1===this.props.onStart(e,(0,c.createDraggableData)(this,t)))return!1;this.setState({dragging:!0,dragged:!0})}),F(this,"onDrag",(e,t)=>{if(!this.state.dragging)return!1;(0,d.default)("Draggable: onDrag: %j",t);let r=(0,c.createDraggableData)(this,t),o={x:r.x,y:r.y,slackX:0,slackY:0};if(this.props.bounds){let{x:e,y:t}=o;o.x+=this.state.slackX,o.y+=this.state.slackY;let[i,a]=(0,c.getBoundPosition)(this,o.x,o.y);o.x=i,o.y=a,o.slackX=this.state.slackX+(e-o.x),o.slackY=this.state.slackY+(t-o.y),r.x=o.x,r.y=o.y,r.deltaX=o.x-this.state.x,r.deltaY=o.y-this.state.y}if(!1===this.props.onDrag(e,r))return!1;this.setState(o)}),F(this,"onDragStop",(e,t)=>{if(!this.state.dragging||!1===this.props.onStop(e,(0,c.createDraggableData)(this,t)))return!1;(0,d.default)("Draggable: onDragStop: %j",t);let r={dragging:!1,slackX:0,slackY:0};if(this.props.position){let{x:e,y:t}=this.props.position;r.x=e,r.y=t}this.setState(r)}),this.state={dragging:!1,dragged:!1,x:e.position?e.position.x:e.defaultPosition.x,y:e.position?e.position.y:e.defaultPosition.y,prevPropsPosition:{...e.position},slackX:0,slackY:0,isElementSVG:!1},e.position&&(e.onDrag||e.onStop)}componentDidMount(){void 0!==window.SVGElement&&this.findDOMNode() instanceof window.SVGElement&&this.setState({isElementSVG:!0})}componentWillUnmount(){this.setState({dragging:!1})}findDOMNode(){var e,t;return null!==(e=null===(t=this.props)||void 0===t||null===(t=t.nodeRef)||void 0===t?void 0:t.current)&&void 0!==e?e:a.default.findDOMNode(this)}render(){let{axis:e,bounds:t,children:r,defaultPosition:i,defaultClassName:a,defaultClassNameDragging:G,defaultClassNameDragged:d,position:u,positionOffset:T,scale:F,...p}=this.props,f={},m=null,g=!u||this.state.dragging,X=u||i,M={x:(0,c.canDragX)(this)&&g?this.state.x:X.x,y:(0,c.canDragY)(this)&&g?this.state.y:X.y};this.state.isElementSVG?m=(0,s.createSVGTransform)(M,T):f=(0,s.createCSSTransform)(M,T);let v=(0,n.default)(r.props.className||"",a,{[G]:this.state.dragging,[d]:this.state.dragged});return o.createElement(l.default,h({},p,{onStart:this.onDragStart,onDrag:this.onDrag,onStop:this.onDragStop}),o.cloneElement(o.Children.only(r),{className:v,style:{...r.props.style,...f},transform:m}))}}t.default=p,F(p,"displayName","Draggable"),F(p,"propTypes",{...l.default.propTypes,axis:i.default.oneOf(["both","x","y","none"]),bounds:i.default.oneOfType([i.default.shape({left:i.default.number,right:i.default.number,top:i.default.number,bottom:i.default.number}),i.default.string,i.default.oneOf([!1])]),defaultClassName:i.default.string,defaultClassNameDragging:i.default.string,defaultClassNameDragged:i.default.string,defaultPosition:i.default.shape({x:i.default.number,y:i.default.number}),positionOffset:i.default.shape({x:i.default.oneOfType([i.default.number,i.default.string]),y:i.default.oneOfType([i.default.number,i.default.string])}),position:i.default.shape({x:i.default.number,y:i.default.number}),className:G.dontSetMe,style:G.dontSetMe,transform:G.dontSetMe}),F(p,"defaultProps",{...l.default.defaultProps,axis:"both",bounds:!1,defaultClassName:"react-draggable",defaultClassNameDragging:"react-draggable-dragging",defaultClassNameDragged:"react-draggable-dragged",defaultPosition:{x:0,y:0},scale:1})},467145:function(e,t,r){var o=r(156628),i=/%[sdv%]/g,a=function(e){var t=1,r=arguments,o=r.length;return e.replace(i,function(e){if(t>=o)return e;var i=r[t];switch(t+=1,e){case"%%":return"%";case"%s":return String(i);case"%d":return Number(i);case"%v":return""}})},n=function(e,t,r){var o=[e+"="+(t.format instanceof Function?t.format(t.push?r:r[t.name]):t.format)];if(t.names)for(var i=0;i<t.names.length;i+=1){var n=t.names[i];t.name?o.push(r[t.name][n]):o.push(r[t.names[i]])}else o.push(r[t.name]);return a.apply(null,o)},s=["v","o","s","i","u","e","p","c","b","t","r","z","a"],c=["i","c","b","a"];e.exports=function(e,t){t=t||{},null==e.version&&(e.version=0),null==e.name&&(e.name=" "),e.media.forEach(function(e){null==e.payloads&&(e.payloads="")});var r=t.outerOrder||s,i=t.innerOrder||c,a=[];return r.forEach(function(t){o[t].forEach(function(r){r.name in e&&null!=e[r.name]?a.push(n(t,r,e)):r.push in e&&null!=e[r.push]&&e[r.push].forEach(function(e){a.push(n(t,r,e))})})}),e.media.forEach(function(e){a.push(n("m",o.m[0],e)),i.forEach(function(t){o[t].forEach(function(r){r.name in e&&null!=e[r.name]?a.push(n(t,r,e)):r.push in e&&null!=e[r.push]&&e[r.push].forEach(function(e){a.push(n(t,r,e))})})})}),a.join("\r\n")+"\r\n"}},173211:function(e,t,r){"use strict";var o=r(703921);e.exports=function(e){if(!o(e))return!1;try{if(!e.constructor)return!1;return e.constructor.prototype===e}catch(e){return!1}}},769274:function(e,t,r){"use strict";r.r(t),r.d(t,{useCacheRoute:function(){return c}});var o=r(520739),i=r(878389);r(268917);var a=r(88648),n=r(381185);r(563097);let s=(e,t)=>{if(!e)return!0;for(let r=0;r<e.matchPatterns.length;r++)if(e.matchPatterns[r]!==t.matchPatterns[r])return!0;return!1},c=e=>{let{beforeRouteUpdate:t,renderRoutes:r,store:c}=(0,n.useRouteCacheManager)(),G=(0,a.useRef)(null),l=s(G.current,e),{element:d}=e;if(t&&c){let a;l&&t({from:G.current,to:e,store:c});let n=[],s=!1;c.forEach(t=>{let r=(0,i._)((0,o._)({},t),{isActive:!1});n.push(r),e.as===t.as&&(r.isActive=!0,r.element=e.element,a=r,s=!0)}),!s&&(a=(0,i._)((0,o._)({},e),{cacheKey:e.as,key:e.as,isActive:!0}),n.push(a)),"function"==typeof r&&(d=r(n,a))}return l&&(G.current=e),d}},793884:function(e,t,r){"use strict";r.d(t,{U:function(){return n}}),r(954372),r(826893),r(268917),r(874386);var o=r(798435),i=r(162984),a=r(336669);function n(){return function(e){(0,a.Vn)(e,function(e,t,r){let a=-1,n=!0,s=!1;if(r&&"number"==typeof t&&"paragraph"===e.type){let i=e.children;for(;++a<i.length;){let e=i[a];if("mdxJsxTextElement"===e.type||"mdxTextExpression"===e.type)s=!0;else if("text"===e.type&&""===(0,o.g)(e.value,{style:"html",trim:!0}));else{n=!1;break}}if(n&&s){a=-1;let e=[];for(;++a<i.length;){let t=i[a];"mdxJsxTextElement"===t.type&&(t.type="mdxJsxFlowElement"),"mdxTextExpression"===t.type&&(t.type="mdxFlowExpression"),"text"===t.type&&/^[\t\r\n ]+$/.test(String(t.value))||e.push(t)}return r.children.splice(t,1,...e),t}}("mdxJsxFlowElement"===e.type||"mdxJsxTextElement"===e.type)&&((e.data||(e.data={}))._mdxExplicitJsx=!0),("mdxFlowExpression"===e.type||"mdxTextExpression"===e.type||"mdxjsEsm"===e.type)&&e.data&&e.data.estree&&(0,i._)(e.data.estree,{enter(e){"JSXElement"===e.type&&((e.data||(e.data={}))._mdxExplicitJsx=!0)}})})}}},126757:function(e,t,r){"use strict";r.d(t,{n:function(){return i}});var o=r(827257);function i(e,t){let r;let i=e.data&&e.data.estree,a=i&&i.comments||[];i&&(t.comments.push(...a),(0,o.S)(i,i.comments),r=i.body[0]&&"ExpressionStatement"===i.body[0].type&&i.body[0].expression||void 0),!r&&(r={type:"JSXEmptyExpression"},t.patch(e,r));let n={type:"JSXExpressionContainer",expression:r};return t.inherit(e,n),n}},551155:function(e,t,r){"use strict";function o(e,t){let r=t.value?t.value+"\n":"",o={};t.lang&&(o.className=["language-"+t.lang]);let i={type:"element",tagName:"code",properties:o,children:[{type:"text",value:r}]};return t.meta&&(i.data={meta:t.meta}),e.patch(t,i),i={type:"element",tagName:"pre",properties:{},children:[i=e.applyData(t,i)]},e.patch(t,i),i}r.d(t,{T:function(){return o}})},139533:function(e,t,r){"use strict";r.d(t,{o:function(){return i}});var o=r(288417);function i(e,t){let r=(0,o.B)(e);return!!(!t.options.resourceLink&&e.url&&!e.title&&e.children&&1===e.children.length&&"text"===e.children[0].type&&(r===e.url||"mailto:"+r===e.url)&&/^[a-z][a-z+.-]+:/i.test(e.url)&&!/[\0- <>\u007F]/.test(e.url))}},158556:function(e,t,r){"use strict";r.d(t,{Z:function(){return n}});var o=r(664960),i=r(980588);let a={};function n(e){let t=e||a,r=this.data(),n=r.micromarkExtensions||(r.micromarkExtensions=[]),s=r.fromMarkdownExtensions||(r.fromMarkdownExtensions=[]),c=r.toMarkdownExtensions||(r.toMarkdownExtensions=[]);n.push((0,i.H)(t)),s.push((0,o.$)()),c.push((0,o.t)(t))}},606358:function(e,t,r){"use strict";r.d(t,{a:function(){return o}});let o=function(e){let t=this.constructor.prototype,r=t[e],o=function(){return r.apply(o,arguments)};return Object.setPrototypeOf(o,t),o}},399563:function(e,t,r){"use strict";function o(e,t){if(Object.is(e,t))return!0;if("object"!=typeof e||null===e||"object"!=typeof t||null===t)return!1;if(e instanceof Map&&t instanceof Map){if(e.size!==t.size)return!1;for(let[r,o]of e)if(!Object.is(o,t.get(r)))return!1;return!0}if(e instanceof Set&&t instanceof Set){if(e.size!==t.size)return!1;for(let r of e)if(!t.has(r))return!1;return!0}let r=Object.keys(e);if(r.length!==Object.keys(t).length)return!1;for(let o=0;o<r.length;o++)if(!Object.prototype.hasOwnProperty.call(t,r[o])||!Object.is(e[r[o]],t[r[o]]))return!1;return!0}r.d(t,{Z:function(){return o}})}}]);

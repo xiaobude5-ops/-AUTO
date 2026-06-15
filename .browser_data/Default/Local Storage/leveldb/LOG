@@ -1,0 +1,14 @@
+2026/06/15-14:14:19.927 7a58 Reusing MANIFEST D:\YIONpro\几何星球AUTO\.browser_data\Default\Local Storage\leveldb/MANIFEST-000001
+2026/06/15-14:14:19.930 7a58 Recovering log #94
+2026/06/15-14:14:19.930 7a58 Level-0 table #96: started
+2026/06/15-14:14:19.934 7a58 Level-0 table #96: 23999 bytes OK
+2026/06/15-14:14:19.937 7a58 Delete type=0 #94
+2026/06/15-14:14:19.937 7d24 Compacting 4@0 + 1@1 files
+2026/06/15-14:14:19.941 7d24 Generated table #98@0: 82 keys, 38191 bytes
+2026/06/15-14:14:19.941 7d24 Compacted 4@0 + 1@1 files => 38191 bytes
+2026/06/15-14:14:19.943 7d24 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/06/15-14:14:19.944 7d24 Delete type=2 #85
+2026/06/15-14:14:19.944 7d24 Delete type=2 #87
+2026/06/15-14:14:19.944 7d24 Delete type=2 #90
+2026/06/15-14:14:19.944 7d24 Delete type=2 #93
+2026/06/15-14:14:19.944 7d24 Delete type=2 #96

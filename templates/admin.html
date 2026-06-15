@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block title %}Admin — Velorah{% endblock %}
+{% block head %}
+<script>
+  var currentUser = null;
+  var allUsers = [];
+  fetch("/api/me").then(function(r){return r.json()}).then(function(res){
+    if(!res.success) window.location.href="/login";
+    currentUser = res.data;
+    if (currentUser.role !== 'admin') { document.body.innerHTML='<div style="text-align:center;padding:80px;color:#fff"><h2 class="text-2xl font-heading italic mb-2">403 Access Denied</h2><a href="/" class="text-white/60 underline">Return to workbench</a></div>'; return; }
+    document.getElementById("topbarUser").innerHTML = currentUser.nickname + ' <span class="badge-admin">Admin</span>';
+    initPage();
+  });
+</script>
+{% endblock %}
+{% block topbar_actions %}
+<a href="/" class="btn-glass btn-glass-ghost text-xs px-4 py-2">← Workbench</a>
+<a href="/admin/users" class="btn-glass btn-glass-ghost text-xs px-4 py-2">Users</a>
+<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="doLogout()">Exit</button>
+{% endblock %}
+{% block content %}
+<div class="z-content pt-24 px-4 max-w-7xl mx-auto">
+
+{% if page == "users" %}
+<!-- ═══════════ Users ═══════════ -->
+<div class="users-header animate-fade-rise">
+  <div>
+    <h2 class="page-title">User Management</h2>
+    <p class="page-sub">All registered users — admins can adjust roles</p>
+  </div>
+</div>
+
+<table class="table-glass animate-fade-rise-delay" id="usersTable">
+  <thead>
+    <tr><th>ID</th><th>Username</th><th>Nickname</th><th>Role</th><th>Registered</th><th style="text-align:right">Actions</th></tr>
+  </thead>
+  <tbody>
+    <tr><td colspan="6" class="td-empty">Loading...</td></tr>
+  </tbody>
+</table>
+
+{% else %}
+<!-- ═══════════ Data Dashboard ═══════════ -->
+
+<div class="filter-bar animate-fade-rise">
+  <div class="filter-row glass-card">
+    <div class="filter-item"><label>Employee</label>
+      <select class="select-glass" id="fUser" onchange="applyFilter()"><option value="">All</option></select>
+    </div>
+    <div class="filter-item"><label>Category</label>
+      <select class="select-glass" id="fCategory" onchange="applyFilter()">
+        <option value="">All</option><option value="日常">日常</option><option value="商单">商单</option><option value="爆款">爆款</option><option value="金劫宝">金劫宝</option>
+      </select>
+    </div>
+    <div class="filter-item"><label>Start</label><input type="date" class="input-glass" id="fDateFrom" onchange="applyFilter()" /></div>
+    <div class="filter-item"><label>End</label><input type="date" class="input-glass" id="fDateTo" onchange="applyFilter()" /></div>
+    <div class="filter-item"><label>Engagement ≥</label><input type="number" class="input-glass w-24" id="fEngagement" placeholder="0" onchange="applyFilter()" /></div>
+    <div class="filter-item"><label>Amount ≥</label><input type="number" class="input-glass w-24" id="fPaymentMin" placeholder="0" onchange="applyFilter()" /></div>
+    <div class="filter-item filter-actions">
+      <button class="liquid-glass-strong px-4 py-2 rounded-full text-xs font-medium text-white" onclick="exportExcel()">Export Excel</button>
+      <a href="/admin/monthly" class="btn-glass btn-glass-ghost text-xs px-4 py-2">Monthly</a>
+      <button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="refreshAll()">Refresh</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row animate-fade-rise-delay" id="adminStats">
+  <div class="stat-card glass-card"><div class="stat-label">Matched</div><div class="stat-value" id="sCount">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">Total Likes</div><div class="stat-value" id="sLikes">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">Total Comments</div><div class="stat-value" id="sComments">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">Total Shares</div><div class="stat-value" id="sShares">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">Total Collects</div><div class="stat-value" id="sCollects">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">Total Engagement</div><div class="stat-value td-num-gold" id="sEngagement">--</div></div>
+  <div class="stat-card glass-card"><div class="stat-label">Total Amount</div><div class="stat-value td-num-gold" id="sPayment">--</div></div>
+</div>
+
+<!-- Result Table -->
+<table class="table-glass animate-fade-rise-delay-2" id="resultTable">
+  <thead>
+    <tr>
+      <th>Employee</th><th>Date</th><th>Link</th><th>Category</th><th>Collaborators</th><th>Amount</th>
+      <th class="td-num">👍</th><th class="td-num">💬</th><th class="td-num">🔄</th><th class="td-num">⭐</th><th class="td-num">🔥</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td colspan="12" class="td-empty">Loading...</td></tr>
+  </tbody>
+</table>
+
+<!-- Payment Modal -->
+<div class="modal" id="paymentModal">
+  <div class="modal-glass liquid-glass-strong">
+    <div class="modal-header"><h3>Edit Amount</h3><button class="modal-close" onclick="closePaymentModal()">&times;</button></div>
+    <div class="modal-body">
+      <label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Amount (¥)</label>
+      <input type="number" class="input-glass" id="paymentAmount" placeholder="0" step="0.01" />
+      <p class="text-xs text-white/30 mt-2">Leave blank to clear</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closePaymentModal()">Cancel</button>
+      <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="savePayment()">Save</button>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  var IS_USERS_PAGE = {{ 'true' if page == 'users' else 'false' }};
+  var currentPaymentId = null;
+
+  function initPage() {
+    if (IS_USERS_PAGE) { loadUsersPage(); }
+    else { loadUsers(); setDefaultDates(); applyFilter(); }
+  }
+
+  function loadUsersPage() {
+    fetch("/api/admin/users").then(function(r){return r.json()}).then(function(res){
+      if (!res.success) return;
+      renderUsersPage(res.data);
+    });
+  }
+
+  function renderUsersPage(users) {
+    var tbody = document.querySelector("#usersTable tbody");
+    if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" class="td-empty">No users</td></tr>'; return; }
+    tbody.innerHTML = users.map(function(u){
+      var isAdmin = u.role === 'admin';
+      var roleBadge = isAdmin ? '<span class="badge badge-shangdan">Admin</span>' : '<span class="badge badge-employee">Employee</span>';
+      var isInitialAdmin = u.username === 'admin' && isAdmin;
+      var isSelf = currentUser && u.id === currentUser.id;
+      var actionHtml = '';
+      if (isInitialAdmin) { actionHtml = '<span class="hint-locked">Protected</span>'; }
+      else if (isSelf) { actionHtml = '<span class="hint-locked">Current</span>'; }
+      else {
+        if (isAdmin) { actionHtml += '<button class="btn-glass btn-glass-ghost text-xs px-3 py-1" onclick="changeRole('+u.id+',\'employee\',\''+escapeHtml(u.nickname)+'\')">⬇ Demote</button> '; }
+        else { actionHtml += '<button class="liquid-glass-strong px-3 py-1 rounded-full text-xs text-white font-medium" onclick="changeRole('+u.id+',\'admin\',\''+escapeHtml(u.nickname)+'\')">⬆ Promote</button> '; }
+        actionHtml += '<button class="btn-icon-danger" onclick="deleteUser('+u.id+',\''+escapeHtml(u.nickname)+'\')">🗑</button>';
+      }
+      return '<tr>'+
+        '<td style="text-align:left">'+u.id+'</td>'+
+        '<td><strong>'+escapeHtml(u.username)+'</strong></td>'+
+        '<td>'+escapeHtml(u.nickname)+'</td>'+
+        '<td>'+roleBadge+'</td>'+
+        '<td style="color:rgba(255,255,255,0.35);font-size:12px">'+(u.created_at||'').slice(0,16)+'</td>'+
+        '<td style="text-align:right">'+actionHtml+'</td></tr>';
+    }).join("");
+  }
+
+  function changeRole(userId, newRole, nickname) {
+    var verb = newRole === 'admin' ? 'Promote to Admin' : 'Demote to Employee';
+    if (!confirm(verb + '「' + nickname + '」?')) return;
+    fetch("/api/admin/users/"+userId+"/role", {
+      method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({role: newRole}),
+    }).then(function(r){return r.json()}).then(function(res){
+      if (res.success) { showToast(verb, 'success'); loadUsersPage(); }
+      else { showToast(res.error || 'Failed', 'error'); }
+    });
+  }
+
+  function deleteUser(userId, nickname) {
+    if (!confirm('Delete「' + nickname + '」?\\n\\nAll data will be permanently removed.')) return;
+    fetch("/api/admin/users/"+userId, {method:"DELETE"}).then(function(r){return r.json()}).then(function(res){
+      if (res.success) { showToast('Deleted ' + nickname, 'success'); loadUsersPage(); }
+      else { showToast(res.error || 'Failed', 'error'); }
+    });
+  }
+
+  function loadUsers() {
+    fetch("/api/admin/users").then(function(r){return r.json()}).then(function(res){
+      if (!res.success) return;
+      allUsers = res.data;
+      var sel = document.getElementById("fUser");
+      sel.innerHTML = '<option value="">All</option>';
+      res.data.forEach(function(u){
+        var opt = document.createElement("option"); opt.value = u.id; opt.textContent = u.nickname + " (" + u.username + ")"; sel.appendChild(opt);
+      });
+      applyFilter();
+    });
+  }
+
+  function setDefaultDates() {
+    var now = new Date();
+    document.getElementById("fDateFrom").value = now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2)+"-01";
+    document.getElementById("fDateTo").value = now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2)+"-"+("0"+now.getDate()).slice(-2);
+  }
+
+  function buildUrl() {
+    var params = [];
+    var u = document.getElementById("fUser").value, c = document.getElementById("fCategory").value;
+    var df = document.getElementById("fDateFrom").value, dt = document.getElementById("fDateTo").value;
+    var eng = document.getElementById("fEngagement").value, pm = document.getElementById("fPaymentMin").value;
+    if (u) params.push("user_id="+u);
+    if (c) params.push("category="+encodeURIComponent(c));
+    if (df) params.push("date_from="+df);
+    if (dt) params.push("date_to="+dt);
+    if (eng) params.push("engagement_min="+eng);
+    if (pm) params.push("payment_min="+pm);
+    params.push("per_page=1000");
+    return "/api/admin/filter?"+params.join("&");
+  }
+
+  function applyFilter() {
+    fetch(buildUrl()).then(function(r){return r.json()}).then(function(res){
+      if (!res.success) return;
+      renderResults(res.data);
+    });
+  }
+
+  function renderResults(data) {
+    var tbody = document.querySelector("#resultTable tbody");
+    if (!data.length) {
+      tbody.innerHTML = '<tr><td colspan="12" class="td-empty">No data</td></tr>';
+      ["sCount","sLikes","sComments","sShares","sCollects","sEngagement","sPayment"].forEach(function(id){ document.getElementById(id).textContent = id==='sPayment'?'--':'0'; });
+      return;
+    }
+    var totalLikes=0, totalComments=0, totalShares=0, totalCollects=0, totalEng=0, totalPayment=0;
+    tbody.innerHTML = data.map(function(s){
+      var eng = (s.total_engagement)||((s.likes||0)+(s.comments||0)+(s.shares||0)+(s.collects||0));
+      totalLikes += (s.likes||0); totalComments += (s.comments||0); totalShares += (s.shares||0); totalCollects += (s.collects||0);
+      totalEng += eng; totalPayment += (s.payment_amount||0);
+      var collabStr = (s.collaborators||[]).map(function(c){return c.nickname}).join(", ");
+      var badgeClass = '';
+      if (s.category === '商单') badgeClass = 'badge-shangdan';
+      else if (s.category === '爆款') badgeClass = 'badge-baokuan';
+      else if (s.category === '金劫宝') badgeClass = 'badge-jinjiebao';
+      else badgeClass = 'badge-richang';
+      var isBiz = s.category === '商单' || s.category === '金劫宝';
+      var payText = isBiz
+        ? '<span class="payment-cell editable" onclick="openPayment('+s.id+','+(s.payment_amount||0)+')">'+(s.payment_amount ? '¥'+formatNum(s.payment_amount) : 'Set')+'</span>'
+        : '—';
+      return '<tr>'+
+        '<td>'+escapeHtml(s.submitter_name)+'</td>'+
+        '<td>'+(s.submitted_at||'').slice(0,10)+'</td>'+
+        '<td><a href="'+escapeHtml(s.video_url||'')+'" target="_blank" class="video-link">🔗</a></td>'+
+        '<td><span class="badge '+badgeClass+'">'+escapeHtml(s.category)+'</span></td>'+
+        '<td class="td-collab">'+escapeHtml(collabStr)+'</td>'+
+        '<td>'+payText+'</td>'+
+        '<td class="td-num">'+formatNum(s.likes)+'</td>'+
+        '<td class="td-num">'+formatNum(s.comments)+'</td>'+
+        '<td class="td-num">'+formatNum(s.shares)+'</td>'+
+        '<td class="td-num">'+formatNum(s.collects)+'</td>'+
+        '<td class="td-num td-num-gold">'+formatNum(eng)+'</td>'+
+        '<td class="td-actions"><button class="btn-icon-danger" title="Delete" onclick="deleteRow('+s.id+',\''+escapeHtml(s.submitter_name)+'\')">🗑</button></td></tr>';
+    }).join("");
+    document.getElementById("sCount").textContent = data.length;
+    document.getElementById("sLikes").textContent = formatNum(totalLikes);
+    document.getElementById("sComments").textContent = formatNum(totalComments);
+    document.getElementById("sShares").textContent = formatNum(totalShares);
+    document.getElementById("sCollects").textContent = formatNum(totalCollects);
+    document.getElementById("sEngagement").textContent = formatNum(totalEng);
+    document.getElementById("sPayment").textContent = formatNum(totalPayment);
+  }
+
+  function openPayment(id, current) { currentPaymentId = id; document.getElementById("paymentAmount").value = current || ""; document.getElementById("paymentModal").classList.add("active"); }
+  function closePaymentModal() { document.getElementById("paymentModal").classList.remove("active"); currentPaymentId = null; }
+  function savePayment() {
+    var val = document.getElementById("paymentAmount").value.trim();
+    var amount = val ? parseFloat(val) : null;
+    fetch("/api/admin/payment/"+currentPaymentId, {
+      method: "PATCH", headers: {"Content-Type":"application/json"}, body: JSON.stringify({amount: amount}),
+    }).then(function(r){return r.json()}).then(function(res){
+      if (res.success) { showToast("Saved","success"); closePaymentModal(); applyFilter(); }
+    });
+  }
+
+  function exportExcel() { var p = buildUrl().split("?")[1]||""; window.open("/api/admin/export?"+p.replace("per_page=1000","")); }
+  function refreshAll() {
+    var btn = event.target; btn.disabled = true; btn.textContent = "Refreshing...";
+    fetch("/api/refresh",{method:"POST"}).then(function(r){return r.json()}).then(function(res){
+      if (res.success) { showToast("Refresh started, reload in ~10s","info"); setTimeout(function(){ applyFilter(); btn.disabled=false; btn.textContent="Refresh"; }, 10000); }
+      else { showToast(res.error||"Failed","error"); btn.disabled=false; btn.textContent="Refresh"; }
+    });
+  }
+
+  function doLogout() { fetch("/api/logout",{method:"POST"}).then(function(){ window.location.href="/login"; }); }
+  function deleteRow(id, name) {
+    if (!confirm("Delete submission from「" + name + "」?\\n\\nAll snapshots will also be removed.")) return;
+    fetch("/api/admin/submissions/"+id, {method:"DELETE"}).then(function(r){return r.json()}).then(function(res){
+      if (res.success) { showToast("Deleted","success"); applyFilter(); }
+      else { showToast(res.error||"Failed","error"); }
+    });
+  }
+</script>
+{% endblock %}

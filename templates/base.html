@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Velorah{% endblock %}</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ["'Instrument Serif'", 'serif'],
+            body: ["'Barlow'", 'sans-serif'],
+          },
+          borderRadius: { DEFAULT: '9999px' },
+        }
+      }
+    }
+  </script>
+
+  <!-- Framer Motion -->
+  <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
+  <script>window.Motion = window.FramerMotion;</script>
+
+  <!-- Babel standalone for React JSX -->
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+
+  <!-- React + ReactDOM -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+
+  <!-- Our design system CSS (glass, animations, fonts) -->
+  <link rel="stylesheet" href="/static/css/app.css?v=4" />
+
+  <style>
+    /* Tailwind's default sans-serif would override Barlow otherwise */
+    body { font-family: 'Barlow', sans-serif; }
+    /* Pill default */
+    .rounded { border-radius: 9999px; }
+  </style>
+
+  {% block head %}{% endblock %}
+</head>
+<body class="bg-black text-white">
+
+  <!-- ═══════════════ Video Layers ═══════════════ -->
+  <div class="video-layer" id="videoHero">
+    <video id="vHero" autoplay muted playsinline preload="auto"
+           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"
+           style="opacity:0; width:120%; height:120%; position:absolute; left:50%; top:0; transform:translateX(-50%); object-fit:cover; object-position:top;">
+    </video>
+  </div>
+  <div class="video-layer" id="videoCap" style="display:none;">
+    <video id="vCap" autoplay muted playsinline preload="auto"
+           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_094631_d30ab262-45ee-4b7d-99f3-5d5848c8ef13.mp4"
+           style="opacity:0; width:100%; height:100%; position:absolute; inset:0; object-fit:cover;">
+    </video>
+  </div>
+
+  {% if not hide_nav %}
+  <!-- ═══════════════ Navigation ═══════════════ -->
+  <nav class="z-nav px-8 lg:px-16 flex items-center justify-between">
+    <!-- Logo -->
+    <div class="liquid-glass w-12 h-12 flex items-center justify-center rounded-full text-lg italic font-heading" style="font-style:italic">
+      a
+    </div>
+
+    <!-- Center links (desktop) -->
+    <div class="hidden md:flex items-center">
+      <div class="liquid-glass flex items-center px-1.5 py-1.5 rounded-full">
+        <a href="/" class="px-3 py-2 text-sm font-medium text-white/90 font-body no-underline hover:text-white transition-colors">首页</a>
+        <a href="/admin" class="px-3 py-2 text-sm font-medium text-white/90 font-body no-underline hover:text-white transition-colors">数据</a>
+        <span class="px-3 py-2 text-sm font-medium text-white/90 font-body">分析</span>
+        <span class="px-3 py-2 text-sm font-medium text-white/90 font-body">统计</span>
+        <span class="px-3 py-2 text-sm font-medium text-white/90 font-body">计划</span>
+        <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium font-body whitespace-nowrap flex items-center gap-1.5 ml-1">
+          立即体验
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right actions -->
+    <div class="flex items-center gap-3">
+      <span class="text-sm text-white/70 font-body hidden md:inline" id="topbarUser">{% block topbar_info %}{% endblock %}</span>
+      {% block topbar_actions %}{% endblock %}
+    </div>
+  </nav>
+  {% endif %}
+
+  <!-- ═══════════════ Main Content ═══════════════ -->
+  {% block content %}{% endblock %}
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Shared JS -->
+  <script src="/static/js/app.js"></script>
+
+  <!-- ═══════════════ FadingVideo Engine ═══════════════ -->
+  <script>
+    (function() {
+      var FADE_MS = 500, FADE_OUT_LEAD = 0.55;
+
+      function FadingVideo(videoEl, containerEl) {
+        var vid = videoEl, box = containerEl;
+        var raf = null, fadingOut = null;
+
+        function fadeTo(target, duration) {
+          if (raf) cancelAnimationFrame(raf);
+          var start = performance.now();
+          var from = parseFloat(vid.style.opacity) || 0;
+          function step(now) {
+            var p = Math.min((now - start) / duration, 1);
+            vid.style.opacity = from + (target - from) * p;
+            if (p < 1) raf = requestAnimationFrame(step);
+            else raf = null;
+          }
+          raf = requestAnimationFrame(step);
+        }
+
+        function onLoaded() {
+          vid.style.opacity = '0';
+          vid.play();
+          fadeTo(1, FADE_MS);
+        }
+
+        function onTime() {
+          if (!fadingOut && vid.duration && vid.currentTime && (vid.duration - vid.currentTime <= FADE_OUT_LEAD) && (vid.duration - vid.currentTime > 0)) {
+            fadingOut = true;
+            fadeTo(0, FADE_MS);
+          }
+        }
+
+        function onEnded() {
+          vid.style.opacity = '0';
+          setTimeout(function() {
+            vid.currentTime = 0;
+            vid.play();
+            fadingOut = null;
+            fadeTo(1, FADE_MS);
+          }, 100);
+        }
+
+        vid.addEventListener('loadeddata', onLoaded);
+        vid.addEventListener('timeupdate', onTime);
+        vid.addEventListener('ended', onEnded);
+
+        return function cleanup() {
+          if (raf) cancelAnimationFrame(raf);
+          vid.removeEventListener('loadeddata', onLoaded);
+          vid.removeEventListener('timeupdate', onTime);
+          vid.removeEventListener('ended', onEnded);
+        };
+      }
+
+      // Init both videos
+      var cleanups = [];
+      var vh = document.getElementById('vHero');
+      var vc = document.getElementById('vCap');
+      if (vh) cleanups.push(FadingVideo(vh, document.getElementById('videoHero')));
+      if (vc) cleanups.push(FadingVideo(vc, document.getElementById('videoCap')));
+
+      // Context-aware switch: on dashboard/admin show hero, on cap pages show cap
+      var isMainApp = true; // default: hero video
+      document.getElementById('videoCap').style.display = isMainApp ? 'none' : '';
+    })();
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

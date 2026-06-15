@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% set hide_nav = True %}
+{% block title %}注册 — 几何星球{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-glass liquid-glass-strong text-center">
+
+    <div class="liquid-glass inline-flex items-center rounded-full mb-6">
+      <span class="text-sm text-white/90 px-4">加入探索之旅</span>
+    </div>
+
+    <h1 class="text-4xl md:text-5xl font-heading italic text-white leading-[0.9] tracking-[-2px] mb-6"
+        id="authTitle">
+      开启你的<br/>星际征程
+    </h1>
+
+    <p class="text-sm text-white/85 max-w-md mx-auto font-body font-light leading-relaxed mb-8">
+      创建账号，追踪你在宇宙中的每一份足迹。
+    </p>
+
+    <form class="text-left max-w-sm mx-auto" id="registerForm" onsubmit="handleRegister(event)">
+      <div class="mb-4">
+        <label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">用户名</label>
+        <input type="text" class="input-glass" id="username" placeholder="至少2个字符" autocomplete="off" required />
+      </div>
+      <div class="mb-4">
+        <label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">昵称</label>
+        <input type="text" class="input-glass" id="nickname" placeholder="你的姓名" autocomplete="off" required />
+      </div>
+      <div class="mb-4">
+        <label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">密码</label>
+        <input type="password" class="input-glass" id="password" placeholder="至少4位" autocomplete="new-password" required />
+      </div>
+      <div class="mb-6">
+        <label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">确认密码</label>
+        <input type="password" class="input-glass" id="password2" placeholder="再次输入密码" autocomplete="new-password" required />
+      </div>
+      <button type="submit" class="liquid-glass-strong w-full py-3 rounded-full text-sm font-medium text-white font-body flex items-center justify-center gap-2" id="regBtn">
+        立即启程
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+      </button>
+    </form>
+
+    <p class="mt-6 text-sm text-white/40 font-body">
+      已有账号？<a href="/login" class="text-white/70 hover:text-white underline underline-offset-4">返回登录</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  (function() {
+    var el = document.getElementById('authTitle');
+    if (!el) return;
+    var text = el.textContent.trim().replace(/\s+/g, ' ');
+    var words = text.split(' ');
+    el.innerHTML = '';
+    el.style.display = 'flex';
+    el.style.flexWrap = 'wrap';
+    el.style.justifyContent = 'center';
+    el.style.rowGap = '0.1em';
+    words.forEach(function(w, i) {
+      var span = document.createElement('span');
+      span.textContent = w;
+      span.style.display = 'inline-block';
+      span.style.marginRight = '0.28em';
+      if (window.Motion) {
+        window.Motion.animate(
+          span,
+          { filter: ['blur(10px)', 'blur(5px)', 'blur(0px)'], opacity: [0, 0.5, 1], y: [50, -5, 0] },
+          { duration: 0.7, delay: i * 0.1, ease: 'easeOut' }
+        );
+      } else {
+        span.style.animation = 'fade-rise 0.7s ease-out both';
+        span.style.animationDelay = (i * 0.1) + 's';
+      }
+      el.appendChild(span);
+    });
+  })();
+
+  function handleRegister(e) {
+    e.preventDefault();
+    var pwd = document.getElementById("password").value;
+    var pwd2 = document.getElementById("password2").value;
+    if (pwd !== pwd2) {
+      showToast("两次密码不一致", "error");
+      return;
+    }
+    var btn = document.getElementById("regBtn");
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> 注册中...';
+    fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: document.getElementById("username").value.trim(),
+        nickname: document.getElementById("nickname").value.trim(),
+        password: pwd,
+      }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.success) {
+          showToast("注册成功，请登录", "success");
+          setTimeout(function () { window.location.href = "/login"; }, 1000);
+        } else {
+          showToast(res.error || "注册失败", "error");
+          btn.disabled = false;
+          btn.innerHTML = '立即启程 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>';
+        }
+      })
+      .catch(function () {
+        showToast("网络错误", "error");
+        btn.disabled = false;
+        btn.innerHTML = '立即启程 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>';
+      });
+  }
+</script>
+{% endblock %}

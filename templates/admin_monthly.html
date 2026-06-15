@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Monthly Summary — Velorah{% endblock %}
+{% block head %}
+<script>
+  var currentUser = null;
+  fetch("/api/me").then(function(r){return r.json()}).then(function(res){
+    if(!res.success || res.data.role!=='admin') { window.location.href="/login"; return; }
+    currentUser = res.data;
+    document.getElementById("topbarUser").innerHTML = currentUser.nickname + ' <span class="badge-admin">Admin</span>';
+    setDefaultMonth();
+    loadSummary();
+  });
+</script>
+{% endblock %}
+{% block topbar_actions %}
+<a href="/admin" class="btn-glass btn-glass-ghost text-xs px-4 py-2">← Admin</a>
+<a href="/" class="btn-glass btn-glass-ghost text-xs px-4 py-2">Workbench</a>
+<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="doLogout()">Exit</button>
+{% endblock %}
+{% block content %}
+<div class="z-content pt-24 px-4 max-w-7xl mx-auto">
+
+  <h2 class="section-heading text-4xl md:text-5xl tracking-[-2px] mb-6 animate-fade-rise">Monthly Summary</h2>
+
+  <div class="flex items-center gap-4 mb-6 animate-fade-rise-delay">
+    <label class="text-xs font-medium text-white/50 uppercase tracking-wider font-body">Month</label>
+    <select class="select-glass" id="monthSelect" onchange="loadSummary()"><option value="">Loading...</option></select>
+    <button class="liquid-glass-strong px-4 py-2 rounded-full text-xs font-medium text-white font-body" onclick="exportMonthly()">Export Excel</button>
+  </div>
+
+  <!-- Cross table -->
+  <div class="animate-fade-rise-delay-2">
+    <h3 class="section-heading text-2xl mb-3">By Employee × Category</h3>
+    <table class="table-glass" id="summaryTable">
+      <thead>
+        <tr><th>Employee</th><th>Category</th><th class="td-num">Count</th><th class="td-num">👍</th><th class="td-num">💬</th><th class="td-num">🔄</th><th class="td-num">⭐</th><th class="td-num">🔥</th><th class="td-num">Amount</th></tr>
+      </thead>
+      <tbody><tr><td colspan="9" class="td-empty">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- Employee summary -->
+  <div class="animate-fade-rise-delay-3 mt-8">
+    <h3 class="section-heading text-2xl mb-3">By Employee</h3>
+    <table class="table-glass" id="employeeTable">
+      <thead>
+        <tr><th>Employee</th><th class="td-num">Total</th><th class="td-num">日常</th><th class="td-num">商单</th><th class="td-num">爆款</th><th class="td-num">金劫宝</th><th class="td-num">🔥 Engagement</th><th class="td-num">Amount</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  var currentYear, currentMonth;
+
+  function setDefaultMonth() {
+    var now = new Date(); currentYear = now.getFullYear(); currentMonth = now.getMonth() + 1;
+    var sel = document.getElementById("monthSelect"); sel.innerHTML = "";
+    for (var y=currentYear; y>=currentYear-1; y--) {
+      for (var m=12; m>=1; m--) {
+        if (y===currentYear && m>currentMonth) continue;
+        sel.innerHTML += '<option value="'+y+'-'+("0"+m).slice(-2)+'">'+y+'-'+("0"+m).slice(-2)+'</option>';
+      }
+    }
+    sel.value = currentYear+"-"+("0"+currentMonth).slice(-2);
+  }
+
+  function loadSummary() {
+    var parts = document.getElementById("monthSelect").value.split("-");
+    currentYear = parseInt(parts[0]); currentMonth = parseInt(parts[1]);
+    fetch("/api/admin/monthly-summary?year="+currentYear+"&month="+currentMonth)
+      .then(function(r){return r.json()}).then(function(res){
+        if (!res.success) return;
+        renderSummary(res.data);
+      });
+  }
+
+  function renderSummary(data) {
+    var tbody = document.querySelector("#summaryTable tbody");
+    if (!data.length) { tbody.innerHTML = '<tr><td colspan="9" class="td-empty">No data</td></tr>'; document.querySelector("#employeeTable tbody").innerHTML = ''; return; }
+    tbody.innerHTML = data.map(function(r){
+      var eng = (r.total_likes||0)+(r.total_comments||0)+(r.total_shares||0)+(r.total_collects||0);
+      var catBadge = r.category === '爆款' ? 'badge-baokuan' : r.category === '商单' ? 'badge-shangdan' : r.category === '金劫宝' ? 'badge-jinjiebao' : 'badge-richang';
+      return '<tr><td>'+r.nickname+'</td><td><span class="badge '+catBadge+'">'+r.category+'</span></td><td class="td-num">'+r.count+'</td><td class="td-num">'+formatNum(r.total_likes)+'</td><td class="td-num">'+formatNum(r.total_comments)+'</td><td class="td-num">'+formatNum(r.total_shares)+'</td><td class="td-num">'+formatNum(r.total_collects)+'</td><td class="td-num td-num-gold">'+formatNum(eng)+'</td><td class="td-num td-num-gold">'+(r.total_payment?'¥'+formatNum(r.total_payment):'—')+'</td></tr>';
+    }).join("");
+
+    var employeeMap = {};
+    data.forEach(function(r){
+      if (!employeeMap[r.user_id]) employeeMap[r.user_id] = {nickname:r.nickname, total:0, daily:0, shangdan:0, baokuan:0, jinjiebao:0, eng:0, payment:0};
+      var e = employeeMap[r.user_id]; e.total += r.count; e.payment += (r.total_payment||0);
+      e.eng += (r.total_likes||0)+(r.total_comments||0)+(r.total_shares||0)+(r.total_collects||0);
+      if (r.category==='日常') e.daily += r.count;
+      else if (r.category==='爆款') e.baokuan += r.count;
+      else if (r.category==='金劫宝') e.jinjiebao += r.count;
+      else e.shangdan += r.count;
+    });
+    document.querySelector("#employeeTable tbody").innerHTML = Object.values(employeeMap).map(function(e){
+      return '<tr><td>'+e.nickname+'</td><td class="td-num">'+e.total+'</td><td class="td-num">'+e.daily+'</td><td class="td-num">'+e.shangdan+'</td><td class="td-num">'+(e.baokuan||0)+'</td><td class="td-num">'+(e.jinjiebao||0)+'</td><td class="td-num td-num-gold">'+formatNum(e.eng)+'</td><td class="td-num td-num-gold">'+(e.payment?'¥'+formatNum(e.payment):'—')+'</td></tr>';
+    }).join("");
+  }
+
+  function exportMonthly() { window.open("/api/admin/export?year="+currentYear+"&month="+currentMonth); }
+  function doLogout() { fetch("/api/logout",{method:"POST"}).then(function(){ window.location.href="/login"; }); }
+</script>
+{% endblock %}

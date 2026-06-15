@@ -1,0 +1,129 @@
+<h2>员工仪表盘 — 页面结构对比</h2>
+<p class="subtitle">深色主题下，员工登录后的完整页面布局。A 和 B 两版对比</p>
+
+<div class="cards">
+  <div class="card" data-choice="employee-a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e27;padding:32px 24px;min-height:300px;">
+      <!-- Topbar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 0 20px;border-bottom:1px solid #1a1f3a;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:16px;font-weight:700;color:#e8d5a3">几何星球</div>
+          <div style="font-size:10px;color:#4a5070;background:#131833;border-radius:4px;padding:2px 8px;">员工端</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="color:#6b7db3;font-size:12px">👤 张三</span>
+          <span style="color:#4a5070;font-size:11px">退出</span>
+        </div>
+      </div>
+
+      <!-- Submit card -->
+      <div style="background:linear-gradient(135deg,#131833,#181d3a);border-radius:12px;padding:24px;border:1px solid #1e2340;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+          <div style="width:28px;height:28px;background:#c9a96e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;">📤</div>
+          <span style="color:#e8d5a3;font-weight:700;font-size:14px;">提交新视频</span>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
+          <input placeholder="粘贴抖音视频链接..." style="flex:1;background:#0a0e27;border:1px solid #2a3050;border-radius:8px;padding:10px 14px;color:#c0c8e0;font-size:13px;font-family:inherit">
+          <select style="background:#0a0e27;color:#c9a96e;border:1px solid #2a3050;border-radius:8px;padding:10px 14px;font-size:13px;font-family:inherit;min-width:100px"><option>日常</option><option>商单</option></select>
+          <button style="background:linear-gradient(135deg,#c9a96e,#b8943e);border:none;border-radius:8px;padding:10px 24px;color:#0a0e27;font-weight:700;font-size:13px;font-family:inherit;white-space:nowrap">提交</button>
+        </div>
+        <p style="color:#4a5070;font-size:11px;">提交后系统将自动抓取视频信息，约需 5-10 秒</p>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
+        <div style="background:#131833;border-radius:10px;padding:16px;border:1px solid #1e2340;"><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">本月提交</div><div style="font-family:monospace;font-size:22px;font-weight:700;color:#e8d5a3">12</div></div>
+        <div style="background:#131833;border-radius:10px;padding:16px;border:1px solid #1e2340;"><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">总互动</div><div style="font-family:monospace;font-size:22px;font-weight:700;color:#c9a96e">8.2k</div></div>
+        <div style="background:#131833;border-radius:10px;padding:16px;border:1px solid #1e2340;"><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">今日增长</div><div style="font-family:monospace;font-size:22px;font-weight:700;color:#52c99e">+326</div></div>
+      </div>
+
+      <!-- History list -->
+      <div style="color:#6b7db3;font-size:12px;font-weight:700;margin-bottom:10px;">提交历史</div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead><tr style="background:#11152b;color:#6b7db3;text-align:left">
+          <th style="padding:8px 12px">日期</th><th style="padding:8px 12px">视频</th><th style="padding:8px 12px">分类</th><th style="padding:8px 12px;text-align:right">👍</th><th style="padding:8px 12px;text-align:right">💬</th><th style="padding:8px 12px;text-align:right">🔥 总互动</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:7px 12px">06-08</td><td style="padding:7px 12px">春季新品开箱</td><td style="padding:7px 12px"><span style="background:#1a2a4e;color:#6b9ee8;border-radius:4px;padding:2px 8px;font-size:10px">日常</span></td><td style="padding:7px 12px;text-align:right;font-family:monospace">2.4k</td><td style="padding:7px 12px;text-align:right;font-family:monospace">327</td><td style="padding:7px 12px;text-align:right;font-family:monospace;color:#c9a96e">3.8k</td></tr>
+          <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:7px 12px">06-05</td><td style="padding:7px 12px">夏天必备好物</td><td style="padding:7px 12px"><span style="background:#2a1e1e;color:#e8a06b;border-radius:4px;padding:2px 8px;font-size:10px">商单</span></td><td style="padding:7px 12px;text-align:right;font-family:monospace">5.1k</td><td style="padding:7px 12px;text-align:right;font-family:monospace">892</td><td style="padding:7px 12px;text-align:right;font-family:monospace;color:#c9a96e">7.2k</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-body">
+      <h3>A — 垂直流</h3>
+      <p>提交卡片在上 → 统计数字 → 历史列表。信息从上到下自然流动，聚焦"提交"这个核心动作。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="employee-b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e27;padding:32px 24px;min-height:300px;">
+      <!-- Topbar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 0 20px;border-bottom:1px solid #1a1f3a;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:16px;font-weight:700;color:#e8d5a3">几何星球</div>
+          <div style="font-size:10px;color:#4a5070;background:#131833;border-radius:4px;padding:2px 8px;">员工端</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="color:#6b7db3;font-size:12px">👤 张三</span>
+          <span style="color:#4a5070;font-size:11px">退出</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:16px;">
+        <!-- Left: submit + stats -->
+        <div style="width:340px;flex-shrink:0;display:flex;flex-direction:column;gap:16px;">
+          <!-- Submit card compact -->
+          <div style="background:linear-gradient(135deg,#131833,#181d3a);border-radius:12px;padding:20px;border:1px solid #1e2340;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+              <div style="width:24px;height:24px;background:#c9a96e;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;">📤</div>
+              <span style="color:#e8d5a3;font-weight:700;font-size:13px;">提交视频</span>
+            </div>
+            <input placeholder="粘贴链接..." style="width:100%;box-sizing:border-box;background:#0a0e27;border:1px solid #2a3050;border-radius:8px;padding:10px 12px;color:#c0c8e0;font-size:12px;font-family:inherit;margin-bottom:10px">
+            <div style="display:flex;gap:8px;">
+              <select style="flex:1;background:#0a0e27;color:#c9a96e;border:1px solid #2a3050;border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit"><option>日常</option><option>商单</option></select>
+              <button style="background:linear-gradient(135deg,#c9a96e,#b8943e);border:none;border-radius:8px;padding:8px 16px;color:#0a0e27;font-weight:700;font-size:12px;font-family:inherit">提交</button>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div style="background:#131833;border-radius:10px;padding:16px;border:1px solid #1e2340;">
+            <div style="color:#6b7db3;font-size:12px;font-weight:700;margin-bottom:12px;">📊 本月统计</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div><div style="color:#6b7db3;font-size:10px">提交数</div><div style="font-family:monospace;font-size:18px;font-weight:700;color:#e8d5a3">12</div></div>
+              <div><div style="color:#6b7db3;font-size:10px">总互动</div><div style="font-family:monospace;font-size:18px;font-weight:700;color:#c9a96e">8.2k</div></div>
+              <div><div style="color:#6b7db3;font-size:10px">平均点赞</div><div style="font-family:monospace;font-size:18px;font-weight:700;color:#e8d5a3">3.1k</div></div>
+              <div><div style="color:#6b7db3;font-size:10px">今日增长</div><div style="font-family:monospace;font-size:18px;font-weight:700;color:#52c99e">+326</div></div>
+            </div>
+          </div>
+
+          <!-- Daily changes -->
+          <div style="background:#131833;border-radius:10px;padding:16px;border:1px solid #1e2340;">
+            <div style="color:#6b7db3;font-size:12px;font-weight:700;margin-bottom:10px;">📈 昨日变化</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#6b7db3">春季新品开箱</span><span style="color:#52c99e;font-family:monospace;font-weight:700">+156</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#6b7db3">夏天必备好物</span><span style="color:#52c99e;font-family:monospace;font-weight:700">+89</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#6b7db3">品牌合作推广</span><span style="color:#c9a96e;font-family:monospace;font-weight:700">+312</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: full history table -->
+        <div style="flex:1;">
+          <div style="color:#6b7db3;font-size:12px;font-weight:700;margin-bottom:10px;">提交历史</div>
+          <table style="width:100%;border-collapse:collapse;font-size:11px;">
+            <thead><tr style="background:#11152b;color:#6b7db3;text-align:left">
+              <th style="padding:8px 12px">日期</th><th style="padding:8px 12px">视频</th><th style="padding:8px 12px">分类</th><th style="padding:8px 12px;text-align:right">👍</th><th style="padding:8px 12px;text-align:right">💬</th><th style="padding:8px 12px;text-align:right">🔥</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:7px 12px">06-08</td><td style="padding:7px 12px">春季新品开箱...</td><td style="padding:7px 12px"><span style="background:#1a2a4e;color:#6b9ee8;border-radius:4px;padding:2px 8px;font-size:10px">日常</span></td><td style="padding:7px 12px;text-align:right;font-family:monospace">2.4k</td><td style="padding:7px 12px;text-align:right;font-family:monospace">327</td><td style="padding:7px 12px;text-align:right;font-family:monospace;color:#c9a96e">3.8k</td></tr>
+              <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:7px 12px">06-05</td><td style="padding:7px 12px">夏天必备好物...</td><td style="padding:7px 12px"><span style="background:#2a1e1e;color:#e8a06b;border-radius:4px;padding:2px 8px;font-size:10px">商单</span></td><td style="padding:7px 12px;text-align:right;font-family:monospace">5.1k</td><td style="padding:7px 12px;text-align:right;font-family:monospace">892</td><td style="padding:7px 12px;text-align:right;font-family:monospace;color:#c9a96e">7.2k</td></tr>
+              <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:7px 12px">06-01</td><td style="padding:7px 12px">品牌合作推广...</td><td style="padding:7px 12px"><span style="background:#2a1e1e;color:#e8a06b;border-radius:4px;padding:2px 8px;font-size:10px">商单</span></td><td style="padding:7px 12px;text-align:right;font-family:monospace">12.3k</td><td style="padding:7px 12px;text-align:right;font-family:monospace">2.1k</td><td style="padding:7px 12px;text-align:right;font-family:monospace;color:#c9a96e">18.6k</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — 双栏布局</h3>
+      <p>左边提交 + 统计 + 昨日变化卡片组，右边全宽历史列表。信息分区明确，"仪表盘感"更强。</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,121 @@
+<h2>筛选栏布局 — 管理员仪表盘</h2>
+<p class="subtitle">在深色奢华风格下，筛选栏怎么放最顺手？有 3 种布局方案</p>
+
+<div class="cards">
+  <div class="card" data-choice="layout-a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e27;padding:36px 24px;min-height:240px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:12px;background:#131833;border-radius:10px;padding:14px 18px;border:1px solid #1e2340;">
+        <span style="color:#6b7db3;font-size:12px;white-space:nowrap">👤 员工</span>
+        <select style="background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:6px 12px;font-size:12px;font-family:inherit"><option>全部</option></select>
+        <span style="color:#6b7db3;font-size:12px;white-space:nowrap">📂 分类</span>
+        <select style="background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:6px 12px;font-size:12px;font-family:inherit"><option>全部</option></select>
+        <span style="color:#6b7db3;font-size:12px;white-space:nowrap">📅 日期</span>
+        <input type="date" style="background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:5px 10px;font-size:11px;font-family:inherit;width:90px" value="2026-06-01">
+        <span style="color:#4a5070">—</span>
+        <input type="date" style="background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:5px 10px;font-size:11px;font-family:inherit;width:90px" value="2026-06-30">
+        <span style="color:#6b7db3;font-size:12px;white-space:nowrap">🔥 互动≥</span>
+        <input type="number" placeholder="0" style="background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:6px 8px;font-size:12px;font-family:inherit;width:60px">
+        <div style="flex:1"></div>
+        <button style="background:linear-gradient(135deg,#c9a96e,#b8943e);border:none;border-radius:6px;padding:7px 16px;color:#0a0e27;font-size:12px;font-weight:700;font-family:inherit;white-space:nowrap">📥 导出</button>
+      </div>
+      <div style="background:#11152b;border-radius:10px;padding:16px 20px;border:1px solid #1e2340;">
+        <div style="display:flex;gap:24px;margin-bottom:10px;">
+          <div><span style="color:#6b7db3;font-size:11px">视频数</span><div style="color:#e8d5a3;font-size:20px;font-weight:700;font-family:monospace">127</div></div>
+          <div><span style="color:#6b7db3;font-size:11px">总点赞</span><div style="color:#e8d5a3;font-size:20px;font-weight:700;font-family:monospace">45.2k</div></div>
+          <div><span style="color:#6b7db3;font-size:11px">总评论</span><div style="color:#e8d5a3;font-size:20px;font-weight:700;font-family:monospace">3.8k</div></div>
+          <div><span style="color:#6b7db3;font-size:11px">总互动</span><div style="color:#c9a96e;font-size:20px;font-weight:700;font-family:monospace">58.7k</div></div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="background:#131833;color:#6b7db3;text-align:left">
+          <th style="padding:8px 12px">员工</th><th style="padding:8px 12px">日期</th><th style="padding:8px 12px">描述</th><th style="padding:8px 12px">分类</th><th style="padding:8px 12px;text-align:right">👍</th><th style="padding:8px 12px;text-align:right">💬</th><th style="padding:8px 12px;text-align:right">🔄</th><th style="padding:8px 12px;text-align:right">⭐</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:8px 12px">👤 张三</td><td style="padding:8px 12px">06-08</td><td style="padding:8px 12px">春季新品开箱...</td><td style="padding:8px 12px"><span style="background:#1a2a4e;color:#6b9ee8;border-radius:4px;padding:2px 8px;font-size:10px">日常</span></td><td style="padding:8px 12px;text-align:right;font-family:monospace">2.4k</td><td style="padding:8px 12px;text-align:right;font-family:monospace">327</td><td style="padding:8px 12px;text-align:right;font-family:monospace">156</td><td style="padding:8px 12px;text-align:right;font-family:monospace">892</td></tr>
+          <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:8px 12px">👤 李四</td><td style="padding:8px 12px">06-07</td><td style="padding:8px 12px">XX品牌合作推广</td><td style="padding:8px 12px"><span style="background:#2a1e1e;color:#e8a06b;border-radius:4px;padding:2px 8px;font-size:10px">商单</span></td><td style="padding:8px 12px;text-align:right;font-family:monospace">8.1k</td><td style="padding:8px 12px;text-align:right;font-family:monospace">1.2k</td><td style="padding:8px 12px;text-align:right;font-family:monospace">603</td><td style="padding:8px 12px;text-align:right;font-family:monospace">2.1k</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-body">
+      <h3>A — 顶栏一体</h3>
+      <p>所有筛选项排成一行 + 结果紧跟下方。最节省空间，适合大屏一次看完。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="layout-b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e27;padding:36px 24px;min-height:240px;display:flex;gap:16px;">
+      <div style="width:200px;flex-shrink:0;background:#11152b;border-radius:10px;padding:20px 16px;border:1px solid #1e2340;display:flex;flex-direction:column;gap:16px;">
+        <div style="color:#6b7db3;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">筛选条件</div>
+        <div><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">👤 员工</div><select style="width:100%;background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit"><option>全部</option><option>张三</option><option>李四</option></select></div>
+        <div><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">📂 分类</div><select style="width:100%;background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit"><option>全部</option><option>日常</option><option>商单</option></select></div>
+        <div><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">📅 起始日期</div><input type="date" value="2026-06-01" style="width:100%;background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:5px 8px;font-size:11px;font-family:inherit"></div>
+        <div><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">📅 结束日期</div><input type="date" value="2026-06-30" style="width:100%;background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:5px 8px;font-size:11px;font-family:inherit"></div>
+        <div><div style="color:#6b7db3;font-size:11px;margin-bottom:4px">🔥 互动量 ≥</div><input type="number" placeholder="0" style="width:100%;background:#1a1f3a;color:#c9a96e;border:1px solid #2a3050;border-radius:6px;padding:6px 8px;font-size:12px;font-family:inherit"></div>
+        <button style="margin-top:8px;background:linear-gradient(135deg,#c9a96e,#b8943e);border:none;border-radius:6px;padding:8px 14px;color:#0a0e27;font-size:13px;font-weight:700;font-family:inherit">应用筛选</button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#11152b;border-radius:10px;padding:14px 18px;border:1px solid #1e2340;display:flex;gap:20px;">
+          <div><span style="color:#6b7db3;font-size:10px">视频数</span><div style="color:#e8d5a3;font-size:18px;font-weight:700;font-family:monospace">127</div></div>
+          <div><span style="color:#6b7db3;font-size:10px">总点赞</span><div style="color:#e8d5a3;font-size:18px;font-weight:700;font-family:monospace">45.2k</div></div>
+          <div><span style="color:#6b7db3;font-size:10px">总互动</span><div style="color:#c9a96e;font-size:18px;font-weight:700;font-family:monospace">58.7k</div></div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead><tr style="background:#131833;color:#6b7db3;text-align:left">
+            <th style="padding:8px 10px">员工</th><th style="padding:8px 10px">描述</th><th style="padding:8px 10px">分类</th><th style="padding:8px 10px;text-align:right">👍</th><th style="padding:8px 10px;text-align:right">💬</th><th style="padding:8px 10px;text-align:right">🔥</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:8px 10px">张三</td><td style="padding:8px 10px">春季新品...</td><td style="padding:8px 10px"><span style="background:#1a2a4e;color:#6b9ee8;border-radius:4px;padding:2px 8px;font-size:10px">日常</span></td><td style="padding:8px 10px;text-align:right;font-family:monospace">2.4k</td><td style="padding:8px 10px;text-align:right;font-family:monospace">327</td><td style="padding:8px 10px;text-align:right;font-family:monospace;color:#c9a96e">3.8k</td></tr>
+            <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:8px 10px">李四</td><td style="padding:8px 10px">品牌合作...</td><td style="padding:8px 10px"><span style="background:#2a1e1e;color:#e8a06b;border-radius:4px;padding:2px 8px;font-size:10px">商单</span></td><td style="padding:8px 10px;text-align:right;font-family:monospace">8.1k</td><td style="padding:8px 10px;text-align:right;font-family:monospace">1.2k</td><td style="padding:8px 10px;text-align:right;font-family:monospace;color:#c9a96e">12.0k</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — 侧栏筛选</h3>
+      <p>左侧固定筛选面板 + 右侧结果区。筛选项多时更清晰，有「控制台」的感觉。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="layout-c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e27;padding:36px 24px;min-height:240px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;background:#c9a96e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">🔍</div>
+          <div style="color:#e8d5a3;font-size:14px;font-weight:700">数据筛选</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div style="display:flex;align-items:center;gap:4px;background:#131833;border:1px solid #1e2340;border-radius:8px;padding:4px;font-size:11px;color:#6b7db3">
+            <span style="padding:4px 10px;background:#c9a96e;color:#0a0e27;border-radius:6px;font-weight:700">快速</span>
+            <span style="padding:4px 10px;">高级</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div style="background:#131833;border-radius:8px;padding:8px 14px;border:1px solid #1e2340;display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><span style="color:#6b7db3">👤</span><span style="color:#c0c8e0">全部员工</span><span style="color:#4a5070;font-size:10px">▼</span></div>
+        <div style="background:#131833;border-radius:8px;padding:8px 14px;border:1px solid #1e2340;display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><span style="color:#6b7db3">📂</span><span style="color:#c0c8e0">全部类型</span><span style="color:#4a5070;font-size:10px">▼</span></div>
+        <div style="background:#131833;border-radius:8px;padding:8px 14px;border:1px solid #1e2340;display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><span style="color:#6b7db3">📅</span><span style="color:#c0c8e0">本月</span><span style="color:#4a5070;font-size:10px">▼</span></div>
+        <div style="background:#131833;border-radius:8px;padding:8px 14px;border:1px solid #1e2340;display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><span style="color:#6b7db3">🔥</span><span style="color:#c0c8e0">全部热度</span><span style="color:#4a5070;font-size:10px">▼</span></div>
+        <div style="background:#c9a96e;border-radius:8px;padding:8px 14px;font-size:12px;color:#0a0e27;font-weight:700;cursor:pointer">📥 导出Excel</div>
+      </div>
+      <div style="background:#11152b;border-radius:10px;padding:14px 18px;border:1px solid #1e2340;display:flex;gap:16px;">
+        <div><span style="color:#6b7db3;font-size:10px">符合条件</span><div style="color:#e8d5a3;font-size:20px;font-weight:700;font-family:monospace">127</div></div>
+        <div style="color:#4a5070">|</div>
+        <div><span style="color:#6b7db3;font-size:10px">总互动</span><div style="color:#c9a96e;font-size:20px;font-weight:700;font-family:monospace">58.7k</div></div>
+        <div style="color:#4a5070">|</div>
+        <div><span style="color:#6b7db3;font-size:10px">员工覆盖</span><div style="color:#e8d5a3;font-size:20px;font-weight:700;font-family:monospace">6/8</div></div>
+        <div style="flex:1"></div>
+        <div style="display:flex;align-items:end;"><span style="background:#1a2a4e;color:#6b9ee8;border-radius:4px;padding:4px 10px;font-size:10px">🔗 筛选条件已保存到链接</span></div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="background:#131833;color:#6b7db3;text-align:left">
+          <th style="padding:8px 12px">员工</th><th style="padding:8px 12px">日期</th><th style="padding:8px 12px">描述</th><th style="padding:8px 12px">分类</th><th style="padding:8px 12px;text-align:right">👍</th><th style="padding:8px 12px;text-align:right">💬</th><th style="padding:8px 12px;text-align:right">🔄</th><th style="padding:8px 12px;text-align:right">⭐</th><th style="padding:8px 12px;text-align:right">🔥</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:8px 12px">张三</td><td style="padding:8px 12px">06-08</td><td style="padding:8px 12px">春季新品开箱...</td><td style="padding:8px 12px"><span style="background:#1a2a4e;color:#6b9ee8;border-radius:4px;padding:2px 8px;font-size:10px">日常</span></td><td style="padding:8px 12px;text-align:right;font-family:monospace">2.4k</td><td style="padding:8px 12px;text-align:right;font-family:monospace">327</td><td style="padding:8px 12px;text-align:right;font-family:monospace">156</td><td style="padding:8px 12px;text-align:right;font-family:monospace">892</td><td style="padding:8px 12px;text-align:right;font-family:monospace;color:#c9a96e">3.8k</td></tr>
+          <tr style="border-bottom:1px solid #1a1f3a;color:#c0c8e0"><td style="padding:8px 12px">李四</td><td style="padding:8px 12px">06-07</td><td style="padding:8px 12px">XX品牌合作推广</td><td style="padding:8px 12px"><span style="background:#2a1e1e;color:#e8a06b;border-radius:4px;padding:2px 8px;font-size:10px">商单</span></td><td style="padding:8px 12px;text-align:right;font-family:monospace">8.1k</td><td style="padding:8px 12px;text-align:right;font-family:monospace">1.2k</td><td style="padding:8px 12px;text-align:right;font-family:monospace">603</td><td style="padding:8px 12px;text-align:right;font-family:monospace">2.1k</td><td style="padding:8px 12px;text-align:right;font-family:monospace;color:#c9a96e">12.0k</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-body">
+      <h3>C — 标签胶囊</h3>
+      <p>筛选器做成圆角胶囊标签 + 快速/高级切换。点击弹出下拉，视觉更柔和现代，筛选条件可分享链接。</p>
+    </div>
+  </div>
+</div>

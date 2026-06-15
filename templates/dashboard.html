@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% block title %}Workbench — Velorah{% endblock %}
+{% block head %}
+<script>
+  var currentUser = null;
+  var employees = [];
+  fetch("/api/me").then(function(r){return r.json()}).then(function(res){
+    if(!res.success) window.location.href="/login";
+    currentUser = res.data;
+    document.getElementById("topbarUser").innerHTML =
+      currentUser.nickname +
+      (currentUser.role === 'admin' ? ' <span class="badge-admin">Admin</span>' : '');
+    if (currentUser.role === 'admin') {
+      document.getElementById("adminLink").style.display = '';
+    }
+    loadDashboard();
+  });
+</script>
+{% endblock %}
+{% block topbar_actions %}
+<span id="adminLink" style="display:none">
+  <a href="/admin" class="btn-glass btn-glass-ghost text-xs px-4 py-2">Admin</a>
+</span>
+<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="openChangePassword()">Password</button>
+<button class="btn-glass btn-glass-ghost text-xs px-4 py-2" onclick="doLogout()">Exit</button>
+{% endblock %}
+{% block content %}
+<div class="z-content pt-24 px-4 max-w-6xl mx-auto">
+
+  <!-- Stats Row -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card glass-card animate-fade-rise">
+      <div class="stat-label">Submissions</div>
+      <div class="stat-value" id="sCount">--</div>
+    </div>
+    <div class="stat-card glass-card animate-fade-rise-delay">
+      <div class="stat-label">Total Likes</div>
+      <div class="stat-value" id="sLikes">--</div>
+    </div>
+    <div class="stat-card glass-card animate-fade-rise-delay">
+      <div class="stat-label">Total Comments</div>
+      <div class="stat-value" id="sComments">--</div>
+    </div>
+    <div class="stat-card glass-card animate-fade-rise-delay-2">
+      <div class="stat-label">Total Shares</div>
+      <div class="stat-value" id="sShares">--</div>
+    </div>
+    <div class="stat-card glass-card animate-fade-rise-delay-2">
+      <div class="stat-label">Total Collects</div>
+      <div class="stat-value" id="sCollects">--</div>
+    </div>
+  </div>
+
+  <!-- Submit Card -->
+  <div class="submit-card glass-card animate-fade-rise-delay-3">
+    <div class="submit-header">
+      <div class="submit-icon">📤</div>
+      <span class="submit-title">New Submission</span>
+    </div>
+    <div class="submit-row">
+      <input type="text" class="input-glass submit-url" id="videoUrl" placeholder="Paste Douyin video link..." />
+      <select class="select-glass" id="videoCategory">
+        <option value="日常">日常</option>
+        <option value="商单">商单</option>
+        <option value="爆款">爆款</option>
+        <option value="金劫宝">金劫宝</option>
+      </select>
+      <div class="multi-select-wrap" id="collabWrap">
+        <div class="multi-select-trigger" onclick="toggleCollabDropdown()">
+          <span class="placeholder-text" id="collabPlaceholder">Collaborators</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="multi-select-dropdown" id="collabDropdown">
+          <div class="multi-select-list" id="collabList"></div>
+          <div class="multi-select-actions">
+            <button class="btn-glass btn-glass-ghost text-xs" onclick="closeCollabDropdown()">Close</button>
+          </div>
+        </div>
+      </div>
+      <button class="liquid-glass-strong px-6 py-2.5 rounded-full text-sm font-medium text-white font-body" onclick="submitVideo()">Submit</button>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div class="modal" id="resultModal">
+    <div class="modal-glass liquid-glass-strong">
+      <div class="modal-header"><h3>Submission Success</h3><button class="modal-close" onclick="closeResultModal()">&times;</button></div>
+      <div class="modal-body" id="resultBody"></div>
+      <div class="modal-footer"><button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="closeResultModal()">OK</button></div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div class="modal" id="passwordModal">
+    <div class="modal-glass liquid-glass-strong">
+      <div class="modal-header"><h3>Change Password</h3><button class="modal-close" onclick="closeChangePassword()">&times;</button></div>
+      <div class="modal-body">
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Current Password</label><input type="password" class="input-glass" id="oldPassword" placeholder="Enter current password" /></div>
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">New Password</label><input type="password" class="input-glass" id="newPassword" placeholder="At least 4 characters" /></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closeChangePassword()">Cancel</button>
+        <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="changePassword()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Meta Modal -->
+  <div class="modal" id="editMetaModal">
+    <div class="modal-glass liquid-glass-strong">
+      <div class="modal-header"><h3>Edit Submission</h3><button class="modal-close" onclick="closeEditMeta()">&times;</button></div>
+      <div class="modal-body">
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Category</label>
+          <select class="select-glass w-full" id="editMetaCategory">
+            <option value="日常">日常</option><option value="商单">商单</option><option value="爆款">爆款</option><option value="金劫宝">金劫宝</option>
+          </select>
+        </div>
+        <div class="mb-4"><label class="block text-xs font-medium text-white/60 mb-1.5 font-body uppercase tracking-wider">Date</label><input type="date" class="input-glass" id="editMetaDate" /></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-glass btn-glass-ghost px-4 py-2" onclick="closeEditMeta()">Cancel</button>
+        <button class="liquid-glass-strong px-5 py-2 rounded-full text-sm text-white" onclick="saveEditMeta()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Changes Panel -->
+  <div class="changes-panel glass-card animate-fade-rise-delay-4" id="changesPanel" style="display:none">
+    <div class="changes-header">
+      <h3>Yesterday Changes</h3>
+      <span class="changes-subtitle" id="changesSubtitle"></span>
+    </div>
+    <div class="changes-grid" id="changesGrid"></div>
+  </div>
+
+  <!-- Submission History -->
+  <h3 class="section-heading text-2xl my-6">Submission History</h3>
+  <table class="table-glass animate-fade-rise-delay-4" id="historyTable">
+    <thead>
+      <tr>
+        <th>Date</th><th>Video</th><th>Link</th><th>Category</th>
+        <th class="td-num">👍 Likes</th><th class="td-num">💬 Comments</th>
+        <th class="td-num">🔄 Shares</th><th class="td-num">⭐ Collects</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="historyBody">
+      <tr><td colspan="9" class="td-empty">Loading...</td></tr>
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  function loadDashboard() { loadEmployees(); loadSubmissions(); loadChanges(); }
+
+  function loadEmployees() {
+    fetch("/api/employees").then(function(r){return r.json()}).then(function(res){
+      if (!res.success) return;
+      employees = res.data;
+      renderCollaborators(employees);
+    });
+  }
+
+  function loadSubmissions() {
+    fetch("/api/submissions").then(function(r){return r.json()}).then(function(res){
+      if (!res.success) return;
+      renderHistory(res.data);
+    });
+  }
+
+  function loadChanges() {
+    fetch("/api/daily-changes").then(function(r){return r.json()}).then(function(res){
+      if (!res.success || !res.data.length) { document.getElementById("changesPanel").style.display = "none"; return; }
+      document.getElementById("changesPanel").style.display = "";
+      renderChanges(res.data);
+    });
+  }
+
+  function renderHistory(data) {
+    var tbody = document.getElementById("historyBody");
+    if (!data.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="td-empty">No submissions yet</td></tr>';
+      document.getElementById("sCount").textContent = "0";
+      ["sLikes","sComments","sShares","sCollects"].forEach(function(id){ document.getElementById(id).textContent="0"; });
+      return;
+    }
+    var totalLikes=0, totalComments=0, totalShares=0, totalCollects=0;
+    tbody.innerHTML = data.map(function(s){
+      totalLikes += (s.likes||0); totalComments += (s.comments||0); totalShares += (s.shares||0); totalCollects += (s.collects||0);
+      var badgeClass = '';
+      if (s.category === '商单') badgeClass = 'badge-shangdan';
+      else if (s.category === '爆款') badgeClass = 'badge-baokuan';
+      else if (s.category === '金劫宝') badgeClass = 'badge-jinjiebao';
+      else badgeClass = 'badge-richang';
+      return '<tr>'+
+        '<td>'+(s.submitted_at||'').slice(0,10)+'</td>'+
+        '<td><span class="desc-text" title="'+escapeHtml(s.desc||'')+'">'+(s.desc||'—').slice(0,25)+'</span></td>'+
+        '<td><a href="'+escapeHtml(s.video_url||'')+'" target="_blank" class="video-link" title="Open on Douyin">🔗</a></td>'+
+        '<td><span class="badge '+badgeClass+' edit-meta" data-id="'+s.id+'" data-category="'+s.category+'" data-date="'+(s.submitted_at||'').slice(0,10)+'" onclick="openEditMeta(this)">'+escapeHtml(s.category)+' <span style="font-size:11px">✎</span></span></td>'+
+        '<td class="td-num">'+formatNum(s.likes)+'</td>'+
+        '<td class="td-num">'+formatNum(s.comments)+'</td>'+
+        '<td class="td-num">'+formatNum(s.shares)+'</td>'+
+        '<td class="td-num">'+formatNum(s.collects)+'</td>'+
+        '<td class="td-actions"><button class="btn-icon-edit" title="Edit" onclick="openEditMeta(this.parentElement.parentElement.querySelector(\'.edit-meta\'))">✎</button></td></tr>';
+    }).join("");
+    document.getElementById("sCount").textContent = data.length;
+    document.getElementById("sLikes").textContent = formatNum(totalLikes);
+    document.getElementById("sComments").textContent = formatNum(totalComments);
+    document.getElementById("sShares").textContent = formatNum(totalShares);
+    document.getElementById("sCollects").textContent = formatNum(totalCollects);
+  }
+
+  function renderChanges(data) {
+    document.getElementById("changesGrid").innerHTML = data.map(function(c){
+      var icon = c.total_change >= 0 ? "↑" : "↓";
+      var cls = c.total_change >= 0 ? "change-up" : "change-down";
+      return '<div class="change-card">'+
+        '<div class="change-title">'+escapeHtml(c.desc||'—').slice(0,22)+'</div>'+
+        '<div class="change-stats"><span class="'+cls+'">'+icon+' '+c.total_change+'</span></div>'+
+        '</div>';
+    }).join("");
+  }
+
+  function renderCollaborators(emps) {
+    var list = document.getElementById("collabList");
+    list.innerHTML = emps.map(function(e){
+      return '<label class="multi-select-item">'+
+        '<input type="checkbox" value="'+e.id+'" />'+
+        '<span>'+escapeHtml(e.nickname)+'</span></label>';
+    }).join("");
+  }
+
+  function toggleCollabDropdown() { document.getElementById("collabDropdown").classList.toggle("show"); }
+  function closeCollabDropdown() { document.getElementById("collabDropdown").classList.remove("show"); }
+  function getSelectedCollaborators() {
+    var checks = document.querySelectorAll("#collabList input[type=checkbox]:checked");
+    return Array.from(checks).map(function(c){return parseInt(c.value);});
+  }
+
+  function submitVideo() {
+    var url = document.getElementById("videoUrl").value.trim();
+    var category = document.getElementById("videoCategory").value;
+    var collabs = getSelectedCollaborators();
+    if (!url) { showToast("Please paste a video link", "error"); return; }
+    var btn = event.target;
+    btn.disabled = true; btn.textContent = "Fetching...";
+    fetch("/api/submissions", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({url:url, category:category, collaborator_ids:collabs}),
+    }).then(function(r){return r.json()}).then(function(res){
+      btn.disabled = false; btn.textContent = "Submit";
+      if (!res.success) { showToast(res.error||"Submit failed", "error"); return; }
+      document.getElementById("resultBody").innerHTML =
+        '<div class="text-sm text-white/70">'+escapeHtml(res.data.desc||'')+'</div><br>'+
+        '<div class="flex gap-4 text-sm">👍 '+formatNum(res.data.likes)+' &nbsp; 💬 '+formatNum(res.data.comments)+' &nbsp; 🔄 '+formatNum(res.data.shares)+' &nbsp; ⭐ '+formatNum(res.data.collects)+'</div>';
+      document.getElementById("resultModal").classList.add("active");
+      document.getElementById("videoUrl").value = "";
+      loadSubmissions();
+    });
+  }
+
+  function closeResultModal() { document.getElementById("resultModal").classList.remove("active"); }
+  function openChangePassword() { document.getElementById("passwordModal").classList.add("active"); }
+  function closeChangePassword() {
+    document.getElementById("passwordModal").classList.remove("active");
+    document.getElementById("oldPassword").value = "";
+    document.getElementById("newPassword").value = "";
+  }
+  function changePassword() {
+    var oldPw = document.getElementById("oldPassword").value.trim();
+    var newPw = document.getElementById("newPassword").value.trim();
+    if (!oldPw || !newPw) { showToast("Please fill both fields", "error"); return; }
+    if (newPw.length < 4) { showToast("Password at least 4 characters", "error"); return; }
+    fetch("/api/change-password", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({old_password: oldPw, new_password: newPw}),
+    }).then(function(r){return r.json()}).then(function(res){
+      if (res.success) {
+        showToast("Password changed, please re-login", "success");
+        closeChangePassword();
+        setTimeout(function(){ doLogout(); }, 1500);
+      } else { showToast(res.error || "Change failed", "error"); }
+    });
+  }
+
+  var editMetaId = null;
+  function openEditMeta(el) {
+    editMetaId = el.getAttribute("data-id");
+    document.getElementById("editMetaCategory").value = el.getAttribute("data-category");
+    document.getElementById("editMetaDate").value = el.getAttribute("data-date");
+    document.getElementById("editMetaModal").classList.add("active");
+  }
+  function closeEditMeta() { document.getElementById("editMetaModal").classList.remove("active"); editMetaId = null; }
+  function saveEditMeta() {
+    var cat = document.getElementById("editMetaCategory").value;
+    var dt = document.getElementById("editMetaDate").value;
+    fetch("/api/submissions/"+editMetaId, {
+      method: "PATCH",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({category: cat, submitted_at: dt}),
+    }).then(function(r){return r.json()}).then(function(res){
+      if (res.success) { showToast("Saved", "success"); closeEditMeta(); loadSubmissions(); }
+      else { showToast(res.error || "Save failed", "error"); }
+    });
+  }
+
+  function doLogout() { fetch("/api/logout",{method:"POST"}).then(function(){ window.location.href="/login"; }); }
+</script>
+{% endblock %}

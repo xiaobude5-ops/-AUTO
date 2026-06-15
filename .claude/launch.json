@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "几何星球AUTO",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["app.py"],
+      "port": 5150
+    }
+  ]
+}
